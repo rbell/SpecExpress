@@ -1,0 +1,151 @@
+<project xmlns="http://nant.sourceforge.net/release/0.86-beta1/nant.xsd" 
+	default="build">
+
+	<target name="build" depends="proj.init, proj.assembly-info, proj.compile-dll"/>	
+	<target name="build.test" depends="proj.init, proj.assembly-info, proj.compile-dll, proj.test"/>
+		
+	<target name="proj.compile-dll"
+		depends="proj.init"
+		description="Compile sources into a DLL">
+
+		<!--Gets build number from Teamcity if available-->
+		<property name="build.number" value="0.0" unless="${property::exists('build.number')}"/>		
+
+		<csc target="library" debug="${build.debug}" output="${build.dir}/${proj.name}.dll" keyfile="specexpress.key" >			
+			<sources refid="project.sources" />
+			<references refid="project.references" />
+			<resources refid="project.resources" />
+		</csc>
+		
+	</target>
+	
+	
+	<!--Utilities-->		
+	<target name="proj.init"		
+		description="Initializes build properties for ${proj.name}">
+		
+		<echo message="Initializing project sources, references, and resources  for ${proj.name}" />
+				
+		
+		<!--Default fileset for project sources-->
+		<fileset id="project.sources" failonempty="true" basedir="src/${proj.name}">
+			<include name="**/*.cs" />
+			<!-- exclude resharper stuff -->	
+			<exclude name="**/_ReSharper*/**" />
+			<exclude name="**/*.resharperoptions" />
+			<!-- exclude VS.NET stuff -->
+			<exclude name="**/*.suo" />
+			<exclude name="**/*.user" />
+			<exclude name="*.sln" />
+			<exclude name="**/*.csproj" />
+			<exclude name="**/*.Publish.xml" />
+			<exclude name="**/bin/**" />
+			<exclude name="**/obj/**" />
+			<exclude name="**/Diagrams/**" />
+		</fileset>		
+		
+		<!--<resgen>
+			<resources>
+				<include name="**/*.resx" />
+			</resources>
+		</resgen>
+		-->
+		
+		<resourcefileset id="project.resources" basedir="src/${proj.name}" dynamicprefix="true" prefix="${proj.name}">
+			<exclude name="**/bin/**" />
+			<exclude name="**/obj/**" />
+			<include name="**/*.resources" />			
+			<include name="**/*.resx" />	
+		</resourcefileset>
+				
+		<!--copy and flatten as a way to create a distinct list of references-->	
+		<fileset id="project.references" failonempty="true">
+				<include name="${lib.dir}/**/*.dll" />	
+				<include name="${build.dir}/*.dll" />			
+				<exclude name="${lib.dir}/**/Trace/**/*.dll" />	
+				<exclude name="${lib.dir}/**/Test/**/*.dll" />
+		</fileset>			
+		
+		<delete dir="${lib.dir}-tmp"/>
+		<mkdir dir="${lib.dir}-tmp"/>
+		<copy todir="${lib.dir}-tmp" flatten="true">
+			<fileset refid="project.references" />
+		</copy>
+		<!--reinitialize project.references to this new tmp dir-->	
+		<fileset id="project.references" failonempty="true">
+				<include name="${lib.dir}-tmp/**/*.dll" />					
+		</fileset>
+		
+	</target>
+	
+	<target name="proj.test">
+		
+		<mkdir dir="${test.dir}"/>	
+
+		<!--include files that have been compiled as part of this script-->
+		<copy todir="${test.dir}">
+			<fileset basedir="${build.dir}">
+				<include name="*"/>
+			</fileset>
+		</copy>
+		
+		<!--include external dependencies-->
+		<copy todir="${test.dir}" flatten="true">
+			<fileset refid="project.references" />
+		</copy>
+		
+		<!--Copy configuration-->		
+		<copy file="src\${proj.name}\App.config" tofile="${test.dir}\${proj.name}.dll.config" verbose="true"   failonerror="false"/>
+		
+		<nunit2 verbose="true">
+			<formatter type="Plain" outputdir="${teamcity.build.checkoutDir}/results" />
+			<test assemblyname="${test.dir}\${proj.name}.dll"/>
+		</nunit2>
+	</target>
+	
+	
+	<target name="proj.assembly-info" description="creates assembly info file" depends="getSubversionRevision">
+		<asminfo output="src\${proj.name}\properties\AssemblyInfo.cs" language="CSharp">
+			<imports>
+				<import namespace="System" />
+				<import namespace="System.Reflection" />
+				<import namespace="System.EnterpriseServices" />
+				<import namespace="System.Runtime.InteropServices" />
+			</imports>
+			<attributes>
+				<attribute type="AssemblyTitleAttribute" value="${proj.name}" />
+				<attribute type="AssemblyDescriptionAttribute" value="" />					
+				<attribute type="AssemblyProductAttribute" value="${proj.name}" />				
+				<attribute type="ComVisibleAttribute" value="false" />
+				<attribute type="CLSCompliantAttribute" value="true" />					
+				<attribute type="AssemblyVersionAttribute" value="${build.number}.${svn.revision}" />
+				<attribute type="AssemblyDelaySignAttribute" value="false" />
+				<attribute type="AssemblyCopyrightAttribute" value="Copyright, Alan Baker 2009" />
+				<!--Fix this later: <attribute type="AssemblyKeyFileAttribute" value="..\SR.snk" />-->
+				<attribute type="AllowPartiallyTrustedCallers" value="true" />
+			</attributes>
+			<references>
+				<include name="System.EnterpriseServices.dll" />
+			</references>
+		</asminfo>
+	</target>
+	
+	<target name="getSubversionRevision">
+		<!-- Retrieve subversion revision number -->
+		<echo message="Retrieving Subversion revision number"/>
+		<property name="svn.revision" value="0" />
+		<exec
+			program="tools\svn\svn.exe"
+			commandline='log "src" --xml --limit 1'
+			output="${build.dir}\_revision.xml"
+			failonerror="false"/>
+		<xmlpeek
+			file="${build.dir}\_revision.xml"
+			xpath="/log/logentry/@revision"
+			property="svn.revision"
+			failonerror="false"/>
+		<echo message="Using Subversion revision number: ${svn.revision}"/>
+		
+	</target>
+		
+</project>

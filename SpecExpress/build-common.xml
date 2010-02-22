@@ -1,0 +1,38 @@
+<project xmlns="http://nant.sourceforge.net/release/0.86-beta1/nant.xsd">
+
+	<property name="teamcity.build.checkoutDir" value="" unless="${property::exists('teamcity.build.checkoutDir')}"/>
+	<property name="build.is.personal" value="${property::exists('build.is.personal')}" unless="${property::exists('build.is.personal')}"/>
+	<property name="build.number" value="0.0.0.0" unless="${property::exists('build.number')}"/>
+	
+	<!--
+	<property name="nant.onfailure" value="Failure" />
+	<property name="nant.onsuccess" value="Success" />
+	-->
+	
+	<!--Default lib folder, which can be overrode by calling script-->
+	<property name="lib.dir" value="lib"  unless="${property::exists('lib.dir')}"/>
+	<property name="build.dir" value="bin" unless="${property::exists('build.dir')}"/>
+	<property name="test.dir" value="test-tmp" unless="${property::exists('test.dir')}"/>
+	
+	
+	<target name="common.init" if="${ not directory::exists(build.dir)}">
+		<echo  message="Creating build dir ${build.dir}"/>
+		<mkdir dir="${build.dir}"  />				
+	</target>
+		
+	<target name="common.clean" description="Delete all source code and previously compiled binaries.">		
+		<delete>
+			<fileset>
+				<include name="${build.dir}/**/**"/>
+			</fileset>
+		</delete>
+		
+		<delete dir="${test.dir}"/>	
+		<delete dir="${path::combine(teamcity.build.checkoutDir,'${build.dir}')}"  	if="${directory::exists(path::combine(teamcity.build.checkoutDir,'${build.dir}'))}" />
+	</target>
+	
+	
+
+	
+		
+</project>

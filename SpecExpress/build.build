@@ -1,0 +1,112 @@
+<project 
+	name="SpecExpress" 
+	default="buildAndDeploy"
+	xmlns="http://nant.sourceforge.net/release/0.86-beta1/nant.xsd">
+	<description>
+		<![CDATA[
+			
+			Default Properties:
+				build.dir 	default: bin 		Output directory for compiled assemblies. This is checked back into source control
+				test.dir  	default: tmp-dir 	Staging directory for running test cases
+				lib.dir 	default:lib 		Directory for project references
+				
+				You can override by defining the property in this file
+		]]>	
+	</description>
+	
+	<include buildfile="build-common.xml"/>
+	
+	<!--Global Properties-->
+	<property name="nant.settings.currentframework" value="net-3.5" />
+	<property name="build.debug" value="true" />	
+	<property name="build.number" value="0.1"/>
+	<property name="svn.revision" value="0" />
+	<property name="archive.dir" value="archive" />
+	
+
+	<target name="buildAndDeploy" depends="build, deploy"/>
+	
+	<target name="build"  depends="common.clean, common.init" >			
+						
+		<nant buildfile="build-project-common.xml">
+			<properties>
+				<property name="proj.name" value="SpecExpress" />				
+			</properties>
+		</nant>
+		
+		<nant buildfile="build-project-common.xml">
+			<properties>
+				<property name="proj.name" value="SpecExpress.Test.Domain" />
+			</properties>
+		</nant>
+		
+		<nant buildfile="build-project-common.xml" target="build.test">
+			<properties>
+				<property name="proj.name" value="SpecExpress.Test" />										
+			</properties>
+		</nant>
+		
+		<nant buildfile="build-project-common.xml">
+			<properties>
+				<property name="proj.name" value="SpecExpress.Web" />				
+			</properties>
+		</nant>
+		
+	</target>
+
+    <!--Deploy-->
+	<target name="deploy" depends="getSubversionRevision">
+		<property name="deploy.dir" value="deploy" />
+		
+		<mkdir dir="${deploy.dir}"   if="${ not directory::exists(deploy.dir)}"/>	
+		
+		<delete>
+			<fileset>
+				<include name="${deploy.dir}/**/**"/>
+			</fileset>
+		</delete>
+		
+		<copy todir="${deploy.dir}">
+			<fileset basedir="${build.dir}">
+				<include name="SpecExpress.dll"/>				
+				<include name="SpecExpress.pdb"/>
+				<include name="SpecExpress.Web.dll"/>				
+				<include name="SpecExpress.Web.pdb"/>						
+			</fileset>			
+		</copy>
+		
+		<copy file="License.txt" todir="${deploy.dir}"/>
+		
+		
+		
+		<mkdir dir="${archive.dir}"   if="${ not directory::exists(archive.dir)}"/>	
+		<zip zipfile="${archive.dir}/SpecExpress-${build.number}.${svn.revision}.zip">
+			<fileset basedir="${deploy.dir}">
+				<include name="**/*" />
+			</fileset>
+		</zip>
+		
+	</target>
+
+	<target name="getSubversionRevision">
+		<!-- Retrieve subversion revision number -->
+		<echo message="Retrieving Subversion revision number"/>		
+		<exec
+			program="tools\svn\svn.exe"
+			commandline='log "src" --xml --limit 1'
+			output="${build.dir}\_revision.xml"
+			failonerror="false"/>
+		<xmlpeek
+			file="${build.dir}\_revision.xml"
+			xpath="/log/logentry/@revision"
+			property="svn.revision"
+			failonerror="false"/>
+		<echo message="Using Subversion revision number: ${svn.revision}"/>
+		
+	</target>
+
+
+	
+	
+	
+</project>

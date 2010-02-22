@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0A8DF7B2-EAFC-457B-93EF-EE3030ABAF46}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SpecExpress</RootNamespace>
+    <AssemblyName>SpecExpress</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CompiledFunctionExpression.cs" />
+    <Compile Include="DSL\ActionJoinBuilder.cs" />
+    <Compile Include="CoreValidatorExtensions.cs" />
+    <Compile Include="DSL\ActionOptionConditionBuilder.cs" />
+    <Compile Include="DSL\ActionOptionConditionSatisfiedBuilder.cs" />
+    <Compile Include="DSL\ActionOptionBuilder.cs" />
+    <Compile Include="DSL\MessageCriteria.cs" />
+    <Compile Include="DSL\WithRuleBuilder.cs" />
+    <Compile Include="MessageStore\IMessageStore.cs" />
+    <Compile Include="MessageStore\MessageContext.cs" />
+    <Compile Include="MessageStore\MessageService.cs" />
+    <Compile Include="MessageStore\MessageStoreFactory.cs" />
+    <Compile Include="MessageStore\ResourceMessageStore.cs" />
+    <Compile Include="MessageStore\RuleErrorMessages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RuleErrorMessages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="DSL\RuleBuilder.cs" />
+    <Compile Include="Rules\Boolean\IsFalse.cs" />
+    <Compile Include="Rules\Boolean\IsTrue.cs" />
+    <Compile Include="Rules\Collection\CountEqualTo.cs" />
+    <Compile Include="Rules\Collection\CountGreaterThan.cs" />
+    <Compile Include="Rules\Collection\CountGreaterThanEqualTo.cs" />
+    <Compile Include="Rules\Collection\CountLessThan.cs" />
+    <Compile Include="Rules\Collection\CountLessThanEqualTo.cs" />
+    <Compile Include="Rules\Collection\ForEach.cs" />
+    <Compile Include="Rules\Collection\Contains.cs" />
+    <Compile Include="Rules\Collection\IsEmpty.cs" />
+    <Compile Include="Rules\GeneralValidators\IsInSet.cs" />
+    <Compile Include="Rules\CustomRule.cs" />
+    <Compile Include="Rules\DateValidators\IsInPast.cs" />
+    <Compile Include="Rules\DateValidators\IsInFuture.cs" />
+    <Compile Include="Rules\GeneralValidators\ForEachSpecificationRule.cs" />
+    <Compile Include="Rules\GeneralValidators\Required.cs" />
+    <Compile Include="Rules\GeneralValidators\SpecificationRule.cs" />
+    <Compile Include="Rules\IComparableValidators\Between.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Rules\IComparableValidators\EqualTo.cs" />
+    <Compile Include="Rules\IComparableValidators\LessThanEqualTo.cs" />
+    <Compile Include="Rules\IComparableValidators\LessThan.cs" />
+    <Compile Include="Rules\IComparableValidators\GreaterThan.cs" />
+    <Compile Include="Rules\IComparableValidators\GreaterThanEqualTo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Rules\StringValidators\Alpha.cs" />
+    <Compile Include="Rules\StringValidators\LengthEqualTo.cs" />
+    <Compile Include="Rules\StringValidators\Matches.cs" />
+    <Compile Include="Rules\StringValidators\Numeric.cs" />
+    <Compile Include="Rules\StringValidators\MaxLength.cs" />
+    <Compile Include="Rules\StringValidators\LengthBetween.cs" />
+    <Compile Include="Rules\StringValidators\MinLength.cs" />
+    <Compile Include="SpecExpressConfigurationException.cs" />
+    <Compile Include="Specification.cs" />
+    <Compile Include="SpecificationContainer.cs" />
+    <Compile Include="SpecificationExpression.cs" />
+    <Compile Include="SpecificationScanner.cs" />
+    <Compile Include="Util\ObjectExtensions.cs" />
+    <Compile Include="ValidationCatalog.cs" />
+    <Compile Include="ValidationCatalogConfiguration.cs" />
+    <Compile Include="ValidationContext.cs" />
+    <Compile Include="ValidationException.cs" />
+    <Compile Include="ValidationNotification.cs" />
+    <Compile Include="DSL\WithBuilder.cs" />
+    <Compile Include="Enums\ValidationLevelType.cs" />
+    <Compile Include="Rules\RuleValidator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\ExpressionExtensions.cs" />
+    <Compile Include="Util\StringExtensions.cs" />
+    <Compile Include="Util\RuleValidatorContext.cs" />
+    <Compile Include="Validates.cs" />
+    <Compile Include="ValidationResult.cs" />
+    <Compile Include="PropertyValidator.cs" />
+    <Compile Include="ValidationResultFactory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MessageStore\RuleErrorMessages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>RuleErrorMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
