@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SpecExpressTest.Entities
+namespace SpecExpress.Test.Entities
 {
     public class Contact
     {

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using SpecExpressTest.Entities;
+using SpecExpress.Test.Entities;
 
 namespace SpecExpress.Test.Entities
 {

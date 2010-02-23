@@ -1,7 +1,7 @@
 using System;
 using NUnit.Framework;
 //using SpecExpress.Rules.NumericValidators.Int;
-using SpecExpressTest.Entities;
+using SpecExpress.Test.Entities;
 using SpecExpress.Rules;
 using SpecExpress.Rules.IComparableValidators;
 

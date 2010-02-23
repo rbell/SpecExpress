@@ -3,7 +3,7 @@ using System.Reflection;
 using NUnit.Framework;
 using SpecExpress.MessageStore;
 using SpecExpress.Test.Domain.Specifications;
-using SpecExpressTest.Entities;
+using SpecExpress.Test.Entities;
 using System.Collections.Generic;
 
 namespace SpecExpress.Test
@@ -77,7 +77,7 @@ namespace SpecExpress.Test
             ValidationCatalog.Scan(x => x.AddAssembly(assembly));
 
             var spec = ValidationCatalog.SpecificationContainer.GetSpecification<SpecExpress.Test.Domain.Entities.Contact>();
-            Assert.That(spec.GetType(), Is.EqualTo(typeof(ContactSpecification)));
+            Assert.That(spec.GetType(), Is.EqualTo(typeof(SpecExpress.Test.Domain.Specifications.ContactSpecification)));
         }
 
 

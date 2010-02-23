@@ -4,7 +4,6 @@ using NUnit.Framework;
 using SpecExpress.Rules;
 using SpecExpress.Rules.GeneralValidators;
 using SpecExpress.Test.Entities;
-using SpecExpressTest.Entities;
 
 namespace SpecExpress.Test.RuleValidatorTests
 {

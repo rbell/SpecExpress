@@ -3,8 +3,8 @@ using NUnit.Framework;
 using SpecExpress.MessageStore;
 using SpecExpress.Rules;
 using SpecExpress.Rules.StringValidators;
-using SpecExpressTest.Entities;
-using SpecExpressTest.MessageStore;
+using SpecExpress.Test.Entities;
+using SpecExpress.Test.MessageStore;
 
 namespace SpecExpress.Test
 {

@@ -111,6 +111,7 @@
 				<import namespace="System.Reflection" />
 				<import namespace="System.EnterpriseServices" />
 				<import namespace="System.Runtime.InteropServices" />
+				<import namespace="System.Security" />
 			</imports>
 			<attributes>
 				<attribute type="AssemblyTitleAttribute" value="${proj.name}" />
@@ -121,11 +122,9 @@
 				<attribute type="AssemblyVersionAttribute" value="${build.number}.${svn.revision}" />
 				<attribute type="AssemblyDelaySignAttribute" value="false" />
 				<attribute type="AssemblyCopyrightAttribute" value="Copyright, Alan Baker 2009" />
-				<!--Fix this later: <attribute type="AssemblyKeyFileAttribute" value="..\SR.snk" />-->
-				<attribute type="AllowPartiallyTrustedCallers" value="true" />
 			</attributes>
 			<references>
-				<include name="System.EnterpriseServices.dll" />
+				<include name="System.EnterpriseServices.dll" />				
 			</references>
 		</asminfo>
 	</target>

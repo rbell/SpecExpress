@@ -5,10 +5,9 @@ using System.Text;
 using NUnit.Framework;
 using SpecExpress;
 using SpecExpress.Test.Entities;
-using SpecExpressTest.Entities;
-using SpecExpressTest.Specifications;
+using SpecExpress.Test.Specifications;
 
-namespace SpecExpressTest
+namespace SpecExpress.Test
 {
     [TestFixture]
     public class InheritanceTests

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using SpecExpress.Rules;
 using SpecExpress.Rules.Collection;
-using SpecExpressTest.Entities;
+using SpecExpress.Test.Entities;
 
 namespace SpecExpress.Test.RuleValidatorTests
 {

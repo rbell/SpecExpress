@@ -19,7 +19,7 @@
 	<!--Global Properties-->
 	<property name="nant.settings.currentframework" value="net-3.5" />
 	<property name="build.debug" value="true" />	
-	<property name="build.number" value="0.1"/>
+	<property name="build.number" value="1.1"/>
 	<property name="svn.revision" value="0" />
 	<property name="archive.dir" value="archive" />
 	

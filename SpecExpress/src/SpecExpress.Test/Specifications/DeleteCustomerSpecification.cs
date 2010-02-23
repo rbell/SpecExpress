@@ -5,7 +5,7 @@ using System.Text;
 using SpecExpress;
 using SpecExpress.Test.Domain.Entities;
 
-namespace SpecExpressTest.Specifications
+namespace SpecExpress.Test.Specifications
 {
     public class DeleteCustomerSpecification : Validates<Customer>
     {

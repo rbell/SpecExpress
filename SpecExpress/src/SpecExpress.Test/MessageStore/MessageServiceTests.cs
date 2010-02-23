@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using SpecExpress.MessageStore;
 using SpecExpress.Rules;
-using SpecExpressTest.Entities;
+using SpecExpress.Test.Entities;
 
 namespace SpecExpress.Test
 {

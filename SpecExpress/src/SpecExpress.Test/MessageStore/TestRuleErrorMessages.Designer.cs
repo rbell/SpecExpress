@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SpecExpressTest.MessageStore {
+namespace SpecExpress.Test.MessageStore {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace SpecExpressTest.MessageStore {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SpecExpressTest.MessageStore.TestRuleErrorMessages", typeof(TestRuleErrorMessages).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SpecExpress.Test.MessageStore.TestRuleErrorMessages", typeof(TestRuleErrorMessages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

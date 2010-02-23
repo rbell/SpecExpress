@@ -1,7 +1,7 @@
 using System.Linq;
 using NUnit.Framework;
 using SpecExpress.MessageStore;
-using SpecExpressTest.MessageStore;
+using SpecExpress.Test.MessageStore;
 
 namespace SpecExpress.Test
 {

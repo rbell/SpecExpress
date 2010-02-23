@@ -5,8 +5,7 @@ using System.Linq;
 using SpecExpress.MessageStore;
 using SpecExpress.Rules.Collection;
 using SpecExpress.Test.Entities;
-using SpecExpressTest;
-using SpecExpressTest.Entities;
+using SpecExpress.Test;
 
 namespace SpecExpress.Test.DSLTests
 {

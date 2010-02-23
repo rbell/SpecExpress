@@ -4,7 +4,7 @@ using NUnit.Framework;
 using SpecExpress;
 using SpecExpress.Test.Domain.Entities;
 
-namespace SpecExpressTest
+namespace SpecExpress.Test
 {
     [TestFixture]
     public class ValidationContextTests

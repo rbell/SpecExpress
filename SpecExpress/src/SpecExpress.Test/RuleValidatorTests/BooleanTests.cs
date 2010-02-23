@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using SpecExpress.Rules;
 using SpecExpress.Rules.Boolean;
-using SpecExpressTest.Entities;
+using SpecExpress.Test.Entities;
 
 namespace SpecExpress.Test.RuleValidatorTests
 {

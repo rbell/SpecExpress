@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using SpecExpress;
 
-namespace SpecExpressTest
+namespace SpecExpress.Test
 {
    public class DeleteValidationContext : ValidationContext
    {

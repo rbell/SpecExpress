@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SpecExpressTest
+namespace SpecExpress.Test
 {
     public class BadWolf
     {

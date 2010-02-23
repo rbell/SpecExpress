@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using SpecExpress;
 using SpecExpress.Test.Entities;
-using SpecExpressTest.Entities;
 
-namespace SpecExpressTest
+namespace SpecExpress.Test
 {
     public class ExtendedCustomerSpecification : Validates<ExtendedCustomer>
     {

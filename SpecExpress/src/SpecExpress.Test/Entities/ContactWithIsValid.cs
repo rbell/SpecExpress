@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using SpecExpress.Rules.DateValidators;
-using SpecExpressTest.Entities;
+using SpecExpress.Test.Entities;
 
 namespace SpecExpress.Test.Entities
 {

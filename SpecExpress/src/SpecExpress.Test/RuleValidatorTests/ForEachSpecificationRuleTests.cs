@@ -2,8 +2,7 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using SpecExpress.Test.Entities;
-using SpecExpressTest;
-using SpecExpressTest.Entities;
+using SpecExpress.Test;
 using System.Collections.Generic;
 
 namespace SpecExpress.Test.RuleValidatorTests

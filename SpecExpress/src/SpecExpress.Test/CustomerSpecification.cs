@@ -2,7 +2,7 @@
 using SpecExpress.Test;
 using SpecExpress.Test.Entities;
 
-namespace SpecExpressTest
+namespace SpecExpress.Test
 {
     public class CustomerSpecification : Validates<Customer>
     {

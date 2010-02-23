@@ -8,7 +8,7 @@
     <ProjectGuid>{78D20181-3C87-4DB2-AD31-1D17A159BC16}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SpecExpressTest</RootNamespace>
+    <RootNamespace>SpecExpress.Test</RootNamespace>
     <AssemblyName>SpecExpress.Test</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

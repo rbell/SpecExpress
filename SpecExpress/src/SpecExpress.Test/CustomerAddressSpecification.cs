@@ -2,10 +2,9 @@
 using SpecExpress.Test;
 using SpecExpress.Test.Entities;
 using System.Linq;
-using SpecExpressTest.Entities;
 
 
-namespace SpecExpressTest
+namespace SpecExpress.Test
 {
     public class CustomerAddressSpecification : Validates<Customer>
     {

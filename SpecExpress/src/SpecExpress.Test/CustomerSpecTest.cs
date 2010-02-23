@@ -5,9 +5,8 @@ using NUnit.Framework;
 using SpecExpress;
 using SpecExpress.Rules.DateValidators;
 using SpecExpress.Test.Entities;
-using SpecExpressTest.Entities;
 
-namespace SpecExpressTest
+namespace SpecExpress.Test
 {
     [TestFixture]
     public class CustomerSpecTest

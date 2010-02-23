@@ -1,4 +1,4 @@
-namespace SpecExpressTest.Entities
+namespace SpecExpress.Test.Entities
 {
     public class Country
     {

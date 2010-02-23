@@ -3,7 +3,6 @@ using System.Linq;
 using NUnit.Framework;
 using SpecExpress.Rules.StringValidators;
 using SpecExpress.Test.Entities;
-using SpecExpressTest.Entities;
 
 namespace SpecExpress.Test
 {

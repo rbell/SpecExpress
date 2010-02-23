@@ -1,8 +1,8 @@
 using NUnit.Framework;
 using SpecExpress;
-using SpecExpressTest.Entities;
+using SpecExpress.Test.Entities;
 
-namespace SpecExpressTest
+namespace SpecExpress.Test
 {
     [TestFixture]
     public class ContactSpecificationTests

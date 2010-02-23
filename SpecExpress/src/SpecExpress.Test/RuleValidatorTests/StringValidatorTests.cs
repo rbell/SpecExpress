@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using SpecExpress.Rules;
 using SpecExpress.Rules.StringValidators;
-using SpecExpressTest.Entities;
+using SpecExpress.Test.Entities;
 
 namespace SpecExpress.Test.RuleValidatorTests
 {

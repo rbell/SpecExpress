@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using SpecExpress.Test.Entities;
 
-namespace SpecExpressTest.Entities
+namespace SpecExpress.Test.Entities
 {
     public class ExtendedCustomer : Customer 
     {
