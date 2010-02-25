@@ -30,6 +30,11 @@ namespace SpecExpress
             return ValidationCatalog.Validate(instance, context.SpecificationContainer, spec);
         }
 
+        public static SpecificationContainer SpecificationContainer
+        {
+            get { return new TContext().SpecificationContainer;}
+        }
+
         #endregion
 
         #region Validate Property
