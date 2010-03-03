@@ -21,7 +21,7 @@ namespace SpecExpress.Test
             //    .With.Message("Either First or Last Name must be empty");
             //;
 
-            
+
             Check(c => c, "Contact").Required().Expect((c, x) =>
                                                                {
                                                                    return (String.IsNullOrEmpty(c.FirstName) ||
@@ -29,7 +29,7 @@ namespace SpecExpress.Test
                                                                }, "Either First or Last Name must be empty");
 
             //This will throw an exception
-            Check(x => x.LastName).Required().Expect((y, z) => new BadWolf().IsTrue, "Error");
+            //Check(x => x.LastName).Required().Expect((y, z) => new BadWolf().IsTrue, "Error");
                 
         }
     }

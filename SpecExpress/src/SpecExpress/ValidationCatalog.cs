@@ -355,7 +355,7 @@ namespace SpecExpress
             }
 
             var validators = from validator in specification.PropertyValidators
-                             where validator.PropertyInfo.Name == propertyName
+                             where validator.PropertyInfo!= null && validator.PropertyInfo.Name == propertyName
                              select validator;
 
             if (!validators.Any())
@@ -372,7 +372,58 @@ namespace SpecExpress
             return new ValidationNotification() { Errors = results };
         }
 
+        #region Assert Property
 
+        //Add Type???
+        //public static void AssertValidProperty(object value, string propertyName)
+        //{
+        //    AssertValidProperty(value, propertyName, null);
+        //}
+
+        public static void AssertValidProperty(object value, string propertyName,
+                                                              Specification specification)
+        {
+            AssertValidProperty(value, propertyName, specification, SpecificationContainer);
+        }
+
+        public static void AssertValidProperty<T, TSpec>(object value, Expression<Func<T, object>> property) where TSpec : Specification, new()
+        {
+            var spec = new TSpec() as Specification;
+            var prop = new PropertyValidator<T, object>(property);
+            AssertValidProperty(value, prop.PropertyInfo.Name, spec);
+        }
+
+        public static void AssertValidProperty<T>(object value, Expression<Func<T, object>> property,
+                                                              Specification specification)
+        {
+            var prop = new PropertyValidator<T, object>(property);
+            AssertValidProperty(value, prop.PropertyInfo.Name, specification, SpecificationContainer);
+
+        }
+
+        internal static void AssertValidProperty(object value, string propertyName, Specification specification, SpecificationContainer container)
+        {
+            if (specification == null)
+            {
+                throw new ArgumentException("Specification is required");
+            }
+
+            //Create a placeholder object for the type we are validating
+            var proxy = Activator.CreateInstance(specification.ForType, true);
+
+            //set the value on the proxy object
+            specification.ForType.GetProperty(propertyName).SetValue(proxy, value, null);
+
+            var vn = ValidateProperty(proxy, propertyName, specification, container);
+
+            if (!vn.IsValid)
+            {
+                throw new ValidationException(vn);
+            }
+
+        }
+
+        #endregion
 
         #endregion
 
