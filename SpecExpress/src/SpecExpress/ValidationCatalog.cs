@@ -38,7 +38,6 @@ namespace SpecExpress
         #endregion
 
         #region Validate Property
-
         
         public static ValidationNotification ValidateProperty(object instance, string propertyName)
         {
@@ -70,6 +69,33 @@ namespace SpecExpress
 
 
         #endregion
+
+        #region Assert Property
+
+        public static void AssertValidProperty(object value, string propertyName,
+                                                              Specification specification)
+        {
+            var context = new TContext();
+            ValidationCatalog.AssertValidProperty(value, propertyName, specification, context.SpecificationContainer);
+        }
+
+        public static void AssertValidProperty<T, TSpec>(object value, Expression<Func<T, object>> property) where TSpec : Specification, new()
+        {
+            var spec = new TSpec() as Specification;
+            var prop = new PropertyValidator<T, object>(property);
+            ValidationCatalog.AssertValidProperty(value, prop.PropertyInfo.Name, spec);
+        }
+
+        public static void AssertValidProperty<T>(object value, Expression<Func<T, object>> property,
+                                                              Specification specification)
+        {
+            var context = new TContext();
+            var prop = new PropertyValidator<T, object>(property);
+            ValidationCatalog.AssertValidProperty(value, prop.PropertyInfo.Name, specification, context.SpecificationContainer);
+
+        }
+        #endregion
+
     }
 
     public static class ValidationCatalog
@@ -373,12 +399,6 @@ namespace SpecExpress
         }
 
         #region Assert Property
-
-        //Add Type???
-        //public static void AssertValidProperty(object value, string propertyName)
-        //{
-        //    AssertValidProperty(value, propertyName, null);
-        //}
 
         public static void AssertValidProperty(object value, string propertyName,
                                                               Specification specification)
