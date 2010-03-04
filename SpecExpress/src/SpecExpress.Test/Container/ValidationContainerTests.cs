@@ -233,30 +233,5 @@ namespace SpecExpress.Test
             Assert.IsFalse(propertyNotification.IsValid);
             Assert.AreNotEqual(1, propertyNotification.Errors);
         }
-        [Test]
-        public void AssertValidProperty_Invalid_SimpleProperty_ThrowsValidationException()
-        {
-            //Create Rules Adhoc
-            ValidationCatalog.AddSpecification<Contact>(x =>
-            {
-                x.Check(c => c.LastName).Required();
-                x.Check(c => c.FirstName).Required();
-            });
-
-            //ValidationCatalog.AssertValidProperty<Contact>(string.Empty, c => c.FirstName, ValidationCatalog.SpecificationContainer.GetSpecification(typeof(Contact)));
-
-            Assert.Throws<ValidationException>(
-               () =>
-               {
-                   ValidationCatalog.AssertValidProperty<Contact>(string.Empty, c => c.FirstName, ValidationCatalog.SpecificationContainer.GetSpecification(typeof(Contact)));
-               });
-        }
-
-        [Test]
-        public void AssertValidProperty_Valid_SimpleProperty_DoesNot_ThrowsValidationException()
-        {
-            ValidationCatalog.AssertValidProperty<Contact, ContactSpecification>("John", c => c.FirstName);
-        }
-
     }
 }
