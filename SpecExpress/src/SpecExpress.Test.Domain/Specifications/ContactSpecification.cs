@@ -13,6 +13,7 @@ namespace SpecExpress.Test.Domain.Specifications
             Check(c => c.Addresses).Required();
             Check(c => c.PrimaryAddress).Required();
             Check(c => c.DefaultProject).Required().Specification();
+            Check(c => c, "Credit Score").Required().Expect((c, d) => 1 == 1, "Error");
         }
     }
 }

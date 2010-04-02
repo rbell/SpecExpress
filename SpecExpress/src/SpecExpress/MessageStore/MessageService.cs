@@ -20,7 +20,8 @@ namespace SpecExpress.MessageStore
 
         public string GetMessageTemplate(MessageContext context)
         {
-            var ruleKey = BuildRuleKeyFromContext(context);
+           
+            var ruleKey =  context.Key.IsNullOrDefault() ? BuildRuleKeyFromContext(context) : context.Key.ToString();
 
             IMessageStore messageStore;
 

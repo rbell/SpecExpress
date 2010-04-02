@@ -11,6 +11,13 @@ namespace SpecExpress.Test
     [TestFixture]
     public class ResourceMessageStoreTests
     {
+        [SetUp]
+        public void Setup()
+        {
+            ValidationCatalog.ResetConfiguration();
+            ValidationCatalog.Reset();
+        }
+
         [Test]
         public void GetFormattedErrorMessage_ReturnsFormattedString()
         {
@@ -63,9 +70,27 @@ namespace SpecExpress.Test
             var results = ValidationCatalog.ValidateProperty(contact, c => c.LastName);
 
             Assert.That(results.Errors.ToList().First().Message == "Last Name should only contain letters, big boy!");
+        }
 
-
+        [Test]
+        public void GetMessageForRuleWithMessageOverrrideAndMessageKey()
+        {
+            ValidationCatalog.Configure(x => x.AddMessageStore(new ResourceMessageStore(TestRuleErrorMessages.ResourceManager), "OverrideMessages"));
             
+            ValidationCatalog.AddSpecification<Contact>(c =>
+            {
+                c.Check(x => x.LastName).Required().IsAlpha().With(m => m.MessageKey = "TestRule");
+            }
+                );
+
+            //Create an Entity
+            var contact = new Contact();
+            contact.FirstName = null;
+            contact.LastName = "1111";
+
+            var results = ValidationCatalog.ValidateProperty(contact, c => c.LastName);
+
+            Assert.That(results.Errors.ToList().First().Message == "Last Name is invalid!");
         }
     }
 
