@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SpecExpress
 {
@@ -16,5 +17,33 @@ namespace SpecExpress
         {
             get { return Errors.Count == 0; }
         }
+
+        /// <summary>
+        /// Creates a ValidationNotification object containing all the errors for the specified property
+        /// </summary>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        public ValidationNotification GetNotificationForProperty(string propertyName)
+        {
+            var propertyErrors = FlattenValidationResults().ToList().Where(e => e.Property.Name == propertyName).ToList();
+            var notification = new ValidationNotification() {Errors = propertyErrors};
+            return notification;
+
+        }
+        
+        private IEnumerable<ValidationResult> FlattenValidationResults()
+        {
+
+            foreach (var error in Errors)
+            {
+                yield return error;
+
+                foreach (var grandchild in error.NestedValdiationResults)
+                {
+                    yield return error;
+                }
+            }
+        }
+
     }
 }

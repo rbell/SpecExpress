@@ -126,6 +126,7 @@
     <Compile Include="Specifications\CustomerRequiredNameSpecification.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Container\ValidationContextTests.cs" />
+    <Compile Include="ValidationNotificationTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SpecExpress.Test.Domain\SpecExpress.Test.Domain.csproj">
