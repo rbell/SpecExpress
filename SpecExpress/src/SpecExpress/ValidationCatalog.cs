@@ -153,6 +153,13 @@ namespace SpecExpress
                 //    var errorString = invalidPropertyValidators.Aggregate(string.Empty, (x, y) => x + "\n" + y);
                 //    throw new SpecExpressConfigurationException(errorString);
                 //}
+
+                if (!ValidationCatalog.SpecificationContainer.GetAllSpecifications().Any())
+                {  
+                    throw new SpecExpressConfigurationException("No specifications are registered with ValidationCatalog. Check if Scan has been run.");
+                }
+
+
             }
         }
 

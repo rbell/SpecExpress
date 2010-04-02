@@ -55,14 +55,8 @@ namespace SpecExpress.Test
         }
 
         [Test]
-        [Ignore]
         public void AssertConfigurationValid_IsInvalid()
         {
-            //Set Assemblies to scan for Specifications
-            Assembly assembly = Assembly.LoadFrom("SpecExpress.Test.Domain.dll");
-            ValidationCatalog.Scan(x => x.AddAssembly(assembly));
-            Assert.That(ValidationCatalog.SpecificationContainer.GetAllSpecifications(), Is.Not.Empty);
-
             Assert.Throws<SpecExpressConfigurationException>(
                 () =>
                 {
