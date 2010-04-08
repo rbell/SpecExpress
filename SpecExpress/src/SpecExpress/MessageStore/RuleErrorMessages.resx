@@ -244,7 +244,7 @@
     <value>{PropertyName} must not be between {0} and {1} characters. You entered {PropertyValue} characters.</value>
   </data>
   <data name="Not_LengthEqualTo" xml:space="preserve">
-    <value>{PropertyName} shoud not be {0} characters.</value>
+    <value>{PropertyName} should not be {0} characters.</value>
   </data>
   <data name="Not_LessThan" xml:space="preserve">
     <value>{PropertyName} must not be less than {0}. You entered {PropertyValue}.</value>

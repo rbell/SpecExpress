@@ -4,9 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using SpecExpress.MessageStore;
+using SpecExpress.Util;
 
 namespace SpecExpress
 {
+    /// <summary>
+    /// Validate an object using a ValidationContext
+    /// </summary>
+    /// <typeparam name="TContext"></typeparam>
     public static class ValidationCatalog<TContext> where TContext : ValidationContext, new()
     {
         #region Validate Object
@@ -72,6 +77,7 @@ namespace SpecExpress
 
     }
 
+    
     public static class ValidationCatalog
     {
         private static object _syncLock = new object();
@@ -221,8 +227,11 @@ namespace SpecExpress
             //We've either found a valid Specification or we've thrown an exception
             //The Specification may have been explicitly defined
             //check if the Specification and instance type match up the use them
-            if (specification.ForType == instance.GetType())
+
+
+            if ( instance.GetType().CanBeCastTo(specification.ForType))
             {
+
                 return new ValidationNotification { Errors = specification.Validate(instance, container) };
             }
             else

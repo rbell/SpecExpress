@@ -44,6 +44,13 @@ namespace SpecExpress
 
         #region Check
 
+        /// <summary>
+        /// Create a broken rule for this property
+        /// </summary>
+        /// <typeparam name="TProperty"></typeparam>
+        /// <param name="expression">Lambda expression ( c => c.FirstName ) returning the property to evaluate</param>
+        /// <param name="propertyNameOverride">Name of property to use in related messages</param>
+        /// <returns></returns>
         public ActionOptionConditionBuilder<T, TProperty> Check<TProperty>(Expression<Func<T, TProperty>> expression,
                                                                   string propertyNameOverride)
         {
@@ -56,6 +63,12 @@ namespace SpecExpress
             }
         }
 
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <typeparam name="TProperty"></typeparam>
+        /// <param name="expression">Lambda expression ( c => c.FirstName ) returning the property to evaluate</param>
+        /// <returns></returns>
         public ActionOptionConditionBuilder<T, TProperty> Check<TProperty>(Expression<Func<T, TProperty>> expression)
         {
             return Check(expression, null);

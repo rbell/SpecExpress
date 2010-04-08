@@ -33,10 +33,5 @@ namespace SpecExpress.Test
             Assert.That(results.IsValid, Is.False);
         }
 
-       
-
-
-
-
     }
 }   

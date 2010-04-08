@@ -101,6 +101,7 @@
     <Compile Include="SpecificationExpression.cs" />
     <Compile Include="SpecificationScanner.cs" />
     <Compile Include="Util\ObjectExtensions.cs" />
+    <Compile Include="Util\TypeExtensions.cs" />
     <Compile Include="ValidationCatalog.cs" />
     <Compile Include="ValidationCatalogConfiguration.cs" />
     <Compile Include="ValidationContext.cs" />

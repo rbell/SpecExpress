@@ -5,15 +5,15 @@ namespace SpecExpress.Test.Entities
 {
     public class Contact
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public DateTime? DateOfBirth { get; set; }
-        public int NumberOfDependents { get; set; }
-        public int NumberOfChildren { get; set; }
-        public List<Address> Addresses { get; set; }
-        public List<string> Aliases { get; set; }
-        public bool Active { get; set; }
-        public string NamePattern { get; set; }
+        public virtual string FirstName { get; set; }
+        public virtual string LastName { get; set; }
+        public virtual DateTime? DateOfBirth { get; set; }
+        public virtual int NumberOfDependents { get; set; }
+        public virtual int NumberOfChildren { get; set; }
+        public virtual List<Address> Addresses { get; set; }
+        public virtual List<string> Aliases { get; set; }
+        public virtual bool Active { get; set; }
+        public virtual string NamePattern { get; set; }
         
     }
 }

@@ -10,6 +10,8 @@ namespace SpecExpress.Test
         {
             //Check(c => c.Address).Required().With.Specification<AddressSpecification>();
             //Check(c => c.Name).Required();
+            
+            
         }
     }
 }

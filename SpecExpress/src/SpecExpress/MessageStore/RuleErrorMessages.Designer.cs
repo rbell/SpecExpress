@@ -439,7 +439,7 @@ namespace SpecExpress.MessageStore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {PropertyName} shoud not be {0} characters..
+        ///   Looks up a localized string similar to {PropertyName} should not be {0} characters..
         /// </summary>
         internal static string Not_LengthEqualTo {
             get {
