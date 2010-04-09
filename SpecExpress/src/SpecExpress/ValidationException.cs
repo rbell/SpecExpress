@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SpecExpress
 {
-    [Serializable]
+    //[Serializable]
     public class ValidationException : Exception
     {
         private ValidationNotification _notification;
@@ -31,6 +31,11 @@ namespace SpecExpress
         public ValidationNotification ValidationNotification
         {
             get { return _notification; }
+        }
+
+        public override string ToString()
+        {
+            return ValidationNotification.ToString();
         }
     }
 }

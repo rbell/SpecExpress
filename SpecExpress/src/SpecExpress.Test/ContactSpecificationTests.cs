@@ -1,6 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 using NUnit.Framework;
 using SpecExpress;
 using SpecExpress.Test.Entities;
+using Address=SpecExpress.Test.Domain.Values.Address;
 
 namespace SpecExpress.Test
 {
@@ -32,6 +36,5 @@ namespace SpecExpress.Test
 
             Assert.That(results.IsValid, Is.False);
         }
-
     }
 }   

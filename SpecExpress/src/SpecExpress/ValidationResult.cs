@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Linq;
 
 namespace SpecExpress
 {
@@ -41,16 +42,12 @@ namespace SpecExpress
         {
             get { return _target; }
         }
-        public override string ToString()
-        {
-            return Message;
-        }
+        
 
         public IEnumerable<ValidationResult> NestedValdiationResults {get;set;}
 
         public IEnumerable<string> AllErrors()
         {
-           
             foreach (var error in NestedValdiationResults)
             {
                 yield return error.Message;
@@ -61,10 +58,21 @@ namespace SpecExpress
                 }
                
             }
-          
+        }
+
+        public string PrintNode(string prefix)
+        {
+           return prefix + Message + "\r\n" +
+                               NestedValdiationResults.Select(vr => vr.PrintNode(prefix + "\t")).DefaultIfEmpty().
+                                   Aggregate((a, b) => a + b);
            
         }
 
+        public override string ToString()
+        {
+            return Message;
+        }
+        
     }
 
 

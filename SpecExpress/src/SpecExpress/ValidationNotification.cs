@@ -30,10 +30,14 @@ namespace SpecExpress
             return notification;
 
         }
-        
+
+        public override string ToString()
+        {
+            return  Errors.Select( a=> a.PrintNode(string.Empty)).Aggregate( (a, b) => a + b);
+        }
+
         private IEnumerable<ValidationResult> FlattenValidationResults()
         {
-
             foreach (var error in Errors)
             {
                 yield return error;
