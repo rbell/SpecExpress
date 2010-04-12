@@ -97,7 +97,7 @@ namespace SpecExpress.Util
         {
             if (type.IsGenericType)
             {
-                string[] parameters = Array.ConvertAll(type.GetGenericArguments(), t => t.GetName());
+                string[] parameters =(from arg in type.GetGenericArguments().AsEnumerable() select arg.GetName()).ToArray();
                 string parameterList = String.Join(", ", parameters);
                 return String.Format("{0}<{1}>",type.Name, parameterList);
             }
@@ -109,7 +109,7 @@ namespace SpecExpress.Util
         {
             if (type.IsGenericType)
             {
-                string[] parameters = Array.ConvertAll(type.GetGenericArguments(), t => t.GetName());
+                string[] parameters = (from arg in type.GetGenericArguments().AsEnumerable() select arg.GetName()).ToArray();
                 string parameterList = String.Join(", ", parameters);
                 return String.Format("{0}<{1}>", type.Name, parameterList);
             }
@@ -208,7 +208,7 @@ namespace SpecExpress.Util
                     string.Format("Could not Determine Whether Type '{0}' plugs into Type '{1}'",
                                   pluginType.Name,
                                   pluggedType.Name);
-                throw new ApplicationException(message, e);
+                throw new Exception(message, e);
             }
         }
 
