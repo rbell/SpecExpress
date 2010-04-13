@@ -62,8 +62,6 @@ namespace SpecExpress.Test
 
             CollectionAssert.IsNotEmpty(results.All());
 
-            var flat = results.FlattenErrors();
-
             Assert.That(results.IsValid, Is.False);
         }
 

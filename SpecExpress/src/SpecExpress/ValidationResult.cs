@@ -48,7 +48,7 @@ namespace SpecExpress
 
         public IEnumerable<string> AllErrorMessages()
         {
-            All().SelectMany(e => e.Message);
+            return All().Select(e => e.Message);
             //return (new[] { this.Message }).Union(NestedValidationResults.SelectMany(x => x.AllErrorMessages()));
         }
 
