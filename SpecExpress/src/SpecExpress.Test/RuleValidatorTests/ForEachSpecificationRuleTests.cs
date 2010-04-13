@@ -61,7 +61,7 @@ namespace SpecExpress.Test.RuleValidatorTests
 
             var allerrors = results.Errors.First().AllErrorMessages().ToList();
 
-            Assert.That(results.Errors.First().NestedValdiationResults, Is.Not.Empty);
+            Assert.That(results.Errors.First().NestedValidationResults, Is.Not.Empty);
 
            
 

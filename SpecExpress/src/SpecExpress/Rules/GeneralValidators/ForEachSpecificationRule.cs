@@ -88,7 +88,7 @@ namespace SpecExpress.Rules.GeneralValidators
                     var itemError = ValidationResultFactory.Create(this, childContext, Parameters, MessageKey);
 
                     //var itemError = ValidationResultFactory.Create(this, context, Parameters, MessageKey);
-                    itemError.NestedValdiationResults = itemErrors;
+                    itemError.NestedValidationResults = itemErrors;
                     itemsNestedValidationResult.Add(itemError);
                 }
                 index++;
@@ -99,7 +99,7 @@ namespace SpecExpress.Rules.GeneralValidators
                 //Errors were found on at least one item in the collection to return a ValidationResult for the Collection property
                 Message = "{PropertyName} is invalid.";
                 collectionValidationResult = ValidationResultFactory.Create(this, context, Parameters, MessageKey);
-                collectionValidationResult.NestedValdiationResults = itemsNestedValidationResult;
+                collectionValidationResult.NestedValidationResults = itemsNestedValidationResult;
             }
 
             return collectionValidationResult;
@@ -107,7 +107,7 @@ namespace SpecExpress.Rules.GeneralValidators
             //if (sb.Length > 0)
             //{
             //    listValidationResult = ValidationResultFactory.Create(this, context, Parameters, "{PropertyName} is invalid.", MessageStoreName, MessageKey);
-            //    listValidationResult.NestedValdiationResults = list;
+            //    listValidationResult.NestedValidationResults = list;
             //}
             //else
             //{

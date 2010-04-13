@@ -25,31 +25,38 @@ namespace SpecExpress
         /// <returns></returns>
         public ValidationNotification GetNotificationForProperty(string propertyName)
         {
-            var propertyErrors = AllErrors().ToList().Where(e => e.Property.Name == propertyName).ToList();
+            var propertyErrors = FlattenValidationResults().ToList().Where(e => e.Property.Name == propertyName).ToList();
             var notification = new ValidationNotification() {Errors = propertyErrors};
             return notification;
 
         }
+
+        public IEnumerable<ValidationResult> All()
+        {
+            foreach (var error in Errors)
+            {
+                foreach (var grandchild in error.All())
+                {
+                    yield return grandchild;
+                }
+            }
+        }
+
 
         public override string ToString()
         {
             return  Errors.Select( a=> a.PrintNode(string.Empty)).Aggregate( (a, b) => a + b);
         }
 
-        public IEnumerable<ValidationResult> AllErrors()
+        private IEnumerable<ValidationResult> FlattenValidationResults()
         {
             foreach (var error in Errors)
             {
                 yield return error;
 
-                foreach (var grandchild in error.NestedValdiationResults)
+                foreach (var grandchild in error.NestedValidationResults)
                 {
-                    yield return grandchild;
-                    foreach (var validationResult in grandchild.AllValidationResults())
-                    {
-                        yield return validationResult;
-                            
-                    }
+                    yield return error;
                 }
             }
         }

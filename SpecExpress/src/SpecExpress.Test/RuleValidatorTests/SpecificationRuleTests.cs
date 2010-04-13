@@ -42,7 +42,7 @@ namespace SpecExpress.Test.RuleValidatorTests
 
             Assert.That(results.Errors, Is.Not.Empty);
 
-            Assert.That(results.Errors.First().NestedValdiationResults, Is.Not.Empty);
+            Assert.That(results.Errors.First().NestedValidationResults, Is.Not.Empty);
 
         }
 
@@ -63,7 +63,7 @@ namespace SpecExpress.Test.RuleValidatorTests
 
             Assert.That(results.Errors, Is.Not.Empty);
 
-            Assert.That(results.Errors.First().NestedValdiationResults, Is.Not.Empty);
+            Assert.That(results.Errors.First().NestedValidationResults, Is.Not.Empty);
 
         }
 

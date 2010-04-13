@@ -45,7 +45,7 @@ namespace SpecExpress.Rules.GeneralValidators
             if (list.Any())
             {
                 result = ValidationResultFactory.Create(this, context, Parameters, MessageKey);
-                result.NestedValdiationResults = list;
+                result.NestedValidationResults = list;
             }
 
             return result;

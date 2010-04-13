@@ -45,8 +45,8 @@ namespace SpecExpress.Test
             var results = ValidationCatalog<DeleteValidationContext>.Validate(customer);
             
             Assert.That(results.Errors.First().Message, Is.EqualTo("Active must be false."));
-            Assert.That(results.Errors[1].NestedValdiationResults.First().Message, Is.EqualTo("Contact 1 in Employees is invalid."));
-            Assert.That(results.Errors[1].NestedValdiationResults.First().NestedValdiationResults.First().Message, Is.EqualTo("Active must be false."));
+            Assert.That(results.Errors[1].NestedValidationResults.First().Message, Is.EqualTo("Contact 1 in Employees is invalid."));
+            Assert.That(results.Errors[1].NestedValidationResults.First().NestedValidationResults.First().Message, Is.EqualTo("Active must be false."));
         }
 
     }

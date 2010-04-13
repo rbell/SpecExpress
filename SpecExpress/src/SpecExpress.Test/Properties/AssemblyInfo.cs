@@ -19,7 +19,7 @@ using System.Security;
 [assembly: AssemblyProductAttribute("SpecExpress.Test")]
 [assembly: ComVisibleAttribute(false)]
 [assembly: CLSCompliantAttribute(true)]
-[assembly: AssemblyVersionAttribute("1.1.44398")]
+[assembly: AssemblyVersionAttribute("1.1.44693")]
 [assembly: AssemblyDelaySignAttribute(false)]
 [assembly: AssemblyCopyrightAttribute("Copyright, Alan Baker 2009")]
 

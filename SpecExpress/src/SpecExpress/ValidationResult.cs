@@ -17,7 +17,7 @@ namespace SpecExpress
             _property = property;
             _message = errorMessage;
             _target = target;
-            NestedValdiationResults = new List<ValidationResult>();
+            NestedValidationResults = new List<ValidationResult>();
         }
 
         public ValidationResult(MemberInfo property, string message,  object target, IEnumerable<ValidationResult> nestedValidationResults)
@@ -25,7 +25,7 @@ namespace SpecExpress
             _property = property;
             _message = message;
             _target = target;
-            NestedValdiationResults = nestedValidationResults;
+            NestedValidationResults = nestedValidationResults;
         }
 
         public MemberInfo Property
@@ -44,48 +44,45 @@ namespace SpecExpress
         }
         
 
-        public IEnumerable<ValidationResult> NestedValdiationResults {get;set;}
+        public IEnumerable<ValidationResult> NestedValidationResults {get;set;}
 
         public IEnumerable<string> AllErrorMessages()
         {
-            foreach (var error in NestedValdiationResults)
+            foreach (var error in NestedValidationResults)
             {
                 yield return error.Message;
 
                 foreach (var grandchild in error.AllErrorMessages())
                 {
-                    yield return error.Property.Name + " " + grandchild;
+                    yield return error.Message;
                 }
-               
             }
         }
 
-        public IEnumerable<ValidationResult> AllValidationResults()
+        public IEnumerable<ValidationResult> All()
         {
-            foreach (var error in NestedValdiationResults)
-            {
-                yield return error;
+            yield return this;
 
-                foreach (var grandchild in error.AllValidationResults())
+            foreach (var error in NestedValidationResults)
+            {
+                foreach (var grandchild in error.All())
                 {
                     yield return grandchild;
                 }
             }
         }
 
-       
+        internal string PrintNode(string prefix)
+        {
+           return prefix + Message + "\r\n" +
+                               NestedValidationResults.Select(vr => vr.PrintNode(prefix + "\t")).DefaultIfEmpty().
+                                   Aggregate((a, b) => a + b);
+           
+        }
 
         public override string ToString()
         {
             return Message;
-        }
-
-        internal string PrintNode(string prefix)
-        {
-            return prefix + Message + "\r\n" +
-                                NestedValdiationResults.Select(vr => vr.PrintNode(prefix + "\t")).DefaultIfEmpty().
-                                    Aggregate((a, b) => a + b);
-
         }
         
     }

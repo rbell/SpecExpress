@@ -36,5 +36,33 @@ namespace SpecExpress.Test
 
             Assert.That(results.IsValid, Is.False);
         }
+
+
+        [Test]
+        public void GetAllValidationResults()
+        {
+            var contact = new SpecExpress.Test.Domain.Entities.Contact()
+                               {
+                                   Addresses = new List<Address>()
+                                                   {
+                                                       new Address()
+                                                           {
+                                                               City = "Gatlinburg"
+                                                           }
+                                                   }
+                                   ,
+                                   PrimaryAddress = new Address()
+                                                        {
+
+                                                        }
+                               };
+
+            var results = ValidationCatalog.Validate<SpecExpress.Test.Domain.Specifications.ContactSpecification>(contact);
+
+            CollectionAssert.IsNotEmpty(results.All());
+
+            Assert.That(results.IsValid, Is.False);
+        }
+
     }
 }   
