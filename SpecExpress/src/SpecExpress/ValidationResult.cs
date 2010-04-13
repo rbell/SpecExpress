@@ -46,13 +46,13 @@ namespace SpecExpress
 
         public IEnumerable<ValidationResult> NestedValdiationResults {get;set;}
 
-        public IEnumerable<string> AllErrors()
+        public IEnumerable<string> AllErrorMessages()
         {
             foreach (var error in NestedValdiationResults)
             {
                 yield return error.Message;
 
-                foreach (var grandchild in error.AllErrors())
+                foreach (var grandchild in error.AllErrorMessages())
                 {
                     yield return error.Property.Name + " " + grandchild;
                 }
@@ -60,17 +60,32 @@ namespace SpecExpress
             }
         }
 
-        public string PrintNode(string prefix)
+        public IEnumerable<ValidationResult> AllValidationResults()
         {
-           return prefix + Message + "\r\n" +
-                               NestedValdiationResults.Select(vr => vr.PrintNode(prefix + "\t")).DefaultIfEmpty().
-                                   Aggregate((a, b) => a + b);
-           
+            foreach (var error in NestedValdiationResults)
+            {
+                yield return error;
+
+                foreach (var grandchild in error.AllValidationResults())
+                {
+                    yield return grandchild;
+                }
+            }
         }
+
+       
 
         public override string ToString()
         {
             return Message;
+        }
+
+        internal string PrintNode(string prefix)
+        {
+            return prefix + Message + "\r\n" +
+                                NestedValdiationResults.Select(vr => vr.PrintNode(prefix + "\t")).DefaultIfEmpty().
+                                    Aggregate((a, b) => a + b);
+
         }
         
     }

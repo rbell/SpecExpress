@@ -25,7 +25,7 @@ namespace SpecExpress
         /// <returns></returns>
         public ValidationNotification GetNotificationForProperty(string propertyName)
         {
-            var propertyErrors = FlattenValidationResults().ToList().Where(e => e.Property.Name == propertyName).ToList();
+            var propertyErrors = AllErrors().ToList().Where(e => e.Property.Name == propertyName).ToList();
             var notification = new ValidationNotification() {Errors = propertyErrors};
             return notification;
 
@@ -36,7 +36,7 @@ namespace SpecExpress
             return  Errors.Select( a=> a.PrintNode(string.Empty)).Aggregate( (a, b) => a + b);
         }
 
-        private IEnumerable<ValidationResult> FlattenValidationResults()
+        public IEnumerable<ValidationResult> AllErrors()
         {
             foreach (var error in Errors)
             {
@@ -44,7 +44,12 @@ namespace SpecExpress
 
                 foreach (var grandchild in error.NestedValdiationResults)
                 {
-                    yield return error;
+                    yield return grandchild;
+                    foreach (var validationResult in grandchild.AllValidationResults())
+                    {
+                        yield return validationResult;
+                            
+                    }
                 }
             }
         }
