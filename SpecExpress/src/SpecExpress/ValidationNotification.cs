@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace SpecExpress
 {
@@ -25,7 +27,7 @@ namespace SpecExpress
         /// <returns></returns>
         public ValidationNotification GetNotificationForProperty(string propertyName)
         {
-            var propertyErrors = FlattenValidationResults().ToList().Where(e => e.Property.Name == propertyName).ToList();
+            var propertyErrors = All().Where(e => e.Property.Name == propertyName).ToList();
             var notification = new ValidationNotification() {Errors = propertyErrors};
             return notification;
 
@@ -33,33 +35,12 @@ namespace SpecExpress
 
         public IEnumerable<ValidationResult> All()
         {
-            foreach (var error in Errors)
-            {
-                foreach (var grandchild in error.All())
-                {
-                    yield return grandchild;
-                }
-            }
+            return Errors.SelectMany(error => error.All());
         }
-
 
         public override string ToString()
         {
             return  Errors.Select( a=> a.PrintNode(string.Empty)).Aggregate( (a, b) => a + b);
         }
-
-        private IEnumerable<ValidationResult> FlattenValidationResults()
-        {
-            foreach (var error in Errors)
-            {
-                yield return error;
-
-                foreach (var grandchild in error.NestedValidationResults)
-                {
-                    yield return error;
-                }
-            }
-        }
-
     }
 }

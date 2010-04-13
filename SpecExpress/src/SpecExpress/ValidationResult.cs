@@ -48,28 +48,13 @@ namespace SpecExpress
 
         public IEnumerable<string> AllErrorMessages()
         {
-            foreach (var error in NestedValidationResults)
-            {
-                yield return error.Message;
-
-                foreach (var grandchild in error.AllErrorMessages())
-                {
-                    yield return error.Message;
-                }
-            }
+            All().SelectMany(e => e.Message);
+            //return (new[] { this.Message }).Union(NestedValidationResults.SelectMany(x => x.AllErrorMessages()));
         }
 
         public IEnumerable<ValidationResult> All()
         {
-            yield return this;
-
-            foreach (var error in NestedValidationResults)
-            {
-                foreach (var grandchild in error.All())
-                {
-                    yield return grandchild;
-                }
-            }
+            return (new[] { this }).Union(NestedValidationResults.SelectMany(x => x.All()));
         }
 
         internal string PrintNode(string prefix)

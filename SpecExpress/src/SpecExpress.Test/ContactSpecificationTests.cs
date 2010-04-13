@@ -4,6 +4,7 @@ using System.Reflection;
 using NUnit.Framework;
 using SpecExpress;
 using SpecExpress.Test.Entities;
+using SpecExpress.Util;
 using Address=SpecExpress.Test.Domain.Values.Address;
 
 namespace SpecExpress.Test
@@ -60,6 +61,8 @@ namespace SpecExpress.Test
             var results = ValidationCatalog.Validate<SpecExpress.Test.Domain.Specifications.ContactSpecification>(contact);
 
             CollectionAssert.IsNotEmpty(results.All());
+
+            var flat = results.FlattenErrors();
 
             Assert.That(results.IsValid, Is.False);
         }
