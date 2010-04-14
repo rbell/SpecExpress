@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 //using SpecExpress.Rules.NumericValidators.Int;
+using SpecExpress.Enums;
 using SpecExpress.Test.Entities;
 using SpecExpress.Rules;
 using SpecExpress.Rules.IComparableValidators;
@@ -214,7 +215,7 @@ namespace SpecExpress.Test.RuleValidatorTests
         public RuleValidatorContext<Contact, int> BuildContextForNumberOfDependents(int value)
         {
             var contact = new Contact { NumberOfDependents = value };
-            var context = new RuleValidatorContext<Contact, int>(contact, "NumberOfDependents", contact.NumberOfDependents, null, null);
+            var context = new RuleValidatorContext<Contact, int>(contact, "NumberOfDependents", contact.NumberOfDependents, null, ValidationLevelType.Error, null);
 
             return context;
         }

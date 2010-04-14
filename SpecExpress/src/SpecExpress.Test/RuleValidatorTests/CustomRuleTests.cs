@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using SpecExpress.Enums;
 using SpecExpress.Rules;
 using SpecExpress.Test.Domain.Entities;
 
@@ -56,7 +57,7 @@ namespace SpecExpress.Test.RuleValidatorTests
         private RuleValidatorContext<Contact, string> BuildContextForName(string propertyValue)
         {
             var contact = new Contact { FirstName = propertyValue };
-            var context = new RuleValidatorContext<Contact, string>(contact, "FirstName", contact.FirstName, null, null);
+            var context = new RuleValidatorContext<Contact, string>(contact, "FirstName", contact.FirstName, null, ValidationLevelType.Error, null);
 
             return context;
         }

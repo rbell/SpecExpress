@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using SpecExpress.Enums;
 using SpecExpress.Util;
 
 namespace SpecExpress.Rules
@@ -11,14 +12,16 @@ namespace SpecExpress.Rules
         public object PropertyValue { get; protected set; }
         public MemberInfo PropertyInfo { get; set; }
         public Object Instance { get; set; }
+        public ValidationLevelType Level { get; protected set; }
 
-        public RuleValidatorContext(object instance, string propertyName, object propertyValue, MemberInfo propertyInfo, RuleValidatorContext parentContext)
+        public RuleValidatorContext(object instance, string propertyName, object propertyValue,ValidationLevelType level, MemberInfo propertyInfo, RuleValidatorContext parentContext)
         {
             Instance = instance;
             PropertyName = propertyName;
             PropertyValue = propertyValue;
             PropertyInfo = propertyInfo;
             Parent = parentContext;
+            Level = level;
         }
 
         public RuleValidatorContext(object instance, PropertyValidator validator, RuleValidatorContext parentContext)
@@ -30,13 +33,14 @@ namespace SpecExpress.Rules
             PropertyInfo = validator.PropertyInfo;
             Parent = parentContext;
             Instance = instance;
+            Level = validator.Level;
         }
     }
 
     
 
     /// <summary>
-    /// Retrieves the name and value of the Property given the of the Expression
+    /// Retrieves the name and value of the Property given an Expression
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <typeparam name="TProperty"></typeparam>
@@ -44,27 +48,10 @@ namespace SpecExpress.Rules
     {
         public RuleValidatorContext(T instance, PropertyValidator<T, TProperty> validator,
                                     RuleValidatorContext parentContext)
-            : base(instance, validator, parentContext)
-        {
-            
-            //PropertyName = String.IsNullOrEmpty(validator.PropertyNameOverride)
-            //                   ? validator.PropertyName.SplitPascalCase()
-            //                   : validator.PropertyNameOverride;
-            //PropertyValue = (TProperty) validator.GetValueForProperty(instance);
-            //PropertyInfo = validator.PropertyInfo;
-            //Parent = parentContext;
-            //Instance = instance;
-        }
+            : base(instance, validator, parentContext) {}
 
-        public RuleValidatorContext(T instance, string propertyName, TProperty propertyValue, MemberInfo propertyInfo,
-                                    RuleValidatorContext parentContext) : base(instance, propertyName, propertyValue, propertyInfo, parentContext )
-        {
-            //PropertyName = propertyName;
-            //PropertyValue = propertyValue;
-            //PropertyInfo = propertyInfo;
-            //Parent = parentContext;
-            //Instance = instance;
-        }
+        public RuleValidatorContext(T instance, string propertyName, TProperty propertyValue, MemberInfo propertyInfo, ValidationLevelType level,
+                                    RuleValidatorContext parentContext) : base(instance, propertyName, propertyValue, level, propertyInfo, parentContext ){}
 
         public new TProperty PropertyValue
         {

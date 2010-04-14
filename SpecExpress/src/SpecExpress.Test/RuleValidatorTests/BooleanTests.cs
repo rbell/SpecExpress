@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using SpecExpress.Enums;
 using SpecExpress.Rules;
 using SpecExpress.Rules.Boolean;
 using SpecExpress.Test.Entities;
@@ -35,7 +36,7 @@ namespace SpecExpress.Test.RuleValidatorTests
         public RuleValidatorContext<Contact, bool> BuildContextForContactActive(bool value)
         {
             var contact = new Contact { Active = value };
-            var context = new RuleValidatorContext<Contact, bool>(contact, "Active", contact.Active, null, null);
+            var context = new RuleValidatorContext<Contact, bool>(contact, "Active", contact.Active, null, ValidationLevelType.Error, null);
 
             return context;
         }

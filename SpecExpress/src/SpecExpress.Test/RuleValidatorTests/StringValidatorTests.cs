@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
+using SpecExpress.Enums;
 using SpecExpress.Rules;
 using SpecExpress.Rules.StringValidators;
 using SpecExpress.Test.Entities;
@@ -198,7 +199,7 @@ namespace SpecExpress.Test.RuleValidatorTests
         public RuleValidatorContext<Contact, string> BuildContextForLength(string value)
         {
             var contact = new Contact {FirstName = value};
-            var context = new RuleValidatorContext<Contact, string>(contact, "First Name", contact.FirstName, null, null);
+            var context = new RuleValidatorContext<Contact, string>(contact, "First Name", contact.FirstName, null, ValidationLevelType.Error, null);
             return context;
         }
 
@@ -210,7 +211,7 @@ namespace SpecExpress.Test.RuleValidatorTests
             }
 
             var contact = new Contact { FirstName = firstName, LastName = lastName };
-            var context = new RuleValidatorContext<Contact, string>(contact, "First Name", contact.FirstName, null, null);
+            var context = new RuleValidatorContext<Contact, string>(contact, "First Name", contact.FirstName, null, ValidationLevelType.Error, null);
             return context;
         }
     }

@@ -82,7 +82,7 @@ namespace SpecExpress.Rules.GeneralValidators
 
                     Message = String.Format("{0} {1} in {2} is invalid.", propertyName, index, context.PropertyName);
 
-                    var childContext = new RuleValidatorContext(item, propertyName, item,
+                    var childContext = new RuleValidatorContext(item, propertyName, item, context.Level,
                                                                 item.GetType() as MemberInfo, context);
 
                     var itemError = ValidationResultFactory.Create(this, childContext, Parameters, MessageKey);

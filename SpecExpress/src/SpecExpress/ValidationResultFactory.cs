@@ -26,7 +26,7 @@ namespace SpecExpress
                 message = messageService.FormatMessage(validator.Message, context, parameters, validator.MessageFormatter);
             }
            
-            return new ValidationResult(context.PropertyInfo, message, context.PropertyValue);
+            return new ValidationResult(context.PropertyInfo, message, context.Level, context.PropertyValue);
         }
     }
 }

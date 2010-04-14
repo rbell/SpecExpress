@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using SpecExpress.Enums;
 using SpecExpress.Rules.DateValidators;
 using SpecExpress.Rules.IComparableValidators;
 using SpecExpress.Test.Entities;
@@ -299,7 +300,7 @@ namespace SpecExpress.Test.RuleValidatorTests
             
             // Build context for CalendarEvent containing a StartDate of propertyValue.
             var calendarEvent = new NullableCalendarEvent() { CreateDate = null, StartDate = System.DateTime.Parse(propertyValue), EndDate = null };
-            RuleValidatorContext<NullableCalendarEvent, DateTime?> context = new RuleValidatorContext<NullableCalendarEvent, DateTime?>(calendarEvent, "StartDate", calendarEvent.StartDate, null, null);
+            RuleValidatorContext<NullableCalendarEvent, DateTime?> context = new RuleValidatorContext<NullableCalendarEvent, DateTime?>(calendarEvent, "StartDate", calendarEvent.StartDate, null, ValidationLevelType.Error, null);
 
 
             //RuleValidatorContext<CalendarEvent, DateTime> context = BuildContextForCalendarEventStartDate("Test Event", propertyValueDateTime, DateTime.Now);
@@ -311,7 +312,7 @@ namespace SpecExpress.Test.RuleValidatorTests
         public RuleValidatorContext<CalendarEvent, System.DateTime> BuildContextForCalendarEventStartDate(string subject, DateTime startDate, DateTime endDate)
         {
             var calendarEvent = new CalendarEvent() {Subject = subject, StartDate = startDate, EndDate = endDate};
-            var context = new RuleValidatorContext<CalendarEvent,DateTime>(calendarEvent, "StartDate", calendarEvent.StartDate, null, null);
+            var context = new RuleValidatorContext<CalendarEvent, DateTime>(calendarEvent, "StartDate", calendarEvent.StartDate, null, ValidationLevelType.Error, null);
 
             return context;
         }
@@ -319,7 +320,7 @@ namespace SpecExpress.Test.RuleValidatorTests
         public RuleValidatorContext<CalendarEvent, System.DateTime> BuildContextForCalendarEventStartDate(string subject, DateTime createDate, DateTime startDate, DateTime endDate)
         {
             var calendarEvent = new CalendarEvent() { Subject = subject, CreateDate = createDate, StartDate = startDate, EndDate = endDate };
-            var context = new RuleValidatorContext<CalendarEvent, DateTime>(calendarEvent, "StartDate", calendarEvent.StartDate, null, null);
+            var context = new RuleValidatorContext<CalendarEvent, DateTime>(calendarEvent, "StartDate", calendarEvent.StartDate, null, ValidationLevelType.Error, null);
 
             return context;
         }
@@ -327,7 +328,7 @@ namespace SpecExpress.Test.RuleValidatorTests
         public RuleValidatorContext<CalendarEvent, System.DateTime> BuildContextForCalendarEventEndDate(string subject, DateTime startDate, DateTime endDate)
         {
             var calendarEvent = new CalendarEvent() { Subject = subject, StartDate = startDate, EndDate = endDate };
-            var context = new RuleValidatorContext<CalendarEvent, DateTime>(calendarEvent, "EndDate", calendarEvent.EndDate, null, null);
+            var context = new RuleValidatorContext<CalendarEvent, DateTime>(calendarEvent, "EndDate", calendarEvent.EndDate, null, ValidationLevelType.Error, null);
 
             return context;
         }

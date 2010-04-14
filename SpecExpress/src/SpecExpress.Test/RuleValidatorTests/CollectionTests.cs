@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
+using SpecExpress.Enums;
 using SpecExpress.Rules;
 using SpecExpress.Rules.Collection;
 using SpecExpress.Test.Entities;
@@ -151,7 +152,7 @@ namespace SpecExpress.Test.RuleValidatorTests
                     break;
             }
 
-            var context = new RuleValidatorContext<Contact, IEnumerable>(contact, "Aliases", contact.Aliases, null, null);
+            var context = new RuleValidatorContext<Contact, IEnumerable>(contact, "Aliases", contact.Aliases, null, ValidationLevelType.Error, null);
 
             return context;
         }

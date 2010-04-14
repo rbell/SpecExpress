@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
+using SpecExpress.Enums;
 
 namespace SpecExpress
 {
@@ -11,21 +12,23 @@ namespace SpecExpress
         private readonly String _message;
         private readonly MemberInfo _property;
         private readonly object _target;
-      
-        public ValidationResult(MemberInfo property, string errorMessage, object target)
+
+        public ValidationResult(MemberInfo property, string errorMessage, ValidationLevelType level, object target)
         {
             _property = property;
             _message = errorMessage;
             _target = target;
             NestedValidationResults = new List<ValidationResult>();
+            Level = level;
         }
 
-        public ValidationResult(MemberInfo property, string message,  object target, IEnumerable<ValidationResult> nestedValidationResults)
+        public ValidationResult(MemberInfo property, string message, ValidationLevelType level, object target, IEnumerable<ValidationResult> nestedValidationResults)
         {
             _property = property;
             _message = message;
             _target = target;
             NestedValidationResults = nestedValidationResults;
+            Level = level;
         }
 
         public MemberInfo Property
@@ -42,6 +45,8 @@ namespace SpecExpress
         {
             get { return _target; }
         }
+
+        public ValidationLevelType Level { get; protected set; }
         
 
         public IEnumerable<ValidationResult> NestedValidationResults {get;set;}

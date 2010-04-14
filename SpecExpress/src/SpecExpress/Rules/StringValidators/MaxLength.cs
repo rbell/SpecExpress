@@ -35,7 +35,7 @@ namespace SpecExpress.Rules.StringValidators
             int length = String.IsNullOrEmpty(context.PropertyValue) ? 0 : context.PropertyValue.Trim().Length;
 
             var contextWithLength = new RuleValidatorContext<T, string>(context.Instance, context.PropertyName, length.ToString(),
-                                                                           context.PropertyInfo, null);
+                                                                           context.PropertyInfo, context.Level, null);
             
             if (PropertyExpressions.Any())
             {

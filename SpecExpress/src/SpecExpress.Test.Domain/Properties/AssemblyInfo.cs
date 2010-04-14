@@ -19,7 +19,7 @@ using System.Security;
 [assembly: AssemblyProductAttribute("SpecExpress.Test.Domain")]
 [assembly: ComVisibleAttribute(false)]
 [assembly: CLSCompliantAttribute(true)]
-[assembly: AssemblyVersionAttribute("1.1.45068")]
+[assembly: AssemblyVersionAttribute("1.1.45082")]
 [assembly: AssemblyDelaySignAttribute(false)]
 [assembly: AssemblyCopyrightAttribute("Copyright, Alan Baker 2009")]
 

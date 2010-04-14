@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using SpecExpress.Enums;
 
 namespace SpecExpress
 {
@@ -17,7 +18,11 @@ namespace SpecExpress
 
         public bool IsValid
         {
-            get { return Errors.Count == 0; }
+            get
+            {
+                //Check if there are any validation results with a Level of Error
+                return All().All(e => e.Level == ValidationLevelType.Warn);
+            }
         }
 
         /// <summary>

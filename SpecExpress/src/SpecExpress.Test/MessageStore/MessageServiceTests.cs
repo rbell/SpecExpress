@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using SpecExpress.Enums;
 using SpecExpress.MessageStore;
 using SpecExpress.Rules;
 using SpecExpress.Test.Entities;
@@ -28,7 +29,7 @@ namespace SpecExpress.Test
         public RuleValidatorContext<Contact, string> BuildContext(string value)
         {
             var contact = new Contact { FirstName = value };
-            var context = new RuleValidatorContext<Contact, string>(contact, "First Name", contact.FirstName, null, null);
+            var context = new RuleValidatorContext<Contact, string>(contact, "First Name", contact.FirstName, null, ValidationLevelType.Error, null);
             return context;
         }
     }

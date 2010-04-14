@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
+using SpecExpress.Enums;
 using SpecExpress.Rules;
 using SpecExpress.Rules.GeneralValidators;
 using SpecExpress.Test.Entities;
@@ -17,7 +18,7 @@ namespace SpecExpress.Test.RuleValidatorTests
             var customer = new Customer();
 
             var validator = new Required<Customer, string>();
-            var context = new RuleValidatorContext<Customer, string>(customer, "Name", customer.Name, null, null);
+            var context = new RuleValidatorContext<Customer, string>(customer, "Name", customer.Name, null, ValidationLevelType.Error, null);
 
             //Validate the validator only, return true of no error returned
             var result = validator.Validate(context, null);
@@ -31,7 +32,7 @@ namespace SpecExpress.Test.RuleValidatorTests
             var customer = new Customer();
             
             var validator = new Required<Customer, IEnumerable>();
-            var context = new RuleValidatorContext<Customer, IEnumerable>(customer, "Contacts", customer.Contacts, null, null);
+            var context = new RuleValidatorContext<Customer, IEnumerable>(customer, "Contacts", customer.Contacts, null, ValidationLevelType.Error, null);
 
             //Validate the validator only, return true of no error returned
             var result = validator.Validate(context, null);
@@ -45,7 +46,7 @@ namespace SpecExpress.Test.RuleValidatorTests
             var customer = new Customer() {Contacts = new List<Contact>()};
 
             var validator = new Required<Customer, IEnumerable>();
-            var context = new RuleValidatorContext<Customer, IEnumerable>(customer, "Contacts", customer.Contacts, null, null);
+            var context = new RuleValidatorContext<Customer, IEnumerable>(customer, "Contacts", customer.Contacts, null, ValidationLevelType.Error, null);
 
             //Validate the validator only, return true of no error returned
             var result = validator.Validate(context, null);
