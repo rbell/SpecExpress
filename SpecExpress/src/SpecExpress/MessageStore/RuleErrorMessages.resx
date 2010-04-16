@@ -270,4 +270,7 @@
   <data name="Required" xml:space="preserve">
     <value>{PropertyName} is required.</value>
   </data>
+  <data name="SpecificationRule" xml:space="preserve">
+    <value>{PropertyName} is invalid.</value>
+  </data>
 </root>

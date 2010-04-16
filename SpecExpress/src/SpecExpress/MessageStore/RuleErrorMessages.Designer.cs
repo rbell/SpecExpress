@@ -518,5 +518,14 @@ namespace SpecExpress.MessageStore {
                 return ResourceManager.GetString("Required", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {PropertyName} is invalid..
+        /// </summary>
+        internal static string SpecificationRule {
+            get {
+                return ResourceManager.GetString("SpecificationRule", resourceCulture);
+            }
+        }
     }
 }

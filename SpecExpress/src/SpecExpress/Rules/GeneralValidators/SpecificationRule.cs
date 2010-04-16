@@ -20,7 +20,6 @@ namespace SpecExpress.Rules.GeneralValidators
         public SpecificationRule(Validates<TProperty> specification) 
         {
             _specification = specification;
-            Message = "{PropertyName} is invalid.";
         }
 
         /// <summary>
