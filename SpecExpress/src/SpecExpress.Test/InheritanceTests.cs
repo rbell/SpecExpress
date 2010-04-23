@@ -32,7 +32,7 @@ namespace SpecExpress.Test
         public void SpecificationInheritance_OnObject_WithSpecification_IsValid()
         {
             //Base Class
-            ValidationCatalog.SpecificationContainer.Add(new CustomerRequiredNameSpecification());
+            ValidationCatalog.CatalogSpecificationContainer.Add(new CustomerRequiredNameSpecification());
             //Inherited class
             ValidationCatalog.AddSpecification<ExtendedCustomer>(spec =>
                                                                       { 

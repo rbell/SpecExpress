@@ -5,9 +5,20 @@ using System.Text;
 
 namespace SpecExpress.Rules.GeneralValidators
 {
+    public class SpecificationRule<T, TProperty, TSpecification> : SpecificationRule<T, TProperty> where TSpecification : Validates<TProperty>, new()
+    {
+        public override ValidationResult Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer)
+        {
+            Specification = specificationContainer.TryGetSpecification<TSpecification>() as Validates<TProperty> ??
+                     new TSpecification();
+
+            return base.Validate(context, specificationContainer);
+        }
+    }
+
     public class SpecificationRule<T, TProperty> : RuleValidator<T, TProperty>
     {
-        private Validates<TProperty> _specification;
+        protected Validates<TProperty> Specification;
         public override object[] Parameters
         {
             get { return new object[] { }; }
@@ -19,7 +30,7 @@ namespace SpecExpress.Rules.GeneralValidators
         /// <param name="specification"></param>
         public SpecificationRule(Validates<TProperty> specification) 
         {
-            _specification = specification;
+            Specification = specification;
         }
 
         /// <summary>
@@ -33,12 +44,12 @@ namespace SpecExpress.Rules.GeneralValidators
         public override ValidationResult Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer)
         {
 
-            if (_specification == null)
+            if (Specification == null)
             {
-                _specification = specificationContainer.GetSpecification<TProperty>();
+                Specification = specificationContainer.GetSpecification<TProperty>();
             }
 
-            var list =  _specification.PropertyValidators.SelectMany(x => x.Validate(context.PropertyValue, context, specificationContainer)).ToList();
+            var list =  Specification.PropertyValidators.SelectMany(x => x.Validate(context.PropertyValue, context, specificationContainer)).ToList();
             ValidationResult result = null;
 
             if (list.Any())

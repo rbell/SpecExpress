@@ -80,8 +80,7 @@ namespace SpecExpress.DSL
         /// <returns></returns>
         public IAndOr<T, TProperty> Specification<TSpecType>() where TSpecType : Validates<TProperty>, new()
         {
-            var specification = new TSpecType();
-            var specRule = new SpecificationRule<T, TProperty>(specification);
+            var specRule = new SpecificationRule<T, TProperty, TSpecType>();
             return AddRuleAndReturnActionJoin(specRule);
         }
 
@@ -128,8 +127,7 @@ namespace SpecExpress.DSL
         public IAndOr<T, TProperty> ForEachSpecification<TCollectionType, TCollectionSpecType>(string itemName)
             where TCollectionSpecType : Validates<TCollectionType>, new()
         {
-            var specification = new TCollectionSpecType();
-            var specRule = new ForEachSpecificationRule<T, TProperty, TCollectionType>(specification, itemName);
+            var specRule = new ForEachSpecificationRule<T, TProperty, TCollectionType, TCollectionSpecType>(itemName);
             return AddRuleAndReturnActionJoin(specRule);
         }
 
@@ -229,8 +227,8 @@ namespace SpecExpress.DSL
         /// <returns></returns>
         public IAndOrForCollections<T, TProperty> Specification<TSpecType>() where TSpecType : Validates<TProperty>, new()
         {
-            TSpecType specification = new TSpecType();
-            var specRule = new SpecificationRule<T, TProperty>(specification);
+            //TSpecType specification = new TSpecType();
+            var specRule = new SpecificationRule<T, TProperty, TSpecType>();
 
             _propertyValidator.AddRule(specRule);
             return new ActionJoinBuilderForCollections<T, TProperty>(_propertyValidator);

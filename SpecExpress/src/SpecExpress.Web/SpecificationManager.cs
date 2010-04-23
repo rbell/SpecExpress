@@ -57,7 +57,7 @@ namespace SpecExpress.Web
                 if (String.IsNullOrEmpty(_specificationType))
                 {
                     //No Specification specified, so get Default Specification For Type from Validation Catalog
-                    _resolvedSpecification = ValidationCatalog.SpecificationContainer.TryGetSpecification(GetTypeToValidate());
+                    _resolvedSpecification = ValidationCatalog.CatalogSpecificationContainer.TryGetSpecification(GetTypeToValidate());
                 }
                 else
                 {
@@ -73,7 +73,7 @@ namespace SpecExpress.Web
                     else
                     {
                         //Query the Validation Catalog from the specification that matches type in the Catalog
-                        _resolvedSpecification = ValidationCatalog.SpecificationContainer.GetAllSpecifications().Where(
+                        _resolvedSpecification = ValidationCatalog.CatalogSpecificationContainer.GetAllSpecifications().Where(
                             x => x.GetType() == specType).FirstOrDefault();
                     }
                 }

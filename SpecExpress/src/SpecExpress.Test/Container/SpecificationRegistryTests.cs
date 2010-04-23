@@ -34,10 +34,10 @@ namespace SpecExpress.Test
             Assembly assembly = Assembly.LoadFrom("SpecExpress.Test.Domain.dll");
             //Set Assemblies to scan for Specifications
             ValidationCatalog.Scan(x => x.AddAssembly(assembly));
-            Assert.That(ValidationCatalog.SpecificationContainer.GetAllSpecifications(), Is.Not.Empty);
+            Assert.That(ValidationCatalog.CatalogSpecificationContainer.GetAllSpecifications(), Is.Not.Empty);
 
             ValidationCatalog.Reset();
-            Assert.That(ValidationCatalog.SpecificationContainer.GetAllSpecifications(), Is.Empty);
+            Assert.That(ValidationCatalog.CatalogSpecificationContainer.GetAllSpecifications(), Is.Empty);
             
         }
 
@@ -50,7 +50,7 @@ namespace SpecExpress.Test
             ValidationCatalog.Scan(x => x.AddAssembly(assembly));
 
             //Assert.That(ValidationCatalog.Registry, Is.Not.Empty);
-            Assert.That(ValidationCatalog.SpecificationContainer.GetSpecification<Address>(), Is.Not.Null);
+            Assert.That(ValidationCatalog.CatalogSpecificationContainer.GetSpecification<Address>(), Is.Not.Null);
         }
 
         [Test]
@@ -62,7 +62,7 @@ namespace SpecExpress.Test
            
             //ValidationCatalog.Scan(x => x.AddAssembliesFromPath(@"C:\Dev\SpecExpress\trunk\SpecExpress\src\SpecExpressTest\bin\Debug"));
 
-            Assert.That(ValidationCatalog.SpecificationContainer.GetAllSpecifications().Any(), Is.True);
+            Assert.That(ValidationCatalog.CatalogSpecificationContainer.GetAllSpecifications().Any(), Is.True);
         }
         
         [Test]
@@ -74,7 +74,7 @@ namespace SpecExpress.Test
             
             //Set Assemblies to scan for Specifications
             ValidationCatalog.Scan(x => x.AddAssemblies(AppDomain.CurrentDomain.GetAssemblies().ToList()));
-            Assert.That(ValidationCatalog.SpecificationContainer.GetAllSpecifications().Any(), Is.True);
+            Assert.That(ValidationCatalog.CatalogSpecificationContainer.GetAllSpecifications().Any(), Is.True);
         }
 
         [Test]
@@ -86,7 +86,7 @@ namespace SpecExpress.Test
 
             //ValidationCatalog.Scan(x => x.AddAssembliesFromPath(@"C:\Dev\SpecExpress\trunk\SpecExpress\src\SpecExpressTest\bin\Debug"));
 
-            Assert.That(ValidationCatalog.SpecificationContainer.GetAllSpecifications().Any(), Is.True);
+            Assert.That(ValidationCatalog.CatalogSpecificationContainer.GetAllSpecifications().Any(), Is.True);
 
             var USWidget = new Widget() {Name = "ABC"};
             var invalidLengthUSWidget = new Widget() { Name = "ABCDFEFGA" };

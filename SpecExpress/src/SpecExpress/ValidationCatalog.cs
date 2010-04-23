@@ -30,14 +30,10 @@ namespace SpecExpress
 
         public static ValidationNotification Validate<TSpec>(object instance) where TSpec : Specification, new()
         {
-            var context = new TContext();
-            var spec = new TSpec() as Specification;
-            return ValidationCatalog.Validate(instance, context.SpecificationContainer, spec);
-        }
 
-        public static SpecificationContainer SpecificationContainer
-        {
-            get { return new TContext().SpecificationContainer;}
+            var context = new TContext();
+            var spec = context.SpecificationContainer.TryGetSpecification<TSpec>() ?? new TSpec() as Specification;
+            return ValidationCatalog.Validate(instance, context.SpecificationContainer, spec);
         }
 
         #endregion
@@ -76,7 +72,6 @@ namespace SpecExpress
         #endregion
 
     }
-
     
     public static class ValidationCatalog
     {
@@ -84,7 +79,7 @@ namespace SpecExpress
         
         public static bool ValidateObjectGraph { get; set; }
         public static ValidationCatalogConfiguration Configuration { get; private set;}
-        public static  SpecificationContainer SpecificationContainer = new SpecificationContainer();
+        public static  SpecificationContainer CatalogSpecificationContainer = new SpecificationContainer();
 
         static ValidationCatalog()
         {
@@ -103,7 +98,7 @@ namespace SpecExpress
             var specification = new SpecificationExpression<TEntity>();
             rules(specification);
 
-            SpecificationContainer.Add(specification);
+            CatalogSpecificationContainer.Add(specification);
         }
 
         /// <summary>
@@ -114,7 +109,7 @@ namespace SpecExpress
         {
             var specificationRegistry = new SpecificationScanner();
             configuration(specificationRegistry);
-            SpecificationContainer.Add(specificationRegistry.FoundSpecifications);
+            CatalogSpecificationContainer.Add(specificationRegistry.FoundSpecifications);
         }
         
         public static void Configure(Action<ValidationCatalogConfiguration> action)
@@ -126,7 +121,7 @@ namespace SpecExpress
         {
             lock (_syncLock)
             {
-                SpecificationContainer.Reset();
+                CatalogSpecificationContainer.Reset();
             }
         }
 
@@ -160,7 +155,7 @@ namespace SpecExpress
                 //    throw new SpecExpressConfigurationException(errorString);
                 //}
 
-                if (!ValidationCatalog.SpecificationContainer.GetAllSpecifications().Any())
+                if (!ValidationCatalog.CatalogSpecificationContainer.GetAllSpecifications().Any())
                 {  
                     throw new SpecExpressConfigurationException("No specifications are registered with ValidationCatalog. Check if Scan has been run.");
                 }
@@ -199,7 +194,7 @@ namespace SpecExpress
             if (container == null)
             {
                 //Default container from ValidationCatalog
-                container = SpecificationContainer;
+                container = CatalogSpecificationContainer;
             }
 
 
@@ -213,12 +208,12 @@ namespace SpecExpress
                     //No spec found for type, try for Collection
                     if (instance is IEnumerable)
                     {
-                        return ValidateCollection((IEnumerable)instance, SpecificationContainer);
+                        return ValidateCollection((IEnumerable)instance, CatalogSpecificationContainer);
                     }
                     else
                     {
                         //Unable to find specification, so call GetSpecification to generate an error message
-                        SpecificationContainer.GetSpecification(instance.GetType());
+                        CatalogSpecificationContainer.GetSpecification(instance.GetType());
                         return null;
                     }
                 }
@@ -257,40 +252,12 @@ namespace SpecExpress
 
         public static ValidationNotification Validate<TSpec>(object instance) where TSpec : Specification, new()
         {
-            var spec = new TSpec() as Specification;
-            return Validate(instance, null, spec);
+
+            var spec = CatalogSpecificationContainer.TryGetSpecification<TSpec>() ?? new TSpec() as Specification;
+
+            return Validate(instance, CatalogSpecificationContainer, spec);
         }
-
-
-        #region ValidationContext
-        //internal static ValidationNotification ValidateContext(object instance, ValidationContext context)
-        //{
-        //    //try to find a specification for the type
-        //    Specification specification = context.SpecificationContainer.TryGetSpecification(instance.GetType());
-
-        //    if (specification != null)
-        //    {
-        //        //Specification for this type found
-        //        return Validate(instance, specification);
-        //    }
-        //    else
-        //    {
-        //        //No spec found for type, try for Collection
-        //        if (instance is IEnumerable)
-        //        {
-        //            return ValidateCollection((IEnumerable)instance, context.SpecificationContainer);
-        //        }
-        //        else
-        //        {
-        //            //Unable to find specification, so call GetSpecification to generate an error message
-        //            context.SpecificationContainer.GetSpecification(instance.GetType());
-        //            return null;
-        //        }
-        //    }
-        //}
         
-        #endregion
-
         private static ValidationNotification ValidateCollection(IEnumerable instance, SpecificationContainer specificationContainer)
         {
             //assume that the first item in the collection is the same for all items in the collection and get the specification for that type
@@ -332,9 +299,7 @@ namespace SpecExpress
             return new ValidationNotification { Errors = collectionResult };
             
         }
-
-       
-
+        
         #endregion
 
         #region Property Validation
@@ -347,7 +312,7 @@ namespace SpecExpress
         public static ValidationNotification ValidateProperty(object instance, string propertyName,
                                                               Specification specification)
         {
-            return ValidateProperty(instance, propertyName, specification, SpecificationContainer);
+            return ValidateProperty(instance, propertyName, specification, CatalogSpecificationContainer);
         }
 
         public static ValidationNotification ValidateProperty<T>(T instance, Expression<Func<T,object>> property)
@@ -359,7 +324,7 @@ namespace SpecExpress
                                                               Specification specification)
         {
             var prop = new PropertyValidator<T, object>(property);
-            return ValidateProperty(instance, prop.PropertyInfo.Name, specification, SpecificationContainer);
+            return ValidateProperty(instance, prop.PropertyInfo.Name, specification, CatalogSpecificationContainer);
            
         }
 
@@ -389,7 +354,7 @@ namespace SpecExpress
         }
 
         #endregion
-
+      
     }
 
     

@@ -70,7 +70,7 @@ namespace SpecExpress.Test
             Assembly assembly = Assembly.LoadFrom("SpecExpress.Test.Domain.dll");
             ValidationCatalog.Scan(x => x.AddAssembly(assembly));
 
-            var spec = ValidationCatalog.SpecificationContainer.GetSpecification<SpecExpress.Test.Domain.Entities.Contact>();
+            var spec = ValidationCatalog.CatalogSpecificationContainer.GetSpecification<SpecExpress.Test.Domain.Entities.Contact>();
             Assert.That(spec.GetType(), Is.EqualTo(typeof(SpecExpress.Test.Domain.Specifications.ContactSpecification)));
         }
 

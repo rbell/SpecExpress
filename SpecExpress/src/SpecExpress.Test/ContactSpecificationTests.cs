@@ -65,5 +65,35 @@ namespace SpecExpress.Test
             Assert.That(results.IsValid, Is.False);
         }
 
+        //[Test]
+        //public void GetAllValidationResults2()
+        //{
+        //    Assembly assembly = Assembly.LoadFrom("SpecExpress.Test.Domain.dll");
+        //    ValidationCatalog.Scan(x => x.AddAssembly(assembly));
+            
+        //    var contact = new SpecExpress.Test.Domain.Entities.Contact()
+        //    {
+        //        Addresses = new List<Address>()
+        //                                           {
+        //                                               new Address()
+        //                                                   {
+        //                                                       City = "Gatlinburg"
+        //                                                   }
+        //                                           }
+        //        ,
+        //        PrimaryAddress = new Address()
+        //        {
+
+        //        }
+        //    };
+
+        //    var results = ValidationCatalog.Validate(contact);
+
+        //    CollectionAssert.IsNotEmpty(results.All());
+
+        //    Assert.That(results.IsValid, Is.False);
+        //}
+
+
     }
 }   

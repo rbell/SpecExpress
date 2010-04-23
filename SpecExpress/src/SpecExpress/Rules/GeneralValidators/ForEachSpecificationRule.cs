@@ -9,11 +9,34 @@ using SpecExpress.Util;
 
 namespace SpecExpress.Rules.GeneralValidators
 {
+    public class ForEachSpecificationRule<T, TProperty, TCollectionType, TSpecification>  : ForEachSpecificationRule<T, TProperty, TCollectionType>  where TSpecification : Validates<TCollectionType>, new() 
+    {
+        public ForEachSpecificationRule()
+        {
+            
+        }
+
+        public ForEachSpecificationRule(string itemName) :base(itemName)
+        {
+            
+        }
+        
+        public override ValidationResult Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer)
+        {
+            //Resolve the Specification
+            Specification = specificationContainer.TryGetSpecification<TSpecification>() as Validates<TCollectionType>  ??
+                       new TSpecification();
+
+            return base.Validate(context, specificationContainer);
+        } 
+        
+    }
+
     public class ForEachSpecificationRule<T, TProperty, TCollectionType> : RuleValidator<T, TProperty> 
     {
-        private string _itemName;
+        protected string ItemName;
 
-        private Validates<TCollectionType> _specification;
+        protected Validates<TCollectionType> Specification;
         public override object[] Parameters
         {
             get { return new object[] { }; }
@@ -25,12 +48,12 @@ namespace SpecExpress.Rules.GeneralValidators
         /// <param name="specification"></param>
         public ForEachSpecificationRule(Validates<TCollectionType> specification)
         {
-            _specification = specification;
+            Specification = specification;
         }
 
         public ForEachSpecificationRule(Validates<TCollectionType> specification, string itemName) : this(specification)
         {
-            _itemName = itemName;
+            ItemName = itemName;
         }
 
         /// <summary>
@@ -42,16 +65,16 @@ namespace SpecExpress.Rules.GeneralValidators
 
         public ForEachSpecificationRule(string itemName): this()
         {
-            _itemName = itemName;
+            ItemName = itemName;
         }
 
        
 
         public override ValidationResult Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer)
         {
-            if (_specification == null)
+            if (Specification == null)
             {
-                _specification = specificationContainer.GetSpecification<TCollectionType>();
+                Specification = specificationContainer.GetSpecification<TCollectionType>();
             }
 
             ValidationResult collectionValidationResult = null;
@@ -75,10 +98,10 @@ namespace SpecExpress.Rules.GeneralValidators
             int index = 1;
             foreach (var item in propertyEnumerable)
             {  
-                var itemErrors = _specification.Validate(item, specificationContainer);
+                var itemErrors = Specification.Validate(item, specificationContainer);
                 if (itemErrors.Any())
                 {
-                    var propertyName = String.IsNullOrEmpty(_itemName) ? item.GetType().Name : _itemName;
+                    var propertyName = String.IsNullOrEmpty(ItemName) ? item.GetType().Name : ItemName;
 
                     Message = String.Format("{0} {1} in {2} is invalid.", propertyName, index, context.PropertyName);
 

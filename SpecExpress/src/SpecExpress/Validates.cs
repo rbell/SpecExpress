@@ -77,7 +77,7 @@ namespace SpecExpress
         public void Using<U, TSpecType>() where TSpecType : Validates<U>, new()
         {
             //Get the PropertyValidators from the Using Spec and add it to this specification
-            var usingSpec = ValidationCatalog.SpecificationContainer.GetAllSpecifications().First( x => x.GetType() == typeof(TSpecType));
+            var usingSpec = ValidationCatalog.CatalogSpecificationContainer.GetAllSpecifications().First( x => x.GetType() == typeof(TSpecType));
 
             PropertyValidators.AddRange(usingSpec.PropertyValidators);
         }
