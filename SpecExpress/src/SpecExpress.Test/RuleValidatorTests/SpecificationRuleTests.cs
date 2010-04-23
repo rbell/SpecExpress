@@ -34,8 +34,8 @@ namespace SpecExpress.Test.RuleValidatorTests
             var customer = new Customer {Name = "SampleCustomer", Address = new Address()};
 
             //Add Specification for Customer and Address
-            ValidationCatalog.CatalogSpecificationContainer.Add(new AddressSpecification());
-            ValidationCatalog.CatalogSpecificationContainer.Add(new CustomerAddressSpecification());
+            ValidationCatalog.SpecificationContainer.Add(new AddressSpecification());
+            ValidationCatalog.SpecificationContainer.Add(new CustomerAddressSpecification());
 
             //Validate Customer
             var results = ValidationCatalog.Validate(customer);
@@ -55,7 +55,7 @@ namespace SpecExpress.Test.RuleValidatorTests
             var customer = new Customer { Name = "SampleCustomer", Address = new Address() { Country = new Country() {Id = "DE", Name = "Germany"}, Street = "1234 Offenbacher Strasse"} };
 
             //Add Specification for Customer for international addresses
-            ValidationCatalog.CatalogSpecificationContainer.Add(new InternationalAddressSpecification());
+            ValidationCatalog.SpecificationContainer.Add(new InternationalAddressSpecification());
             ValidationCatalog.AddSpecification<Customer>(spec => spec.Check(c => c.Address).Required().Specification<InternationalAddressSpecification>());
 
             //Validate Customer
@@ -82,7 +82,7 @@ namespace SpecExpress.Test.RuleValidatorTests
                     Country = new Country(){Id = "DE", Name = "Germany"}, Street = "1234 Offenbacher Strasse"} 
                 };
 
-            ValidationCatalog.CatalogSpecificationContainer.Add(new CustomerAddressSpecification());
+            ValidationCatalog.SpecificationContainer.Add(new CustomerAddressSpecification());
 
             var results = ValidationCatalog.Validate(customer);
 
