@@ -256,8 +256,8 @@ namespace SpecExpress
 
         public static ValidationNotification Validate<TSpec>(object instance) where TSpec : Specification, new()
         {
-
-            var spec = SpecificationContainer.TryGetSpecification<TSpec>() ?? new TSpec() as Specification;
+            var spec = SpecificationContainer.GetAllSpecifications()
+                .FirstOrDefault(s => s.GetType() == typeof(TSpec)) ?? new TSpec() as Specification;
 
             return Validate(instance, SpecificationContainer, spec);
         }
