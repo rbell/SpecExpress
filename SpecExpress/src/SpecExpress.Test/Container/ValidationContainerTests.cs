@@ -227,5 +227,7 @@ namespace SpecExpress.Test
             Assert.IsFalse(propertyNotification.IsValid);
             Assert.AreNotEqual(1, propertyNotification.Errors);
         }
+
+
     }
 }
