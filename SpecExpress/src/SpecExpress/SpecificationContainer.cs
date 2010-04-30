@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SpecExpress.Util;
 
 namespace SpecExpress
 {
@@ -53,10 +54,20 @@ namespace SpecExpress
         #region Container
 
         public Specification TryGetSpecification(Type type)
-        {   
-            var specs = from r in _registry
-                        where r.ForType == type
-                        select r;
+        {
+            //Attempt to find Specification where the Types are equal
+           var specs = from r in _registry
+                                where type == r.ForType
+                                select r;
+
+            //If nothing was found, then try where the specification type can be cast to the type
+            if (specs.IsNullOrDefault())
+            {
+                specs = from r in _registry
+                            where type.CanBeCastTo(r.ForType)
+                            select r;
+            }
+           
 
             //TODO: Join with Validation Catalog Registry
 
@@ -95,13 +106,6 @@ namespace SpecExpress
 
         public Specification GetSpecification(Type type)
         {
-            //Check if type is a specification. This is to provide a nice exception in the case that within a ForEachSpecification 
-            //ForEachSpecification<TypeSpecification>() the Type wasn't specified, but the Specification was
-            //if (type is typeof(Specification))
-            //{
-
-            //}
-
             var spec = TryGetSpecification(type);
 
             if (spec == null)
