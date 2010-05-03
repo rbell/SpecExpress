@@ -45,7 +45,7 @@ namespace SpecExpress.Test.Concurrency
 
             int specCount = ValidationCatalog.SpecificationContainer.GetAllSpecifications().Count;
 
-            Assert.AreEqual(21, specCount);
+            Assert.AreEqual(22, specCount);
         }
 
         [TestMethod]

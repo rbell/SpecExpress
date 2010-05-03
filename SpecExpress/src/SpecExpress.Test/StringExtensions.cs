@@ -44,8 +44,18 @@ namespace SpecExpress.Test
             var names = new List<string>() {"Name", "Country", "Address"};
 
             Assert.That(names.ToReverseString(), Is.EqualTo("Address Country Name"));
-
         }
+
+        /// <summary>
+        /// Test for fix for http://specexpress.codeplex.com/WorkItem/View.aspx?WorkItemId=4451
+        /// </summary>
+        [Test]
+        public void AppendPropertyNames_Empty_Returns_NULL()
+        {
+            var names = new List<string>();
+            Assert.That(names.ToReverseString(), Is.Null);
+        }
+
     }
     
 }

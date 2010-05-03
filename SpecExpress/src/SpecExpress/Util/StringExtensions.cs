@@ -32,7 +32,7 @@ namespace SpecExpress.Util
             }
             else
             {
-                return input.First();
+                return input.FirstOrDefault();
             }
            
         }
