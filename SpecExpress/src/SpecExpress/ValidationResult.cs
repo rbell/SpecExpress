@@ -62,6 +62,38 @@ namespace SpecExpress
             return (new[] { this }).Union(NestedValidationResults.SelectMany(x => x.All()));
         }
 
+        public ValidationResult FirstOrDefaultForObject(Func<ValidationResult,bool> predicate)
+        {
+            if (predicate(this))
+            {
+                return this;
+            }
+            else
+            {
+                return NestedValidationResults.Select(nestedValidationResult => nestedValidationResult.FirstOrDefaultForObject(predicate)).FirstOrDefault(foundNode => foundNode != null);
+            }
+        }
+
+        public IEnumerable<ValidationResult> FindDescendents(Func<ValidationResult, bool> predicate)
+        {
+            if (predicate(this))
+            {
+                yield return this;
+            }
+            else
+            {
+                foreach (var nestedValidationResult in NestedValidationResults)
+                {
+                    if (predicate(nestedValidationResult))
+                    {
+                        yield return nestedValidationResult;
+                    }
+                }
+                //yield return NestedValidationResults.Select(nestedValidationResult => nestedValidationResult.FindDescendents(predicate)).FirstOrDefault(foundNode => foundNode != null);
+            }
+        }
+
+
         internal string PrintNode(string prefix)
         {
            return prefix + Message + "\r\n" +
@@ -69,6 +101,8 @@ namespace SpecExpress
                                    Aggregate((a, b) => a + b);
            
         }
+
+
 
         public override string ToString()
         {

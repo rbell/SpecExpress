@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using SpecExpress;
 using SpecExpress.Enums;
 
 namespace SpecExpress
@@ -20,23 +21,34 @@ namespace SpecExpress
         {
             get
             {
+                if (!Errors.Any())
+                {
+                    //empty collection of errors
+                    return true;
+                }
+
                 //Check if there are any validation results with a Level of Error
                 return All().All(e => e.Level == ValidationLevelType.Warn);
             }
         }
 
-        /// <summary>
-        /// Creates a ValidationNotification object containing all the errors for the specified property
-        /// </summary>
-        /// <param name="propertyName"></param>
-        /// <returns></returns>
-        public ValidationNotification GetNotificationForProperty(string propertyName)
-        {
-            var propertyErrors = All().Where(e => e.Property.Name == propertyName).ToList();
-            var notification = new ValidationNotification() {Errors = propertyErrors};
-            return notification;
 
+        public IEnumerable<ValidationResult> FindDescendents(Func<ValidationResult, bool> predicate)
+        {
+            foreach (var vr in this.Errors)
+            {
+                var foundNodes = vr.FindDescendents(predicate);
+
+                if (foundNodes.Any())
+                {
+                    foreach (var validationResult in foundNodes)
+                    {
+                        yield return validationResult;
+                    }
+                }
+            }
         }
+
 
         public IEnumerable<ValidationResult> All()
         {
@@ -47,5 +59,17 @@ namespace SpecExpress
         {
             return  Errors.Select( a=> a.PrintNode(string.Empty)).Aggregate( (a, b) => a + b);
         }
+    }
+}
+
+public static class ValidationNotificationExtensions
+{
+    public static ValidationNotification ToNotification(this IEnumerable<ValidationResult> validationResults)
+    {
+        var notification = new ValidationNotification()
+        {
+            Errors = validationResults.ToList()
+        };
+        return notification;
     }
 }

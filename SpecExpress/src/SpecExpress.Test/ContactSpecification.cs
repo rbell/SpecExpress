@@ -30,7 +30,8 @@ namespace SpecExpress.Test
 
             //This will throw an exception
             //Check(x => x.LastName).Required().Expect((y, z) => new BadWolf().IsTrue, "Error");
-                
+
+            Check(c => c.Addresses).Required();
         }
     }
 }

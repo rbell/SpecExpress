@@ -1,31 +1,45 @@
-﻿using NUnit.Framework;
+﻿using System.Collections.Generic;
+using System.Linq;
+using NUnit.Framework;
+using SpecExpress.Enums;
 using SpecExpress.Test.Domain.Entities;
+using SpecExpress.Test.Domain.Values;
 
 namespace SpecExpress.Test
 {
     [TestFixture]
     public class ValidationNotificationTests
     {
+
         [Test]
-        public void GetNotificationForProperty_IsValid()
+        public void FindDescendents_IsValid()
         {
-            //Add a rule
-            ValidationCatalog.AddSpecification<Contact>(spec =>
-                                                            {
-                                                                spec.Check(c => c.FirstName).Required();
-                                                                spec.Check(c => c.LastName).Required();
-                                                            });
+            var addressToFind = new Address()
+            {
+                City = "Gatlinburg"
+            };
 
-            //dummy data 
-            var contact = new Contact();
+            var primaryAddress = new Address();
 
-            //Validate
-            ValidationNotification valNot = ValidationCatalog.Validate(contact);
-            ValidationNotification valNotProperties = valNot.GetNotificationForProperty("FirstName");
+            var contact = new SpecExpress.Test.Domain.Entities.Contact()
+            {
+                FirstName = "Charles",
+                LastName = "radar",
+                Addresses = new List<Address>() { addressToFind },
+                PrimaryAddress = primaryAddress
+            };
 
-            Assert.That(valNot.Errors.Count == 2);
+            var allNotfication =
+                ValidationCatalog.Validate<SpecExpress.Test.Domain.Specifications.ContactSpecification>(contact);
 
-            Assert.That(valNotProperties.Errors.Count == 1);
+            var filteredNotfication = ValidationCatalog.Validate<SpecExpress.Test.Domain.Specifications.ContactSpecification >(contact)
+                .FindDescendents(v => v.Target == addressToFind)
+                .SelectMany(vr => vr.NestedValidationResults)
+                .ToNotification();
+            
+            Assert.That(filteredNotfication.IsValid, Is.False);
         }
+
+
     }
 }

@@ -65,6 +65,37 @@ namespace SpecExpress.Test
             Assert.That(results.IsValid, Is.False);
         }
 
+       
+
+        [Test]
+        public void Collection()
+        {
+            var contact1 = new Contact() { 
+                FirstName = "Something", 
+                LastName = "Else", 
+                Addresses = new List<Entities.Address>()
+                                //{
+                                //    new Entities.Address()B
+                                //        {
+                                //            Street = "Main",
+                                //            City = "Someplace",
+                                //            Country = new Country()
+                                //                          {
+                                //                              Id = "US",
+                                //                              Name = "United States"
+                                //                          },
+                                //                          PostalCode = "12345",
+
+                                //                          Province = "AA"
+                                //        }
+                                //}
+            };
+
+            var results = ValidationCatalog.Validate<ContactSpecification>(contact1);
+
+            Assert.That(results.IsValid, Is.False);
+        }
+
         //[Test]
         //public void GetAllValidationResults2()
         //{
