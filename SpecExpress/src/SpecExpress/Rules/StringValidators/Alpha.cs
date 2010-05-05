@@ -18,7 +18,7 @@ namespace SpecExpress.Rules.StringValidators
                 return Evaluate(false, context);
             }
 
-            Match m = new Regex(@"^[a-zA-Z\s]+$").Match(context.PropertyValue.Trim());
+            Match m = new Regex(@"^[a-zA-Z\s]+$").Match(context.PropertyValue);
             return Evaluate(m.Success, context);
         }
     }

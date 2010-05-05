@@ -17,7 +17,7 @@ namespace SpecExpress.Test.RuleValidatorTests
         /// <param name="minLength"></param>
         /// <returns></returns>
         [TestCase("", 3, Result = false, TestName = "Empty")]
-        [TestCase("      ", 3, Result = false, TestName = "Empty")]
+        [TestCase("      ", 3, Result = true, TestName = "Whitespace")]
         [TestCase(null, 3, Result = false, TestName = "Null")]
         [TestCase("Joe", 4, Result = false, TestName = "Less")]
         [TestCase("Joes", 4, Result = true, TestName = "Equal")]
@@ -44,7 +44,7 @@ namespace SpecExpress.Test.RuleValidatorTests
         }
 
         [TestCase("", 1, Result = true, TestName = "Empty")]
-        [TestCase("      ", 1, Result = true, TestName = "Empty")]
+        [TestCase("      ", 1, Result = false, TestName = "Whitespace")]
         [TestCase(null, 1, Result = true, TestName = "Null")]
         [TestCase("Joesph", 7, Result = true, TestName = "Less")]
         [TestCase("Joesph", 6, Result = true, TestName = "Equal")]
@@ -113,7 +113,7 @@ namespace SpecExpress.Test.RuleValidatorTests
         }
 
         [TestCase("", 5, 10, Result = false, TestName = "Empty")]
-        [TestCase("      ", 5, 10, Result = false, TestName = "EmptyWhitespace")]
+        [TestCase("      ", 5, 10, Result = true, TestName = "EmptyWhitespace")]
         [TestCase(null, 5, 10, Result = false, TestName = "Null")]
         [TestCase("abcd", 5, 10, Result = false, TestName = "Less")]
         [TestCase("abcde", 5, 10, Result = true, TestName = "EqualToLow")]
@@ -164,7 +164,7 @@ namespace SpecExpress.Test.RuleValidatorTests
         }
 
         [TestCase("", Result = false, TestName = "Empty")]
-        [TestCase("      ", Result = false, TestName = "Whitespace")]
+        [TestCase("      ", Result = true, TestName = "Whitespace")]
         [TestCase(null, Result = false, TestName = "Null")]
         [TestCase("abcdefghijklmnopqrstuvwxyz", Result = true, TestName = "all characters")]
         [TestCase("abcdef ghijklmno qrstuvwxyz", Result = true, TestName = "alpha with spaces")]
@@ -180,7 +180,7 @@ namespace SpecExpress.Test.RuleValidatorTests
 
 
         [TestCase("", 0,Result = true, TestName = "Empty")]
-        [TestCase("      ", 0, Result = true, TestName = "Whitespace")]
+        [TestCase("      ", 6, Result = true, TestName = "Whitespace")]
         [TestCase(null, 0, Result = true, TestName = "Null")]
         [TestCase("abcde", 5, Result = true, TestName = "5 characters")]
         [TestCase("abcdef", 4, Result = false, TestName = "5 characters invalid")]
