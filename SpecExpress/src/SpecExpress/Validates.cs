@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using SpecExpress.DSL;
 using SpecExpress.Enums;
 
@@ -63,6 +64,43 @@ namespace SpecExpress
             }
         }
 
+        public ActionOptionConditionBuilder<T, TProperty> Check<TProperty>(Expression<Func<T, TProperty>> expression,
+                                                                 Func<T,string> messageExpression)
+        {
+            lock (this)
+            {
+                PropertyValidator<T, TProperty> validator = registerValidator(expression);
+                            
+              
+                validator.PropertyNameOverrideExpression = messageExpression;
+                validator.Level = ValidationLevelType.Error;
+                return new ActionOptionConditionBuilder<T, TProperty>(validator);
+            }
+        }
+
+        //public static Func<object , string > ValueUnTypedGetPropertyTypeFn(PropertyInfo pi)
+        //{
+        //    var mi = typeof(StaticAccessors<object>).GetMethod("TypedGetPropertyFn");
+        //    var genericMi = mi.MakeGenericMethod(pi.PropertyType);
+        //    var typedGetPropertyFn = (Delegate)genericMi.Invoke(null, new[] { pi });
+
+
+        //    var typedMi = typedGetPropertyFn.Method;
+        //    var obj = Expression.Parameter(typeof(object), "oFunc");
+        //    var expr = Expression.Lambda<Func<TEntity, object>>(
+        //            Expression.Convert(
+        //                Expression.Call(
+        //                    Expression.Convert(obj, typedMi.DeclaringType),
+        //                    typedMi
+        //                ),
+        //                typeof(object)
+        //            ),
+        //            obj
+        //        );
+        //    return expr.Compile();
+
+        //}
+
         /// <summary>
         ///  
         /// </summary>
@@ -71,7 +109,7 @@ namespace SpecExpress
         /// <returns></returns>
         public ActionOptionConditionBuilder<T, TProperty> Check<TProperty>(Expression<Func<T, TProperty>> expression)
         {
-            return Check(expression, null);
+            return Check(expression, null as string); //need to cast null to a type to know which overload to use
         }
 
         public void Using<U, TSpecType>() where TSpecType : Validates<U>, new()

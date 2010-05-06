@@ -26,10 +26,17 @@ namespace SpecExpress.Rules
 
         public RuleValidatorContext(object instance, PropertyValidator validator, RuleValidatorContext parentContext)
         {
-            PropertyName = String.IsNullOrEmpty(validator.PropertyNameOverride)
-                              ? validator.PropertyName.SplitPascalCase()
-                              : validator.PropertyNameOverride;
+           
             PropertyValue = validator.GetValueForProperty(instance);
+
+
+
+            PropertyName = String.IsNullOrEmpty(validator.PropertyNameOverride)
+                             ? validator.PropertyName.SplitPascalCase()
+                             : validator.PropertyNameOverride;
+
+        
+
             PropertyInfo = validator.PropertyInfo;
             Parent = parentContext;
             Instance = instance;
@@ -48,7 +55,12 @@ namespace SpecExpress.Rules
     {
         public RuleValidatorContext(T instance, PropertyValidator<T, TProperty> validator,
                                     RuleValidatorContext parentContext)
-            : base(instance, validator, parentContext) {}
+            : base(instance, validator, parentContext) 
+        {
+                PropertyName = validator.PropertyNameOverrideExpression == null ? validator.PropertyName.SplitPascalCase()
+                       : validator.PropertyNameOverrideExpression(instance);
+            
+        }
 
         public RuleValidatorContext(T instance, string propertyName, TProperty propertyValue, MemberInfo propertyInfo, ValidationLevelType level,
                                     RuleValidatorContext parentContext) : base(instance, propertyName, propertyValue, level, propertyInfo, parentContext ){}

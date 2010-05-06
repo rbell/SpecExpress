@@ -14,6 +14,9 @@ namespace SpecExpress
 {
     public abstract class PropertyValidator
     {
+        private string _propertyNameOverride;
+      
+
         protected PropertyValidator(Type entityType, Type propertyType)
         {
             EntityType = entityType;
@@ -63,7 +66,20 @@ namespace SpecExpress
             protected set { }
         }
 
-        public string PropertyNameOverride { get; set; }
+       
+
+        public string PropertyNameOverride 
+        {
+            get
+            {
+                return _propertyNameOverride;
+            }
+
+            set { _propertyNameOverride = value; }
+        }
+
+       
+
         public string PropertyName
         {
             get
@@ -155,6 +171,8 @@ namespace SpecExpress
 
     public abstract class PropertyValidator<T> : PropertyValidator
     {
+        private Func<T, string> _propertyNameOverrideExpression;
+
         protected PropertyValidator(Type propertyType)
             : base(typeof(T), propertyType)
         {
@@ -176,6 +194,25 @@ namespace SpecExpress
         {
             return Validate((T) instance, null, specificationContainer);
         }
+
+        public Func<T, string> PropertyNameOverrideExpression
+        {
+            get
+            {
+                //a value was specified for PropertyNameOverride. Convert it to an expression so there's only one property to check
+                //instead of two to get a custom property name
+                if (!String.IsNullOrEmpty(PropertyNameOverride) && _propertyNameOverrideExpression == null)
+                {
+                    return new Func<T, string>(o => PropertyNameOverride);
+                }
+                else
+                {
+                    return _propertyNameOverrideExpression;
+                }
+            }
+            set { _propertyNameOverrideExpression = value; }
+        }
+       
     }
 
     public class PropertyValidator<T, TProperty> : PropertyValidator<T>

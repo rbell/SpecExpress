@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using SpecExpress.Rules.StringValidators;
@@ -94,6 +95,30 @@ namespace SpecExpress.Test
             Assert.That(results.Errors.Count, Is.AtLeast(1));
 
         }
+
+        [Test]
+        public void Validate_Property_With_PropertyNameOverrideExpression_IsValid()
+        {
+            var emptyContact = new Contact();
+            emptyContact.FirstName = "George's last name";
+            emptyContact.LastName = string.Empty;
+
+            var propertyValidator =
+                new PropertyValidator<Contact, string>(contact => contact.LastName);
+
+            propertyValidator.PropertyValueRequired = true;
+            propertyValidator.PropertyNameOverrideExpression = new Func<Contact, string>( o => o.FirstName);
+
+            //add a single rule
+            var lengthValidator = new LengthBetween<Contact>(1, 5);
+            propertyValidator.AddRule(lengthValidator); //.Rules.Add(lengthValidator);
+
+            //Validate
+            List<ValidationResult> result = propertyValidator.Validate(emptyContact, null);
+
+            Assert.That(result, Is.Not.Empty);
+        }
+
 
 
     }
