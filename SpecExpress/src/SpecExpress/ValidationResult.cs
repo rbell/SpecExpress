@@ -7,6 +7,7 @@ using SpecExpress.Enums;
 
 namespace SpecExpress
 {
+    [Serializable]
     public class ValidationResult
     {
         private readonly String _message;

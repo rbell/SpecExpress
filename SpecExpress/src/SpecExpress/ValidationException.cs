@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SpecExpress
 {
-    //[Serializable]
+    [Serializable]
     public class ValidationException : Exception
     {
         private ValidationNotification _notification;
@@ -23,10 +23,10 @@ namespace SpecExpress
             _message = message;
         }
 
-       // protected ValidationException(SerializationInfo info, StreamingContext context)
-       //     : base(info, context)
-       //{
-       //}
+        protected ValidationException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
 
         public ValidationNotification ValidationNotification
         {

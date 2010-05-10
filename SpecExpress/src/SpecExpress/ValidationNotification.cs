@@ -8,6 +8,7 @@ using SpecExpress.Enums;
 
 namespace SpecExpress
 {
+    [Serializable]
     public class ValidationNotification
     {
         public ValidationNotification()
