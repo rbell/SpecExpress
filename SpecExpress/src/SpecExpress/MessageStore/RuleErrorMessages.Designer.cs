@@ -70,7 +70,7 @@ namespace SpecExpress.MessageStore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {PropertyName} must be between {0} and {1}.  You entered {PropertyValue}..
+        ///   Looks up a localized string similar to {PropertyName} must be between {0} and {1}..
         /// </summary>
         internal static string Between {
             get {
@@ -133,7 +133,7 @@ namespace SpecExpress.MessageStore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {PropertyName} must equal {0}.  You entered {PropertyValue}..
+        ///   Looks up a localized string similar to {PropertyName} must equal {0}..
         /// </summary>
         internal static string EqualTo {
             get {
@@ -142,7 +142,7 @@ namespace SpecExpress.MessageStore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {PropertyName} must be greater than {0}. You entered {PropertyValue}..
+        ///   Looks up a localized string similar to {PropertyName} must be greater than {0}..
         /// </summary>
         internal static string GreaterThan {
             get {
@@ -151,7 +151,7 @@ namespace SpecExpress.MessageStore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {PropertyName} must be greater than or equal to {0}. You entered {PropertyValue}..
+        ///   Looks up a localized string similar to {PropertyName} must be greater than or equal to {0}..
         /// </summary>
         internal static string GreaterThanEqualTo {
             get {
@@ -214,7 +214,7 @@ namespace SpecExpress.MessageStore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {PropertyName} must be between {0} and {1} characters. You entered {PropertyValue} characters..
+        ///   Looks up a localized string similar to {PropertyName} must be between {0} and {1} characters..
         /// </summary>
         internal static string LengthBetween {
             get {
@@ -232,7 +232,7 @@ namespace SpecExpress.MessageStore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {PropertyName} must be less than {0}. You entered {PropertyValue}..
+        ///   Looks up a localized string similar to {PropertyName} must be less than {0}..
         /// </summary>
         internal static string LessThan {
             get {
@@ -241,7 +241,7 @@ namespace SpecExpress.MessageStore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {PropertyName} must be less than or equal to {0}. You entered {PropertyValue}..
+        ///   Looks up a localized string similar to {PropertyName} must be less than or equal to {0}..
         /// </summary>
         internal static string LessThanEqualTo {
             get {
@@ -250,7 +250,7 @@ namespace SpecExpress.MessageStore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The value in {PropertyName} does not meet the pattern of &apos;{0}&apos;.  You entered {PropertyValue}..
+        ///   Looks up a localized string similar to The value in {PropertyName} does not meet the pattern of &apos;{0}&apos;..
         /// </summary>
         internal static string Matches {
             get {
@@ -259,7 +259,7 @@ namespace SpecExpress.MessageStore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {PropertyName} must be less than {0} characters. You entered {PropertyValue}..
+        ///   Looks up a localized string similar to {PropertyName} must be less than {0} characters..
         /// </summary>
         internal static string MaxLength {
             get {
@@ -268,7 +268,7 @@ namespace SpecExpress.MessageStore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {PropertyName} must be greater than {0} characters. You entered {PropertyValue}..
+        ///   Looks up a localized string similar to {PropertyName} must be greater than {0} characters..
         /// </summary>
         internal static string MinLength {
             get {
@@ -286,7 +286,7 @@ namespace SpecExpress.MessageStore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {PropertyName} must not be between {0} and {1}.  You entered {PropertyValue}..
+        ///   Looks up a localized string similar to {PropertyName} must not be between {0} and {1}..
         /// </summary>
         internal static string Not_Between {
             get {
@@ -358,7 +358,7 @@ namespace SpecExpress.MessageStore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {PropertyName} must not be greater than {0}. You entered {PropertyValue}..
+        ///   Looks up a localized string similar to {PropertyName} must not be greater than {0}..
         /// </summary>
         internal static string Not_GreaterThan {
             get {
@@ -367,7 +367,7 @@ namespace SpecExpress.MessageStore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {PropertyName} must not be greater than or equal to {0}. You entered {PropertyValue}..
+        ///   Looks up a localized string similar to {PropertyName} must not be greater than or equal to {0}..
         /// </summary>
         internal static string Not_GreaterThanEqualTo {
             get {
@@ -394,7 +394,7 @@ namespace SpecExpress.MessageStore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {PropertyName} must not be in the future. You entered {PropertyValue}..
+        ///   Looks up a localized string similar to {PropertyName} must not be in the future. .
         /// </summary>
         internal static string Not_IsInFuture {
             get {
@@ -403,7 +403,7 @@ namespace SpecExpress.MessageStore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {PropertyName} must not be in the past.  You entered {PropertyValue}..
+        ///   Looks up a localized string similar to {PropertyName} must not be in the past..
         /// </summary>
         internal static string Not_IsInPast {
             get {
@@ -430,7 +430,7 @@ namespace SpecExpress.MessageStore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {PropertyName} must not be between {0} and {1} characters. You entered {PropertyValue} characters..
+        ///   Looks up a localized string similar to {PropertyName} must not be between {0} and {1} characters..
         /// </summary>
         internal static string Not_LengthBetween {
             get {
@@ -448,7 +448,7 @@ namespace SpecExpress.MessageStore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {PropertyName} must not be less than {0}. You entered {PropertyValue}..
+        ///   Looks up a localized string similar to {PropertyName} must not be less than {0}..
         /// </summary>
         internal static string Not_LessThan {
             get {
@@ -457,7 +457,7 @@ namespace SpecExpress.MessageStore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {PropertyName} must not be less than or equal to {0}. You entered {PropertyValue}..
+        ///   Looks up a localized string similar to {PropertyName} must not be less than or equal to {0}..
         /// </summary>
         internal static string Not_LessThanEqualTo {
             get {
@@ -466,7 +466,7 @@ namespace SpecExpress.MessageStore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The value in {PropertyName} must not meet the pattern of &apos;{0}&apos;.  You entered {PropertyValue}..
+        ///   Looks up a localized string similar to The value in {PropertyName} must not meet the pattern of &apos;{0}&apos;..
         /// </summary>
         internal static string Not_Matches {
             get {
@@ -475,7 +475,7 @@ namespace SpecExpress.MessageStore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {PropertyName} must not be less than {0} characters. You entered {PropertyValue}..
+        ///   Looks up a localized string similar to {PropertyName} must not be less than {0} characters..
         /// </summary>
         internal static string Not_MaxLength {
             get {
@@ -484,7 +484,7 @@ namespace SpecExpress.MessageStore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {PropertyName} must not be greater than {0} characters. You entered {PropertyValue}..
+        ///   Looks up a localized string similar to {PropertyName} must not be greater than {0} characters..
         /// </summary>
         internal static string Not_MinLength {
             get {
