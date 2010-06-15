@@ -89,8 +89,18 @@ namespace SpecExpress
                     {
                         yield return nestedValidationResult;
                     }
+                    else
+                    {
+                        var foundNodes = nestedValidationResult.FindDescendents(predicate);
+                        if (foundNodes.Any())
+                        {
+                            foreach (var validationResult in foundNodes)
+                            {
+                                yield return validationResult;
+                            }
+                        }
+                    }
                 }
-                //yield return NestedValidationResults.Select(nestedValidationResult => nestedValidationResult.FindDescendents(predicate)).FirstOrDefault(foundNode => foundNode != null);
             }
         }
 
