@@ -63,8 +63,11 @@
     <Compile Include="Container\ComplexTypesTests.cs" />
     <Compile Include="ContactSpecification.cs" />
     <Compile Include="CustomerAddressSpecification.cs" />
+    <Compile Include="Entities\LookupFactory.cs" />
+    <Compile Include="HardCodedValidationContext.cs" />
     <Compile Include="Specifications\DeleteContactSpecification.cs" />
     <Compile Include="Specifications\DeleteCustomerSpecification.cs" />
+    <Compile Include="SpecificationTestStub.cs" />
     <Compile Include="TestMocksWithSpecifications.cs" />
     <Compile Include="ValidationContexts\DeleteValidationContext.cs" />
     <Compile Include="Entities\Country.cs" />

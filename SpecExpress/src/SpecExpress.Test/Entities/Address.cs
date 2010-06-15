@@ -17,7 +17,7 @@ namespace SpecExpress.Test.Entities
                 return false;
 
             var a = obj as Address;
-            return a.Street == Street;
+            return a.Street + a.City == Street + City;
         }
     }
 }

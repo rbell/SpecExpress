@@ -14,6 +14,7 @@ namespace SpecExpress.Test.Entities
         public virtual List<string> Aliases { get; set; }
         public virtual bool Active { get; set; }
         public virtual string NamePattern { get; set; }
+        public virtual List<Country> AvailableCountries { get; set; }
         
     }
 }
