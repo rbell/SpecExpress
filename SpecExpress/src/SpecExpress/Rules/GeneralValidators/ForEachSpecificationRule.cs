@@ -21,13 +21,13 @@ namespace SpecExpress.Rules.GeneralValidators
             
         }
         
-        public override ValidationResult Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer)
+        public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
             //Resolve the Specification
             Specification = specificationContainer.TryGetSpecification<TSpecification>() as Validates<TCollectionType>  ??
                        new TSpecification();
 
-            return base.Validate(context, specificationContainer);
+            return base.Validate(context, specificationContainer, notification);
         } 
         
     }
@@ -68,9 +68,9 @@ namespace SpecExpress.Rules.GeneralValidators
             ItemName = itemName;
         }
 
-       
 
-        public override ValidationResult Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer)
+
+        public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
             if (Specification == null)
             {
@@ -82,11 +82,10 @@ namespace SpecExpress.Rules.GeneralValidators
             //Check if the Collection is null/default
             if (context.PropertyValue.IsNullOrDefault())
             {
-                return collectionValidationResult;
+                return true;
             }
             
             var itemsNestedValidationResult = new List<ValidationResult>();
-
 
             var propertyEnumerable = ( (IEnumerable)(context.PropertyValue));
 
@@ -97,9 +96,9 @@ namespace SpecExpress.Rules.GeneralValidators
 
             int index = 1;
             foreach (var item in propertyEnumerable)
-            {  
-                var itemErrors = Specification.Validate(item, specificationContainer);
-                if (itemErrors.Any())
+            {
+                var innerNotfication = new ValidationNotification();
+                if (!Specification.Validate(item, specificationContainer, innerNotfication))
                 {
                     var propertyName = String.IsNullOrEmpty(ItemName) ? item.GetType().Name : ItemName;
 
@@ -111,7 +110,7 @@ namespace SpecExpress.Rules.GeneralValidators
                     var itemError = ValidationResultFactory.Create(this, childContext, Parameters, MessageKey);
 
                     //var itemError = ValidationResultFactory.Create(this, context, Parameters, MessageKey);
-                    itemError.NestedValidationResults = itemErrors;
+                    itemError.NestedValidationResults = innerNotfication.Errors;
                     itemsNestedValidationResult.Add(itemError);
                 }
                 index++;
@@ -123,37 +122,13 @@ namespace SpecExpress.Rules.GeneralValidators
                 Message = "{PropertyName} is invalid.";
                 collectionValidationResult = ValidationResultFactory.Create(this, context, Parameters, MessageKey);
                 collectionValidationResult.NestedValidationResults = itemsNestedValidationResult;
+                notification.Errors.Add(collectionValidationResult);
+                return false;
             }
-
-            return collectionValidationResult;
-
-            //if (sb.Length > 0)
-            //{
-            //    listValidationResult = ValidationResultFactory.Create(this, context, Parameters, "{PropertyName} is invalid.", MessageStoreName, MessageKey);
-            //    listValidationResult.NestedValidationResults = list;
-            //}
-            //else
-            //{
-            //    return null;
-            //}
+            else
+            {
+                return true;
+            }
         }
-
-        //private string CreateErrorMessage(object value)
-        //{
-        //    string message = _errorMessageTemplate;
-        //    Type valueType = value.GetType();
-        //    var valueProperties = valueType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-
-        //    foreach (var property in valueProperties)
-        //    {
-        //        string propertySearchString = "{" + property.Name + "}";
-        //        if (message.Contains(propertySearchString))
-        //        {
-        //            message = message.Replace(propertySearchString, property.GetValue(value, null).ToString());
-        //        }
-        //    }
-
-        //    return message;
-        //}
     }
 }

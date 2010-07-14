@@ -27,8 +27,10 @@ namespace SpecExpress.Test.RuleValidatorTests
             // Build context for CalendarEvent containing a StartDate of propertyValue.
             RuleValidatorContext<CalendarEvent, DateTime> context = BuildContextForCalendarEventEndDate("Test Event", DateTime.Now, propertyValueDateTime);
 
+            var notification = new ValidationNotification();
+
             //Validate the validator only, return true of no error returned
-            return validator.Validate(context, null) == null;
+            return validator.Validate(context, null, notification);
         }
 
         [TestCase("1/1/2009", "12/1/2009", Result = false, TestName = "DateOnlyPropertyValueIsBefore")]
@@ -47,8 +49,10 @@ namespace SpecExpress.Test.RuleValidatorTests
             // Build context for CalendarEvent containing a StartDate of propertyValue.
             RuleValidatorContext<CalendarEvent, DateTime> context = BuildContextForCalendarEventEndDate("Test Event", greaterThanDateTime, propertyValueDateTime);
 
+            var notification = new ValidationNotification();
+
             //Validate the validator only, return true of no error returned
-            return validator.Validate(context, null) == null;
+            return validator.Validate(context, null, notification);
         }
 
         [TestCase("1/1/2009", "12/1/2009", Result = false, TestName = "DateOnlyPropertyValueIsBefore")]
@@ -67,8 +71,10 @@ namespace SpecExpress.Test.RuleValidatorTests
             // Build context for CalendarEvent containing a StartDate of propertyValue.
             RuleValidatorContext<CalendarEvent, DateTime> context = BuildContextForCalendarEventEndDate("Test Event", DateTime.Now, propertyValueDateTime);
 
+            var notification = new ValidationNotification();
+
             //Validate the validator only, return true of no error returned
-            return validator.Validate(context, null) == null;
+            return validator.Validate(context, null, notification);
         }
 
         [TestCase("1/1/2009", "12/1/2009", Result = false, TestName = "DateOnlyPropertyValueIsBefore")]
@@ -87,8 +93,10 @@ namespace SpecExpress.Test.RuleValidatorTests
             // Build context for CalendarEvent containing a StartDate of propertyValue.
             RuleValidatorContext<CalendarEvent, DateTime> context = BuildContextForCalendarEventEndDate("Test Event", greaterThanDateTime, propertyValueDateTime);
 
+            var notification = new ValidationNotification();
+
             //Validate the validator only, return true of no error returned
-            return validator.Validate(context, null) == null;
+            return validator.Validate(context, null, notification);
         }
 
         [TestCase("1/1/2009", "12/1/2009", Result = true, TestName = "DateOnlyPropertyValueIsBefore")]
@@ -107,8 +115,10 @@ namespace SpecExpress.Test.RuleValidatorTests
             // Build context for CalendarEvent containing a StartDate of propertyValue.
             RuleValidatorContext<CalendarEvent, DateTime> context = BuildContextForCalendarEventStartDate("Test Event", propertyValueDateTime, DateTime.Now);
 
+            var notification = new ValidationNotification();
+
             //Validate the validator only, return true of no error returned
-            return validator.Validate(context, null) == null;
+            return validator.Validate(context, null, notification);
         }
 
         [TestCase("1/1/2009", "12/1/2009", Result = true, TestName = "DateOnlyPropertyValueIsBefore")]
@@ -127,8 +137,10 @@ namespace SpecExpress.Test.RuleValidatorTests
             // Build context for CalendarEvent containing a StartDate of propertyValue.
             RuleValidatorContext<CalendarEvent, DateTime> context = BuildContextForCalendarEventStartDate("Test Event", propertyValueDateTime, lessThanDateTime);
 
+            var notification = new ValidationNotification();
+
             //Validate the validator only, return true of no error returned
-            return validator.Validate(context, null) == null;
+            return validator.Validate(context, null, notification);
         }
 
         [TestCase("1/1/2009", "12/1/2009", Result = true, TestName = "DateOnlyPropertyValueIsBefore")]
@@ -147,8 +159,10 @@ namespace SpecExpress.Test.RuleValidatorTests
             // Build context for CalendarEvent containing a StartDate of propertyValue.
             RuleValidatorContext<CalendarEvent, DateTime> context = BuildContextForCalendarEventStartDate("Test Event", propertyValueDateTime, DateTime.Now);
 
+            var notification = new ValidationNotification();
+
             //Validate the validator only, return true of no error returned
-            return validator.Validate(context, null) == null;
+            return validator.Validate(context, null, notification);
         }
 
         [TestCase("1/1/2009", "12/1/2009", Result = true, TestName = "DateOnlyPropertyValueIsBefore")]
@@ -167,8 +181,10 @@ namespace SpecExpress.Test.RuleValidatorTests
             // Build context for CalendarEvent containing a StartDate of propertyValue.
             RuleValidatorContext<CalendarEvent, DateTime> context = BuildContextForCalendarEventStartDate("Test Event", propertyValueDateTime, lessThanDateTime);
 
+            var notification = new ValidationNotification();
+
             //Validate the validator only, return true of no error returned
-            return validator.Validate(context, null) == null;
+            return validator.Validate(context, null, notification);
         }
 
         [TestCase("1/1/2009", Result = false, TestName = "PropertyValueIsInPast")]
@@ -182,8 +198,10 @@ namespace SpecExpress.Test.RuleValidatorTests
             // Build context for CalendarEvent containing a StartDate of propertyValue.
             RuleValidatorContext<CalendarEvent, DateTime> context = BuildContextForCalendarEventStartDate("Test Event", propertyValueDateTime, DateTime.Now);
 
+            var notification = new ValidationNotification();
+
             //Validate the validator only, return true of no error returned
-            return validator.Validate(context, null) == null;            
+            return validator.Validate(context, null, notification);            
         }
 
         [TestCase("1/1/2009", Result = true, TestName = "PropertyValueIsInPast")]
@@ -197,8 +215,10 @@ namespace SpecExpress.Test.RuleValidatorTests
             // Build context for CalendarEvent containing a StartDate of propertyValue.
             RuleValidatorContext<CalendarEvent, DateTime> context = BuildContextForCalendarEventStartDate("Test Event", propertyValueDateTime, DateTime.Now);
 
+            var notification = new ValidationNotification();
+
             //Validate the validator only, return true of no error returned
-            return validator.Validate(context, null) == null;
+            return validator.Validate(context, null, notification);
         }
 
         [TestCase("1/1/2009", "12/1/2009", "1/1/2010", Result = true, TestName = "StartDateBetweenRange")]
@@ -219,8 +239,10 @@ namespace SpecExpress.Test.RuleValidatorTests
                                                                                                           startDateTime,
                                                                                                           endDateTime);
 
+            var notification = new ValidationNotification();
+
             //Validate the validator only, return true of no error returned
-            return validator.Validate(context, null) == null; 
+            return validator.Validate(context, null, notification); 
         }
 
         [TestCase("1/1/2009", "12/1/2009", "1/1/2010", Result = true, TestName = "StartDateBetweenRange")]
@@ -241,8 +263,10 @@ namespace SpecExpress.Test.RuleValidatorTests
                                                                                                           startDateTime,
                                                                                                           endDateTime);
 
+            var notification = new ValidationNotification();
+
             //Validate the validator only, return true of no error returned
-            return validator.Validate(context, null) == null;
+            return validator.Validate(context, null, notification);
         }
 
         [TestCase("1/1/2009", "12/1/2009", "1/1/2010", Result = true, TestName = "StartDateBetweenRange")]
@@ -262,9 +286,10 @@ namespace SpecExpress.Test.RuleValidatorTests
                                                                                                           createDateTime,
                                                                                                           startDateTime,
                                                                                                           endDateTime);
+            var notification = new ValidationNotification();
 
             //Validate the validator only, return true of no error returned
-            return validator.Validate(context, null) == null;
+            return validator.Validate(context, null, notification);
         }
 
         [TestCase("1/1/2009", "12/1/2009", "1/1/2010", Result = true, TestName = "StartDateBetweenRange")]
@@ -285,8 +310,10 @@ namespace SpecExpress.Test.RuleValidatorTests
                                                                                                           startDateTime,
                                                                                                           endDateTime);
 
+            var notification = new ValidationNotification();
+
             //Validate the validator only, return true of no error returned
-            return validator.Validate(context, null) == null;
+            return validator.Validate(context, null, notification);
         }
 
         [TestCase("1/1/2009", Result = true, TestName = "PropertyValueIsInPast")]
@@ -305,8 +332,10 @@ namespace SpecExpress.Test.RuleValidatorTests
 
             //RuleValidatorContext<CalendarEvent, DateTime> context = BuildContextForCalendarEventStartDate("Test Event", propertyValueDateTime, DateTime.Now);
 
+            var notification = new ValidationNotification();
+
             //Validate the validator only, return true of no error returned
-            return validator.Validate(context, null) == null;
+            return validator.Validate(context, null, notification);
         }
 
         public RuleValidatorContext<CalendarEvent, System.DateTime> BuildContextForCalendarEventStartDate(string subject, DateTime startDate, DateTime endDate)

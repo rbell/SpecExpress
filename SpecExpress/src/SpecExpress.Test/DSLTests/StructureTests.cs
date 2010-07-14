@@ -49,6 +49,15 @@ namespace SpecExpress.Test.DSLTests
             Check(c => c.Name).Optional().LengthBetween(0, 10);
 
             Check(c => c.Name).Required().Not.LengthBetween(0, 10);
+
+            Check(c => c.ActiveDate).Required()
+                .Group(r => r.GreaterThan(DateTime.Now).And.LessThan(DateTime.Now.AddDays(10)))
+                .Or.LessThan(DateTime.Now.AddDays(-10));
+
+            Check(c => c.ActiveDate).Required()
+                .LessThan(DateTime.Now.AddDays(-10))
+                .Or.Group(r => r.GreaterThan(DateTime.Now).And.LessThan(DateTime.Now.AddDays(10)));
+
         }
 
 

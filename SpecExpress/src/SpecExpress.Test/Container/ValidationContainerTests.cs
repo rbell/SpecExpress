@@ -220,12 +220,12 @@ namespace SpecExpress.Test
             // Validating contact as a whole should result in two errors.
             var objectNotification = ValidationCatalog.Validate(contact);
             Assert.IsFalse(objectNotification.IsValid);
-            Assert.AreNotEqual(2, objectNotification.Errors);
+            Assert.AreEqual(2, objectNotification.Errors.Count);
 
             // Validation contact.LastName should result with only one error.
             var propertyNotification = ValidationCatalog.ValidateProperty(contact, c => c.Addresses);
             Assert.IsFalse(propertyNotification.IsValid);
-            Assert.AreNotEqual(1, propertyNotification.Errors);
+            Assert.AreEqual(1, propertyNotification.Errors.Count);
         }
 
 

@@ -17,28 +17,30 @@ namespace SpecExpress.Rules
         public abstract object[] Parameters { get; }
        
 
-        protected ValidationResult Evaluate(bool isValid, RuleValidatorContext context)
+        protected bool Evaluate(bool isValid, RuleValidatorContext context, ValidationNotification notification)
         {
             if (Negate)
             {
                 if (!isValid)
                 {
-                    return null;
+                    return true;
                 }
                 else
                 {
-                    return ValidationResultFactory.Create(this, context, Parameters, MessageKey);
+                    notification.Errors.Add(ValidationResultFactory.Create(this, context, Parameters, MessageKey));
+                    return false;
                 }
             }
             else
             {
                 if (isValid)
                 {
-                    return null;
+                    return true;
                 }
                 else
                 {
-                    return ValidationResultFactory.Create(this, context, Parameters,MessageKey);
+                    notification.Errors.Add(ValidationResultFactory.Create(this, context, Parameters,MessageKey));
+                    return false;
                 }
             }
         }
@@ -117,7 +119,7 @@ namespace SpecExpress.Rules
             return GetExpressionValue(PropertyExpressions.First().Value, context);
         }
 
-        //protected List<CompiledFunctionExpression<T, TProperty>> PropertyExpressions = new List<CompiledFunctionExpression<T, TProperty>>();
-        public abstract ValidationResult Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer);
+        //public abstract ValidationResult Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, );
+        public abstract bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification);
     }
 }

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SpecExpress
 {
-    [Serializable]
+    //[Serializable]
     public class ValidationException : Exception
     {
         private ValidationNotification _notification;

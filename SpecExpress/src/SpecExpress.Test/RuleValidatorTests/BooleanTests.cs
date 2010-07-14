@@ -17,8 +17,10 @@ namespace SpecExpress.Test.RuleValidatorTests
             var validator = new IsTrue<Contact>();
             RuleValidatorContext<Contact, bool> context = BuildContextForContactActive(propertyValue);
 
+            var notification = new ValidationNotification();
+
             //Validate the validator only, return true of no error returned
-            return validator.Validate(context, null) == null;
+            return validator.Validate(context, null, notification);
         }
 
         [TestCase(true, Result = false, TestName = "PropertyIsTrue")]
@@ -29,8 +31,10 @@ namespace SpecExpress.Test.RuleValidatorTests
             var validator = new IsFalse<Contact>();
             RuleValidatorContext<Contact, bool> context = BuildContextForContactActive(propertyValue);
 
+            var notification = new ValidationNotification();
+
             //Validate the validator only, return true of no error returned
-            return validator.Validate(context, null) == null;
+            return validator.Validate(context, null, notification);
         }
 
         public RuleValidatorContext<Contact, bool> BuildContextForContactActive(bool value)

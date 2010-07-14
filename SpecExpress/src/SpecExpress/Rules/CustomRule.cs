@@ -16,11 +16,11 @@ namespace SpecExpress.Rules
             _expression = rule;
         }
 
-        public override ValidationResult Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer)
+        public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
             var result = (bool)(_expression.DynamicInvoke(new object[] {context.Instance, context.PropertyValue }));
 
-            return Evaluate(result, context);
+            return Evaluate(result, context, notification);
         }
     }
 }

@@ -25,14 +25,14 @@ namespace SpecExpress.Rules.GeneralValidators
             get { return new object[] {}; }
         }
 
-        public override ValidationResult Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer)
+        public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
             if (_expression != null)
             {
                 _set = _expression.Invoke(context.Instance);                
             }
 
-            return Evaluate(context.PropertyValue != null && _set.Contains(context.PropertyValue), context);
+            return Evaluate(context.PropertyValue != null && _set.Contains(context.PropertyValue), context, notification);
         }
     }
 }

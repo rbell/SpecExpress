@@ -24,7 +24,7 @@ namespace SpecExpress.Rules.StringValidators
             get { return new string[] {_regexPattern}; }
         }
 
-        public override ValidationResult Validate(RuleValidatorContext<T, string> context, SpecificationContainer specificationContainer)
+        public override bool Validate(RuleValidatorContext<T, string> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
             if (PropertyExpressions.Any())
             {
@@ -33,7 +33,7 @@ namespace SpecExpress.Rules.StringValidators
 
             Regex regex = new Regex(_regexPattern);
             bool isMatch = regex.IsMatch(context.PropertyValue);
-            return Evaluate(isMatch, context);
+            return Evaluate(isMatch, context, notification);
         }
     }
 }

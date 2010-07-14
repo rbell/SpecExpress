@@ -25,11 +25,15 @@ namespace SpecExpress
             }
         }
 
-        public List<ValidationResult> Validate(object instance, SpecificationContainer specificationContainer)
+        public bool Validate(object instance, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
             lock (this)
             {
-                return PropertyValidators.SelectMany(x => x.Validate(instance, specificationContainer)).ToList();
+                foreach (var validator in PropertyValidators)
+                {
+                    validator.Validate(instance, specificationContainer, notification);
+                }
+                return notification.IsValid;
             }
         }
 

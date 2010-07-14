@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\SpecExpress.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\SpecExpress.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -46,9 +48,7 @@
     <Compile Include="DSL\ActionJoinBuilder.cs" />
     <Compile Include="CoreValidatorExtensions.cs" />
     <Compile Include="DSL\ActionOptionConditionBuilder.cs" />
-    <Compile Include="DSL\ActionOptionConditionSatisfiedBuilder.cs" />
     <Compile Include="DSL\ActionOptionBuilder.cs" />
-    <Compile Include="DSL\MessageCriteria.cs" />
     <Compile Include="DSL\WithRuleBuilder.cs" />
     <Compile Include="MessageStore\IMessageStore.cs" />
     <Compile Include="MessageStore\MessageContext.cs" />
@@ -95,6 +95,11 @@
     <Compile Include="Rules\StringValidators\MaxLength.cs" />
     <Compile Include="Rules\StringValidators\LengthBetween.cs" />
     <Compile Include="Rules\StringValidators\MinLength.cs" />
+    <Compile Include="RuleTree\GroupNode.cs" />
+    <Compile Include="RuleTree\RuleExpressionFactory.cs" />
+    <Compile Include="RuleTree\RuleNode.cs" />
+    <Compile Include="RuleTree\NodeBase.cs" />
+    <Compile Include="RuleTree\RuleTree.cs" />
     <Compile Include="SpecExpressConfigurationException.cs" />
     <Compile Include="Specification.cs" />
     <Compile Include="SpecificationContainer.cs" />

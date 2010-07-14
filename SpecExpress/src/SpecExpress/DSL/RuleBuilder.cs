@@ -7,36 +7,53 @@ using SpecExpress.Rules.GeneralValidators;
 namespace SpecExpress.DSL
 {
     /// <summary>
-    /// Interface that Rule Extensions will extend.
+    /// Interface for a RuleBuilder.  The DSL may be extended by defining Extension methods to this interface
+    /// to define Rules to enforce for a given property.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <typeparam name="TProperty"></typeparam>
+    /// <typeparam name="T">Type of entity being validated.</typeparam>
+    /// <typeparam name="TProperty">Type of property on the entity being validated.</typeparam>
     public interface IRuleBuilder<T, TProperty>
     {
+        /// <summary>
+        /// Gets a JoinBuilder
+        /// </summary>
         ActionJoinBuilder<T, TProperty> JoinBuilder { get; }
-        RuleBuilder<T, TProperty> RegisterValidator(RuleValidator<T, TProperty> validator);
+
+        /// <summary>
+        /// Facilitates Registering a RuleValidator
+        /// </summary>
+        /// <param name="validator"><see cref="RuleValidator&lt;T, TProperty&gt;"/></param>
+        /// <returns><see cref="IRuleBuilder&lt;T, TProperty&gt;"/></returns>
+        IRuleBuilder<T, TProperty> RegisterValidator(RuleValidator<T, TProperty> validator);
     }
 
-    
-
     /// <summary>
-    /// TODO: Document what this does in detail and how Rule Extensions extend it.
-    /// Builds a rule
+    /// Facilitates the expression of an individual Rule to apply to a property.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <typeparam name="TProperty"></typeparam>
+    /// <typeparam name="T">Type of entity being validated.</typeparam>
+    /// <typeparam name="TProperty">Type of property on the entity being validated.</typeparam>
     public class RuleBuilder<T, TProperty> : IRuleBuilder<T, TProperty>
     {
         private readonly PropertyValidator<T, TProperty> _propertyValidator;
         private readonly ActionJoinBuilder<T, TProperty> JoinBuilder;
         private bool _negate = false;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="RuleBuilder&lt;T, TProperty&gt;"/>
+        /// </summary>
+        /// <param name="propertyValidator">The <see cref="PropertyValidator&lt;T, TProperty&gt;"/> that is being build by the DSL.</param>
         public RuleBuilder(PropertyValidator<T, TProperty> propertyValidator)
         {
             _propertyValidator = propertyValidator;
             JoinBuilder = new ActionJoinBuilder<T, TProperty>(_propertyValidator);
         }
         
+        /// <summary>
+        /// Negates the current Rule being built.
+        /// </summary>
+        /// <example>
+        /// Check(c => c.ActiveDate).Required().Not.LessThan(DateTime.Now);
+        /// </example>
         public RuleBuilder<T, TProperty> Not
         {
             get
@@ -46,15 +63,33 @@ namespace SpecExpress.DSL
             }
         }
 
+        internal bool OrNextRule { get; set; }
+
         #region IRuleBuilder<T,TProperty> Members
 
-        RuleBuilder<T, TProperty> IRuleBuilder<T, TProperty>.RegisterValidator(RuleValidator<T, TProperty> validator)
+        /// <summary>
+        /// Facilitates Registering a RuleValidator on the PropertyValidator
+        /// </summary>
+        /// <param name="validator"><see cref="RuleValidator&lt;T, TProperty&gt;"/></param>
+        /// <returns><see cref="IRuleBuilder&lt;T, TProperty&gt;"/></returns>
+        IRuleBuilder<T, TProperty> IRuleBuilder<T, TProperty>.RegisterValidator(RuleValidator<T, TProperty> validator)
         {
-            validator.Negate = _negate;    
-            _propertyValidator.AddRule(validator);
+            validator.Negate = _negate;
+            if (OrNextRule)
+            {
+                _propertyValidator.OrRule(validator);
+                OrNextRule = false;
+            }
+            else
+            {
+                _propertyValidator.AndRule(validator);
+            }
             return this;
         }
 
+        /// <summary>
+        /// Gets a JoinBuilder
+        /// </summary>
         ActionJoinBuilder<T, TProperty> IRuleBuilder<T, TProperty>.JoinBuilder
         {
             get { return JoinBuilder; }
@@ -65,31 +100,27 @@ namespace SpecExpress.DSL
         /// <summary>
         /// Sets Specification used to validate this Property to the Default
         /// </summary>
-        /// <returns></returns>
+        /// <returns><see cref="IAndOr&lt;T, TProperty&gt;"/></returns>
         public IAndOr<T, TProperty> Specification()
         {
             var specRule = new SpecificationRule<T, TProperty>();
             return AddRuleAndReturnActionJoin(specRule);
-
-
         }
 
         /// <summary>
         /// Sets Specification used to validate this Property to the Default
         /// </summary>
-        /// <returns></returns>
+        /// <returns><see cref="IAndOr&lt;T, TProperty&gt;"/></returns>
         public IAndOr<T, TProperty> Specification<TSpecType>() where TSpecType : Validates<TProperty>, new()
         {
             var specRule = new SpecificationRule<T, TProperty, TSpecType>();
             return AddRuleAndReturnActionJoin(specRule);
         }
 
-
-
         /// <summary>
         /// Sets Specification used to validate this Property to the Default
         /// </summary>
-        /// <returns></returns>
+        /// <returns><see cref="IAndOr&lt;T, TProperty&gt;"/></returns>
         public IAndOr<T, TProperty> Specification(Action<Validates<TProperty>> rules)
         {
             var specification = new SpecificationExpression<TProperty>();
@@ -100,11 +131,16 @@ namespace SpecExpress.DSL
 
 
         /// <summary>
-        /// ForEachSpecification<< Contact >> ( spec => spec.Check(c => c.LastName).Required(); );
+        /// Allows the definition of an inline specification to be applied to each item in a collection.
         /// </summary>
-        /// <typeparam name="TCollectionType"></typeparam>
-        /// <param name="rules"></param>
-        /// <returns></returns>
+        /// <example>
+        /// Check(cust => cust.ContactCollection).Required()
+        ///     .ForEachSpecification&ltContact&gt( spec => spec.Check(c =&gt c.LastName).Required(), "Contacts" );
+        /// </example>
+        /// <typeparam name="TCollectionType">The type of instances contained in the collection.</typeparam>
+        /// <param name="rules"><see cref="Action&lt;Validates&lt;TCollectionType&gt;&gt;"/></param>
+        /// <param name="itemName">Name of property to use in notification message.</param>
+        /// <returns><see cref="IAndOr&lt;T, TProperty&gt;"/></returns>
         public IAndOr<T, TProperty> ForEachSpecification<TCollectionType>(Action<Validates<TCollectionType>> rules, string itemName)
         {
             var specification = new SpecificationExpression<TCollectionType>();
@@ -113,17 +149,32 @@ namespace SpecExpress.DSL
             return AddRuleAndReturnActionJoin(specRule);
         }
 
+        /// <summary>
+        /// Allows the definition of an inline specification to be applied to each item in a collection.
+        /// </summary>
+        /// <example>
+        /// Check(cust => cust.Contacts).Required()
+        ///     .ForEachSpecification&ltContact&gt( spec => spec.Check(c =&gt c.LastName).Required() );
+        /// </example>
+        /// <typeparam name="TCollectionType">The type of instances contained in the collection.</typeparam>
+        /// <param name="rules"><see cref="Action&lt;Validates&lt;TCollectionType&gt;&gt;"/></param>
+        /// <returns><see cref="IAndOr&lt;T, TProperty&gt;"/></returns>
         public IAndOr<T, TProperty> ForEachSpecification<TCollectionType>(Action<Validates<TCollectionType>> rules)
         {
             return ForEachSpecification<TCollectionType>(rules, string.Empty);
         }
 
         /// <summary>
-        /// ForEachSpecification<< Contact, ContactSpecification >>(); //explictly use supplied specification
+        /// Allows the enforcement of a specific specification to be applied to each item in a collection.
         /// </summary>
-        /// <typeparam name="TCollectionType"></typeparam>
-        /// <typeparam name="TCollectionSpecType"></typeparam>
-        /// <returns></returns>
+        /// <example>
+        /// Check(cust => cust.ContactCollection).Required()
+        ///     .ForEachSpecification&lt;Contact, ContactSpecification&gt;("Contacts");
+        /// </example>
+        /// <param name="itemName">Tne name the property to use when a notification is generated.</param>
+        /// <typeparam name="TCollectionType">The type of instances contained in the collection.</typeparam>
+        /// <typeparam name="TCollectionSpecType">The Specification type to apply to each item in the collection.</typeparam>
+        /// <returns><see cref="IAndOr&lt;T, TProperty&gt;"/></returns>
         public IAndOr<T, TProperty> ForEachSpecification<TCollectionType, TCollectionSpecType>(string itemName)
             where TCollectionSpecType : Validates<TCollectionType>, new()
         {
@@ -131,6 +182,16 @@ namespace SpecExpress.DSL
             return AddRuleAndReturnActionJoin(specRule);
         }
 
+        /// <summary>
+        /// Allows the enforcement of a specific specification to be applied to each item in a collection.
+        /// </summary>
+        /// <example>
+        /// Check(cust => cust.Contacts).Required()
+        ///     .ForEachSpecification&lt;Contact, ContactSpecification&gt;(); 
+        /// </example>
+        /// <typeparam name="TCollectionType">The type of instances contained in the collection.</typeparam>
+        /// <typeparam name="TCollectionSpecType">The Specification type to apply to each item in the collection.</typeparam>
+        /// <returns><see cref="IAndOr&lt;T, TProperty&gt;"/></returns>
         public IAndOr<T, TProperty> ForEachSpecification<TCollectionType, TCollectionSpecType>()
            where TCollectionSpecType : Validates<TCollectionType>, new()
         {
@@ -138,155 +199,65 @@ namespace SpecExpress.DSL
         }
 
         /// <summary>
-        /// ForEachSpecification<< Contact >>(); //Default Specification
+        /// Allows the enforcement of the default specification to be applied to each item in a collection.
         /// </summary>
-        /// <typeparam name="TCollectionType"></typeparam>
-        /// <param name="rules"></param>
-        /// <returns></returns>
+        /// <example>
+        /// Check(cust => cust.Contacts).Required()
+        ///     .ForEachSpecification&lt;Contact&gt;(); 
+        /// </example>
+        /// <typeparam name="TCollectionType">The type of instances contained in the collection.</typeparam>
+        /// <returns><see cref="IAndOr&lt;T, TProperty&gt;"/></returns>
         public IAndOr<T, TProperty> ForEachSpecification<TCollectionType>()
         {
             var specRule = new ForEachSpecificationRule<T, TProperty, TCollectionType>();
             return AddRuleAndReturnActionJoin(specRule);
         }
 
+        /// <summary>
+        /// Facilitates the grouping of a subset of rules to dictate precidence for And / Or opertations.
+        /// </summary>
+        /// <example>
+        ///    Validate ActiveDate is in a five day window starting 10 days ago OR a five day window starting in 5 days from now.
+        ///    spec.Check(c => c.ActiveDate).Required()
+        ///        .Group(d => d.GreaterThan(DateTime.Now.AddDays(-10))
+        ///                        .And.LessThan(DateTime.Now.AddDays(-5)))
+        ///        .Or
+        ///        .Group(d => d.GreaterThan(DateTime.Now.AddDays(5))
+        ///                        .And.LessThan(DateTime.Now.AddDays(10)));
+        /// </example>
+        /// <param name="rules"><see cref="Action&lt;RuleBuilder&lt;T, TProperty&gt;&gt;"/></param>
+        /// <returns><see cref="IAndOr&lt;T, TProperty&gt;"/></returns>
+        public IAndOr<T, TProperty> Group(Action<RuleBuilder<T, TProperty>> rules)
+        {
+            var innerPropertyValidator = new PropertyValidator<T, TProperty>(_propertyValidator);
+            var groupRules = new RuleBuilder<T, TProperty>(innerPropertyValidator);
+            rules(groupRules);
+            if (OrNextRule)
+            {
+                _propertyValidator.OrGroup(innerPropertyValidator);
+            }
+            else
+            {
+                _propertyValidator.AndGroup(innerPropertyValidator);
+            }
+
+            return new ActionJoinBuilder<T, TProperty>(_propertyValidator);
+        }
+
         private ActionJoinBuilder<T, TProperty> AddRuleAndReturnActionJoin(RuleValidator specRule)
         {
-            _propertyValidator.AddRule(specRule);
+            if (OrNextRule)
+            {
+                _propertyValidator.OrRule(specRule);
+            }
+            else
+            {
+                _propertyValidator.AndRule(specRule);
+            }
             return new ActionJoinBuilder<T, TProperty>(_propertyValidator);
         }
 
         
-    }
-
-    /// <summary>
-    /// Interface that Rule Extensions will extend.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <typeparam name="TProperty"></typeparam>
-    public interface IRuleBuilderForCollections<T, TProperty> where TProperty : IEnumerable 
-    {
-        ActionJoinBuilderForCollections<T, TProperty> JoinBuilder { get; }
-        RuleBuilderForCollections<T, TProperty> RegisterValidator(RuleValidator<T, TProperty> validator);
-    }
-
-    /// <summary>
-    /// TODO: Document what this does in detail and how Rule Extensions extend it.
-    /// Builds a rule
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <typeparam name="TProperty"></typeparam>
-    public class RuleBuilderForCollections<T, TProperty> : IRuleBuilderForCollections<T, TProperty> where TProperty : IEnumerable 
-    {
-        private readonly PropertyValidator<T, TProperty> _propertyValidator;
-        private readonly ActionJoinBuilderForCollections<T, TProperty> JoinBuilder;
-
-        public RuleBuilderForCollections(PropertyValidator<T, TProperty> propertyValidator)
-        {
-            _propertyValidator = propertyValidator;
-            JoinBuilder = new ActionJoinBuilderForCollections<T, TProperty>(_propertyValidator);
-        }
-
-        #region IRuleBuilder<T,TProperty> Members
-
-        RuleBuilderForCollections<T, TProperty> IRuleBuilderForCollections<T, TProperty>.RegisterValidator(RuleValidator<T, TProperty> validator)
-        {
-            _propertyValidator.AddRule(validator);
-            return this;
-        }
-
-        ActionJoinBuilderForCollections<T, TProperty> IRuleBuilderForCollections<T, TProperty>.JoinBuilder
-        {
-            get { return JoinBuilder; }
-        }
-
-        #endregion
-
-        public IAndOrForCollections<T, TProperty> MessageKey<TMessage>(TMessage messageKey)
-        {
-            //set error message for last rule added
-            RuleValidator rule = _propertyValidator.Rules.Last();
-            rule.MessageKey = messageKey;
-            return new ActionJoinBuilderForCollections<T, TProperty>(_propertyValidator);
-        }
-
-        /// <summary>
-        /// Sets Specification used to validate this Property to the Default
-        /// </summary>
-        /// <returns></returns>
-        public IAndOrForCollections<T, TProperty> Specification()
-        {
-            var specRule = new SpecificationRule<T, TProperty>();
-
-            _propertyValidator.AddRule(specRule);
-            return new ActionJoinBuilderForCollections<T, TProperty>(_propertyValidator);
-        }
-
-        /// <summary>
-        /// Sets Specification used to validate this Property to the Default
-        /// </summary>
-        /// <returns></returns>
-        public IAndOrForCollections<T, TProperty> Specification<TSpecType>() where TSpecType : Validates<TProperty>, new()
-        {
-            //TSpecType specification = new TSpecType();
-            var specRule = new SpecificationRule<T, TProperty, TSpecType>();
-
-            _propertyValidator.AddRule(specRule);
-            return new ActionJoinBuilderForCollections<T, TProperty>(_propertyValidator);
-        }
-
-
-
-        /// <summary>
-        /// Sets Specification used to validate this Property to the Default
-        /// </summary>
-        /// <returns></returns>
-        public IAndOrForCollections<T, TProperty> Specification(Action<Validates<TProperty>> rules)
-        {
-            var specification = new SpecificationExpression<TProperty>();
-            rules(specification);
-            var specRule = new SpecificationRule<T, TProperty>(specification);
-
-            _propertyValidator.AddRule(specRule);
-            return new ActionJoinBuilderForCollections<T, TProperty>(_propertyValidator);
-        }
-
-        ///// <summary>
-        ///// ForEachSpecification<< Contact >>();
-        ///// </summary>
-        ///// <typeparam name="TCollectionType"></typeparam>
-        ///// <typeparam name="TCollectionSpecType"></typeparam>
-        ///// <returns></returns>
-        //public IAndOr<T, TProperty> ForEachSpecification<TCollectionType, TCollectionSpecType>()
-        //    where TCollectionSpecType : SpecificationBase<TCollectionType>, new()
-        //     //where TProperty : IEnumerable
-        //{
-        //    var specification = new TCollectionSpecType();
-        //    var specRule = new  ForEachSpecificationRule<T, TCollectionType>(specification);
-        //    _propertyValidator.AddRule(specRule);
-
-        //    return new ActionJoinBuilder<T, TProperty>(_propertyValidator);
-        //}
-
-        /// <summary>
-        /// ForEachSpecification<<Contact>>( spec => 
-        /// {
-        ///     spec.Check(r.Property).Required();
-        /// });
-        /// </summary>
-        /// <typeparam name="TCollectionType"></typeparam>
-        /// <param name="rules"></param>
-        /// <returns></returns>
-        public IAndOrForCollections<T, TProperty> ForEachSpecification<TCollectionType>(Action<Validates<TCollectionType>> rules)
-        {
-            var specification = new SpecificationExpression<TCollectionType>();
-            rules(specification);
-            var specRule = new ForEachSpecificationRule<T, TProperty, TCollectionType>();
-
-
-            _propertyValidator.AddRule(specRule);
-            return new ActionJoinBuilderForCollections<T, TProperty>(_propertyValidator);
-        }
-
     }
 
 }

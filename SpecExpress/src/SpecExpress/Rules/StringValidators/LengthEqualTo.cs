@@ -29,7 +29,7 @@ namespace SpecExpress.Rules.StringValidators
             get { return new object[] { _length}; }
         }
 
-        public override ValidationResult Validate(RuleValidatorContext<T, string> context, SpecificationContainer specificationContainer)
+        public override bool Validate(RuleValidatorContext<T, string> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
 
             int length = String.IsNullOrEmpty(context.PropertyValue) ? 0 : context.PropertyValue.Length;
@@ -43,7 +43,7 @@ namespace SpecExpress.Rules.StringValidators
                 _length = (int)PropertyExpressions.First().Value.Invoke(context.Instance);
             }
             
-            return Evaluate(length == _length, contextWithLength);
+            return Evaluate(length == _length, contextWithLength, notification);
         }
     }
 }

@@ -25,13 +25,13 @@ namespace SpecExpress.Rules.Collection
             get { return new object[]{}; }
         }
 
-        public override ValidationResult Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer)
+        public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
             StringBuilder sb = new StringBuilder();
 
             if (context.PropertyValue.IsNullOrDefault() )
             {
-                return null;
+                return true;
             }
 
             foreach (var value in context.PropertyValue)
@@ -45,11 +45,12 @@ namespace SpecExpress.Rules.Collection
             if (sb.Length > 0)
             {
                 Message = sb.ToString();
-                return ValidationResultFactory.Create(this, context, null, null);                            
+                notification.Errors.Add(ValidationResultFactory.Create(this, context, null, null));
+                return false;                            
             }
             else
             {
-                return null;
+                return true;
             }
         }
 

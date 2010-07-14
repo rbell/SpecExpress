@@ -29,7 +29,6 @@ namespace SpecExpress.Test
                                                                }, "Either First or Last Name must be empty");
 
             //This will throw an exception
-            //Check(x => x.LastName).Required().Expect((y, z) => new BadWolf().IsTrue, "Error");
 
             Check(c => c.Addresses).Required();
         }

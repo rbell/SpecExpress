@@ -20,8 +20,8 @@ namespace SpecExpress.Test
             var spec = new CustomerSpecification();
             spec.Check(cust => cust.Name).Optional();
 
-            List<ValidationResult> notification = spec.Validate(customer);
-            Assert.IsEmpty(notification);
+            var notification = spec.Validate(customer);
+            Assert.IsEmpty(notification.Errors);
         }
 
         [Test]
@@ -32,8 +32,8 @@ namespace SpecExpress.Test
             var spec = new CustomerSpecification();
             spec.Check(cust => cust.Name).Optional().LengthBetween(0, 100);
 
-            List<ValidationResult> notification = spec.Validate(customer);
-            Assert.IsEmpty(notification);
+            var notification = spec.Validate(customer);
+            Assert.IsEmpty(notification.Errors);
         }
 
         [Test]
@@ -44,9 +44,9 @@ namespace SpecExpress.Test
             var spec = new CustomerSpecification();
             spec.Check(cust => cust.Name).Optional().LengthBetween(2, 100);
 
-            List<ValidationResult> notification = spec.Validate(customer);
-            Assert.IsNotEmpty(notification);
-            Assert.AreEqual(1, notification.Count);
+            var notification = spec.Validate(customer);
+            Assert.IsNotEmpty(notification.Errors);
+            Assert.AreEqual(1, notification.Errors.Count);
         }
 
         [Test]
@@ -57,8 +57,8 @@ namespace SpecExpress.Test
             var spec = new CustomerSpecification();
             spec.Check(cust => cust.Name).Required();
 
-            List<ValidationResult> notification = spec.Validate(customer);
-            Assert.IsNotEmpty(notification);
+            var notification = spec.Validate(customer);
+            Assert.IsNotEmpty(notification.Errors);
         }
 
         [Test]
@@ -69,9 +69,9 @@ namespace SpecExpress.Test
             var spec = new CustomerSpecification();
             spec.Check(cust => cust.Name).Required().LengthBetween(2, 100);
 
-            List<ValidationResult> notification = spec.Validate(customer);
-            Assert.IsNotEmpty(notification);
-            Assert.AreEqual(1, notification.Count);
+            var notification = spec.Validate(customer);
+            Assert.IsNotEmpty(notification.Errors);
+            Assert.AreEqual(1, notification.Errors.Count);
         }
 
         [Test]
@@ -82,9 +82,9 @@ namespace SpecExpress.Test
             var spec = new CustomerSpecification();
             spec.Check(cust => cust.Name).Required().LengthBetween(2, 100);
 
-            List<ValidationResult> notification = spec.Validate(customer);
-            Assert.IsNotEmpty(notification);
-            Assert.AreEqual(1, notification.Count);
+            var notification = spec.Validate(customer);
+            Assert.IsNotEmpty(notification.Errors);
+            Assert.AreEqual(1, notification.Errors.Count);
         }
 
         [Test]
@@ -95,9 +95,9 @@ namespace SpecExpress.Test
             var spec = new CustomerSpecification();
             spec.Check(cust => cust.Name).Required().Not.MinLength(100);
 
-            List<ValidationResult> notification = spec.Validate(customer);
-            Assert.IsNotEmpty(notification);
-            Assert.AreEqual(1, notification.Count);
+            var notification = spec.Validate(customer);
+            Assert.IsNotEmpty(notification.Errors);
+            Assert.AreEqual(1, notification.Errors.Count);
         }
 
         [Test]
@@ -115,9 +115,9 @@ namespace SpecExpress.Test
                 .Optional()
                 .ForEach(c => ((Contact)c).Active, "All contacts under age of 20 must be active.");
 
-            List<ValidationResult> notification = spec.Validate(customer);
-            Assert.IsNotEmpty(notification);
-            Assert.AreEqual(1, notification.Count);
+            var notification = spec.Validate(customer);
+            Assert.IsNotEmpty(notification.Errors);
+            Assert.AreEqual(1, notification.Errors.Count);
         }
 
         [Test]
@@ -128,10 +128,10 @@ namespace SpecExpress.Test
             var spec = new CustomerSpecification();
             spec.Check(cust => cust.Address.Country.Name).Required();
 
-            List<ValidationResult> notification = spec.Validate(customer);
-            Assert.That(notification, Is.Not.Empty);
-            Assert.That(notification.Count, Is.EqualTo(1));
-            Assert.That(notification[0].Message, Is.EqualTo("Address Country Name is required."));
+            var notification = spec.Validate(customer);
+            Assert.That(notification.Errors, Is.Not.Empty);
+            Assert.That(notification.Errors.Count, Is.EqualTo(1));
+            Assert.That(notification.Errors[0].Message, Is.EqualTo("Address Country Name is required."));
         }
 
         [Test]
@@ -142,8 +142,8 @@ namespace SpecExpress.Test
             var spec = new CustomerSpecification();
             spec.Check(c => c.PromotionDate).Optional().IsInFuture();
 
-            List<ValidationResult> notification = spec.Validate(customer);
-            Assert.That(notification, Is.Empty);
+            var notification = spec.Validate(customer);
+            Assert.That(notification.Errors, Is.Empty);
 
         }
 
@@ -156,64 +156,113 @@ namespace SpecExpress.Test
             var spec = new CustomerSpecification();
             spec.Check(c => c.PromotionDate).Optional().IsInFuture();
 
-            List<ValidationResult> notification = spec.Validate(customer);
-            Assert.That(notification, Is.Not.Empty);
+            var notification = spec.Validate(customer);
+            Assert.That(notification.Errors, Is.Not.Empty);
 
         }
 
-        //[Test]
-        //public void Test1()
-        //{
-        //    var customer = new Customer {Name = "X"};
+        [Test]
+        [TestCase(-20, true, Description = "Date before floor should be valid.")]
+        [TestCase(10, true, Description = "Date after ceiling should be valid.")]
+        [TestCase(-5, false, Description = "Date between floor and ceiling should fail.")]
+        public void ActiveDate_GreaterThan_Or_LessThan(int activeDateDaysFromToday, bool isValid)
+        {
+            var customer = new Customer() { ActiveDate = DateTime.Now.AddDays(activeDateDaysFromToday) };
 
-        //    var spec = new CustomerSpecification();
-        //    spec.Check(cust => cust.Name).Required().And.LengthBetween(2, 100);
+            var spec = new CustomerSpecification();
+            spec.Check(c => c.ActiveDate).Required().LessThan(DateTime.Now.AddDays(-10)).Or.GreaterThan(DateTime.Now);
 
-        //    List<ValidationResult> notifications = spec.Validate(customer);
+            var notification = spec.Validate(customer);
+            if (isValid)
+            {
+                Assert.That(notification.Errors, Is.Empty);
+            }
+            else
+            {
+                Assert.That(notification.Errors, Is.Not.Empty);
+            }
+        }
 
-        //    Assert.IsNotNull(notifications);
-        //    Assert.AreEqual(1, notifications.Count);
-        //    Assert.AreEqual("'Name' must be between 2 and 100 characters. You entered 1 characters.",
-        //                    notifications[0].Message);
-        //}
+        [Test]
+        [TestCase(-15, true, Description = "Date in ten day windo should be valid.")]
+        [TestCase(10, true, Description = "Date after now should be valid.")]
+        [TestCase(-5, false, Description = "Date between window and now should fail.")]
+        [TestCase(-25, false, Description = "Date before window should fail.")]
+        public void ActiveDate_And_Or_RulePrecidence(int activeDateDaysFromToday, bool isValid)
+        {
+            var customer = new Customer() { ActiveDate = DateTime.Now.AddDays(activeDateDaysFromToday) };
 
-        //[Test]
-        //public void Test2()
-        //{
-        //    var customer = new Customer {CustomerDate = new DateTime(2009, 3, 1)};
+            var spec = new CustomerSpecification();
 
-        //    var spec = new CustomerSpecification();
-        //    spec.Check(cust => cust.CustomerDate).Required()
-        //        .And
-        //        .LessThan(new DateTime(2009, 1, 1))
-        //        .Or
-        //        .GreaterThan(new DateTime(2010, 1, 1));
+            // Valid dates are a window of 10 days starting 20 days ago, or greater than now.
+            spec.Check(c => c.ActiveDate).Required().GreaterThan(DateTime.Now.AddDays(-20)).And.LessThan(DateTime.Now.AddDays(-10)).Or.GreaterThan(DateTime.Now);
 
-        //    List<ValidationResult> notifications = spec.Validate(customer);
+            var notification = spec.Validate(customer);
+            if (isValid)
+            {
+                Assert.That(notification.Errors, Is.Empty);
+            }
+            else
+            {
+                Assert.That(notification.Errors, Is.Not.Empty);
+            }
+        }
 
-        //    Assert.IsNotNull(notifications);
-        //    Assert.AreEqual(2, notifications.Count);
-        //    Assert.AreEqual(
-        //        "'Customer Date' must be less than 1/1/2009 12:00:00 AM. You entered 3/1/2009 12:00:00 AM.",
-        //        notifications[0].Message);
-        //}
+        [Test]
+        [TestCase(-15, true, Description = "Date in ten day windo should be valid.")]
+        [TestCase(10, true, Description = "Date after now should be valid.")]
+        [TestCase(-5, false, Description = "Date between window and now should fail.")]
+        [TestCase(-25, false, Description = "Date before window should fail.")]
+        public void ActiveDate_Or_And_RulePrecidence(int activeDateDaysFromToday, bool isValid)
+        {
+            var customer = new Customer() { ActiveDate = DateTime.Now.AddDays(activeDateDaysFromToday) };
 
-        //[Test]
-        //public void Test3()
-        //{
-        //    var customer = new Customer {CustomerDate = new DateTime(2010, 3, 1)};
+            var spec = new CustomerSpecification();
 
-        //    var spec = new CustomerSpecification();
-        //    spec.Check(cust => cust.CustomerDate).Required()
-        //        .And
-        //        .LessThan(new DateTime(2009, 1, 1))
-        //        .Or
-        //        .GreaterThan(new DateTime(2010, 1, 1));
+            // Valid dates are greater than now or a window of 10 days starting 20 days ago.
+            spec.Check(c => c.ActiveDate).Required().GreaterThan(DateTime.Now).Or.GreaterThan(DateTime.Now.AddDays(-20)).And.LessThan(DateTime.Now.AddDays(-10));
 
-        //    List<ValidationResult> notifications = spec.Validate(customer);
+            var notification = spec.Validate(customer);
+            if (isValid)
+            {
+                Assert.That(notification.Errors, Is.Empty);
+            }
+            else
+            {
+                Assert.That(notification.Errors, Is.Not.Empty);
+            }
+        }
 
-        //    Assert.IsEmpty(notifications);
-        //}
+        [Test]
+        [TestCase(-15, false, Description = "Date 15 days ago should not be valid.")]
+        [TestCase(10, false, Description = "Date 10 days from now should not be valid.")]
+        [TestCase(0, false, Description = "A current date should not be valid.")]
+        [TestCase(-7, true, Description = "Date 7 days ago should be valid.")]
+        [TestCase(7, true, Description = "Date 7 days from now should be valid.")]
+        public void ActiveDate_TwoWindowsUsingGroups(int activeDateDaysFromToday, bool isValid)
+        {
+            var customer = new Customer() { ActiveDate = DateTime.Now.AddDays(activeDateDaysFromToday) };
+
+            var spec = new CustomerSpecification();
+
+            // Valid dates are in a five day window starting 10 days ago OR a five day window starting in 5 days from now.
+            spec.Check(c => c.ActiveDate).Required()
+                .Group(d => d.GreaterThan(DateTime.Now.AddDays(-10))
+                                .And.LessThan(DateTime.Now.AddDays(-5)))
+                .Or
+                .Group(d => d.GreaterThan(DateTime.Now.AddDays(5))
+                                .And.LessThan(DateTime.Now.AddDays(10)));
+
+            var notification = spec.Validate(customer);
+            if (isValid)
+            {
+                Assert.That(notification.Errors, Is.Empty);
+            }
+            else
+            {
+                Assert.That(notification.Errors, Is.Not.Empty);
+            }
+        }
 
         [Test]
         public void When_Customer_Contacts_IsInitializeButEmpty_And_DefinedRequired_IsInvalid()
@@ -223,9 +272,9 @@ namespace SpecExpress.Test
             var spec = new CustomerSpecification();
             spec.Check(cust => cust.Contacts).Required();
 
-            List<ValidationResult> notifications = spec.Validate(customer);
+            var notifications = spec.Validate(customer);
 
-            Assert.IsNotEmpty(notifications);
+            Assert.IsNotEmpty(notifications.Errors);
         }
 
 

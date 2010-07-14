@@ -24,7 +24,7 @@ namespace SpecExpress.Rules.Collection
             get { return new object[] {_contains}; }
         }
 
-        public override ValidationResult Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer)
+        public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
             bool contains = false;
 
@@ -42,7 +42,7 @@ namespace SpecExpress.Rules.Collection
                 }
             }
 
-            return Evaluate(contains, context);
+            return Evaluate(contains, context, notification);
         }
     }
 }

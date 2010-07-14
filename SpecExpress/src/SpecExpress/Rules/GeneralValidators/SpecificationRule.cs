@@ -7,12 +7,12 @@ namespace SpecExpress.Rules.GeneralValidators
 {
     public class SpecificationRule<T, TProperty, TSpecification> : SpecificationRule<T, TProperty> where TSpecification : Validates<TProperty>, new()
     {
-        public override ValidationResult Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer)
+        public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
             Specification = specificationContainer.TryGetSpecification<TSpecification>() as Validates<TProperty> ??
                      new TSpecification();
 
-            return base.Validate(context, specificationContainer);
+            return base.Validate(context, specificationContainer, notification);
         }
     }
 
@@ -41,7 +41,7 @@ namespace SpecExpress.Rules.GeneralValidators
            
         }
 
-        public override ValidationResult Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer)
+        public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
 
             if (Specification == null)
@@ -49,16 +49,27 @@ namespace SpecExpress.Rules.GeneralValidators
                 Specification = specificationContainer.GetSpecification<TProperty>();
             }
 
-            var list =  Specification.PropertyValidators.SelectMany(x => x.Validate(context.PropertyValue, context, specificationContainer)).ToList();
-            ValidationResult result = null;
-
-            if (list.Any())
+            //var list =  _specification.PropertyValidators.SelectMany(x => x.Validate(context.PropertyValue, context, specificationContainer)).ToList();
+            var innerNotification = new ValidationNotification();
+            foreach (var validator in Specification.PropertyValidators)
             {
-                result = ValidationResultFactory.Create(this, context, Parameters, MessageKey);
-                result.NestedValidationResults = list;
+                validator.Validate(context.PropertyValue, context, specificationContainer, innerNotification);
             }
 
-            return result;
+            ValidationResult result = null;
+
+            if (innerNotification.Errors.Any())
+            {
+                result = ValidationResultFactory.Create(this, context, Parameters, MessageKey);
+                result.NestedValidationResults = innerNotification.Errors;
+                notification.Errors.Add(result);
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
         }
     }
 }

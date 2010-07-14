@@ -33,7 +33,7 @@ namespace SpecExpress.Rules.IComparableValidators
             SetPropertyExpression("ceiling",ceiling);
         }
 
-        public override ValidationResult Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer)
+        public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
             if (PropertyExpressions.ContainsKey("floor"))
             {
@@ -47,7 +47,7 @@ namespace SpecExpress.Rules.IComparableValidators
 
             Comparer<TProperty> comparer = System.Collections.Generic.Comparer<TProperty>.Default;
            
-            return Evaluate(comparer.Compare(context.PropertyValue, _ceiling) <= 0 && comparer.Compare(context.PropertyValue, _floor) >= 0 , context);
+            return Evaluate(comparer.Compare(context.PropertyValue, _ceiling) <= 0 && comparer.Compare(context.PropertyValue, _floor) >= 0 , context, notification);
         }
 
         public override object[] Parameters

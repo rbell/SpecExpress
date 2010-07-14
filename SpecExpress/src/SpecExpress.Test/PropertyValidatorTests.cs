@@ -40,12 +40,15 @@ namespace SpecExpress.Test
 
             //add a single rule
             var lengthValidator = new LengthBetween<Contact>(1, 5);
-            propertyValidator.AddRule(lengthValidator); //.Rules.Add(lengthValidator);
+            propertyValidator.AndRule(lengthValidator); //.Rules.Add(lengthValidator);
+
+            var notification = new ValidationNotification();
 
             //Validate
-            List<ValidationResult> result = propertyValidator.Validate(emptyContact, null);
+            var result = propertyValidator.Validate(emptyContact, null, notification);
 
-            Assert.That(result, Is.Empty);
+            Assert.That(result, Is.True);
+            Assert.That(notification.Errors, Is.Empty);
         }
 
         [Test]
@@ -111,12 +114,13 @@ namespace SpecExpress.Test
 
             //add a single rule
             var lengthValidator = new LengthBetween<Contact>(1, 5);
-            propertyValidator.AddRule(lengthValidator); //.Rules.Add(lengthValidator);
+            propertyValidator.AndRule(lengthValidator);
 
             //Validate
-            List<ValidationResult> result = propertyValidator.Validate(emptyContact, null);
+            ValidationNotification notification = new ValidationNotification();
+            propertyValidator.Validate(emptyContact, null, notification);
 
-            Assert.That(result, Is.Not.Empty);
+            Assert.That(notification.Errors, Is.Not.Empty);
         }
 
 

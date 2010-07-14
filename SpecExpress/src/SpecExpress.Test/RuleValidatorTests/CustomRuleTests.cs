@@ -32,8 +32,10 @@ namespace SpecExpress.Test.RuleValidatorTests
             validator.Message = "Invalid Name";
             RuleValidatorContext<Contact, string> context = BuildContextForName(propertyValue);
 
+            var notification = new ValidationNotification();
+
             //Validate the validator only, return true of no error returned
-            return validator.Validate(context, null) == null;
+            return validator.Validate(context, null, notification);
         }
 
         [TestCase("IsValidName", Result = true, TestName = "ValidProperty")]
@@ -45,8 +47,10 @@ namespace SpecExpress.Test.RuleValidatorTests
             validator.Message = "Invalid Name";
             RuleValidatorContext<Contact, string> context = BuildContextForName(propertyValue);
 
+            var notification = new ValidationNotification();
+
             //Validate the validator only, return true of no error returned
-            return validator.Validate(context, null) == null;
+            return validator.Validate(context, null, notification);
         }
 
         private bool IsValidName(Contact contact, string name)

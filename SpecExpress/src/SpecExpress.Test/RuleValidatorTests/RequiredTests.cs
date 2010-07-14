@@ -20,10 +20,12 @@ namespace SpecExpress.Test.RuleValidatorTests
             var validator = new Required<Customer, string>();
             var context = new RuleValidatorContext<Customer, string>(customer, "Name", customer.Name, null, ValidationLevelType.Error, null);
 
-            //Validate the validator only, return true of no error returned
-            var result = validator.Validate(context, null);
+            var notification = new ValidationNotification();
 
-            Assert.IsNotEmpty(result.Message);
+            //Validate the validator only, return true of no error returned
+            validator.Validate(context, null, notification);
+
+            Assert.IsNotEmpty(notification.Errors[0].Message);
         }
 
         [Test]
@@ -34,10 +36,12 @@ namespace SpecExpress.Test.RuleValidatorTests
             var validator = new Required<Customer, IEnumerable>();
             var context = new RuleValidatorContext<Customer, IEnumerable>(customer, "Contacts", customer.Contacts, null, ValidationLevelType.Error, null);
 
-            //Validate the validator only, return true of no error returned
-            var result = validator.Validate(context, null);
+            var notification = new ValidationNotification();
 
-            Assert.IsNotEmpty(result.Message);
+            //Validate the validator only, return true of no error returned
+            validator.Validate(context, null, notification);
+
+            Assert.IsNotEmpty(notification.Errors[0].Message);
         }
 
         [Test]
@@ -48,10 +52,12 @@ namespace SpecExpress.Test.RuleValidatorTests
             var validator = new Required<Customer, IEnumerable>();
             var context = new RuleValidatorContext<Customer, IEnumerable>(customer, "Contacts", customer.Contacts, null, ValidationLevelType.Error, null);
 
-            //Validate the validator only, return true of no error returned
-            var result = validator.Validate(context, null);
+            var notification = new ValidationNotification();
 
-            Assert.IsNotEmpty(result.Message);
+            //Validate the validator only, return true of no error returned
+            validator.Validate(context, null, notification);
+
+            Assert.IsNotEmpty(notification.Errors[0].Message);
         }
 
 

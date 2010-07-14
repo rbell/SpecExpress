@@ -29,8 +29,8 @@ namespace SpecExpress.Test
 
             var validationResults = spec.Validate(customer);
 
-            var addressValidationResult = validationResults.Where(vr => vr.Property.Name == "Address").First();
-            var nameValidationResult = validationResults.Where(vr => vr.Property.Name == "Name").First();
+            var addressValidationResult = validationResults.Errors.Where(vr => vr.Property.Name == "Address").First();
+            var nameValidationResult = validationResults.Errors.Where(vr => vr.Property.Name == "Name").First();
 
             Assert.That(addressValidationResult.Level == ValidationLevelType.Warn);
             Assert.That(nameValidationResult.Level == ValidationLevelType.Error);

@@ -24,7 +24,7 @@ namespace SpecExpress.Rules.Collection
             get { return new object[] { _countLessThanEqualTo }; }
         }
 
-        public override ValidationResult Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer)
+        public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
             if (PropertyExpressions.Any())
             {
@@ -40,7 +40,7 @@ namespace SpecExpress.Rules.Collection
                 }
             }
 
-            return Evaluate(collectionCount <= _countLessThanEqualTo, context);
+            return Evaluate(collectionCount <= _countLessThanEqualTo, context, notification);
         }
     }
 }
