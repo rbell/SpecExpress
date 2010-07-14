@@ -1,6 +1,11 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2869EDF5-93A6-4AEF-AFF8-55B083575A48}"
+	ProjectSection(SolutionItems) = preProject
+		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
+	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecExpress", "SpecExpress\SpecExpress.csproj", "{0A8DF7B2-EAFC-457B-93EF-EE3030ABAF46}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecExpress.Test.Domain", "SpecExpress.Test.Domain\SpecExpress.Test.Domain.csproj", "{EBFBAF72-555E-4FC8-AD82-3C66D8D7C8E7}"
@@ -8,11 +13,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecExpress.Test", "SpecExpress.Test\SpecExpress.Test.csproj", "{78D20181-3C87-4DB2-AD31-1D17A159BC16}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecExpress.Test.Concurrency", "SpecExpress.Test.Concurrency\SpecExpress.Test.Concurrency.csproj", "{5EBF5191-FF1E-4940-8520-D34CAF45ADB0}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2869EDF5-93A6-4AEF-AFF8-55B083575A48}"
-	ProjectSection(SolutionItems) = preProject
-		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecExpress.Web", "SpecExpress.Web\SpecExpress.Web.csproj", "{01482E62-23D8-4A15-B5F1-6594AF297F51}"
 EndProject
