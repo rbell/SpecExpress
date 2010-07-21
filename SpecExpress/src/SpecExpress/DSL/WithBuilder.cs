@@ -67,7 +67,7 @@ namespace SpecExpress.DSL
         /// Returns a Func<TProperty, string> that is used to format the value of the property
         /// as displayed in an error message (i.e. Date format string).
         /// </summary>
-        public Func<TProperty, string> FormatProperty 
+        public Func<TProperty, string> FormatProperty
         {
             get
             {
@@ -77,7 +77,7 @@ namespace SpecExpress.DSL
             set
             {
                 //RuleValidator rule = _propertyValidator.Rules.Last();
-               
+
                 // Func<TProperty, string> func = value;
                 //var s = func() ;
 
@@ -88,14 +88,7 @@ namespace SpecExpress.DSL
 
         private RuleValidator getLastRuleValidator()
         {
-            if (_propertyValidator.RuleTree.LastRuleNode == null)
-            {
-                return _propertyValidator.RequiredRule;
-            }
-            else
-            {
-                return _propertyValidator.RuleTree.LastRuleNode.Rule;
-            }
+            return _propertyValidator.RuleTree.LastRuleNode.Rule;
         }
     }
 }

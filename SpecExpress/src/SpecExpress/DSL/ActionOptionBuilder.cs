@@ -1,3 +1,5 @@
+using SpecExpress.Rules.GeneralValidators;
+
 namespace SpecExpress.DSL
 {
     /// <summary>
@@ -25,7 +27,9 @@ namespace SpecExpress.DSL
         /// <returns><see cref="WithRuleBuilder&lt;T, TProperty&gt;"/></returns>
         public WithRuleBuilder<T, TProperty> Required()
         {
-            _propertyValidator.PropertyValueRequired = true;
+            _propertyValidator.ConditionalAndRule(new Required<T,TProperty>());
+
+            //_propertyValidator.PropertyValueRequired = true;
             return new WithRuleBuilder<T, TProperty>(_propertyValidator);
         }
 
@@ -37,8 +41,7 @@ namespace SpecExpress.DSL
         /// <returns><see cref="WithRuleBuilder&lt;T, TProperty&gt;"/></returns>
         public WithRuleBuilder<T, TProperty> Required(string errorMessage)
         {
-            _propertyValidator.PropertyValueRequired = true;
-            _propertyValidator.RequiredRule.Message = errorMessage;
+            _propertyValidator.ConditionalAndRule(new Required<T, TProperty>() {Message = errorMessage});
 
             return new WithRuleBuilder<T, TProperty>(_propertyValidator);
         }
@@ -50,7 +53,6 @@ namespace SpecExpress.DSL
         /// <returns><see cref="WithRuleBuilder&lt;T, TProperty&gt;"/></returns>
         public WithRuleBuilder<T, TProperty> Optional()
         {
-            _propertyValidator.PropertyValueRequired = false;
             return new WithRuleBuilder<T, TProperty>(_propertyValidator);
         }
     }

@@ -28,12 +28,12 @@ namespace SpecExpress.RuleTree
                 return Expression.Constant(true);
             }
 
-            if (node is RuleNode<T,TProperty>)
+            if (node is RuleNode<T, TProperty>)
             {
                 return buildRuleNodeExpression(node as RuleNode<T, TProperty>, contextParam, specContainerParam, specNotificationParam);
             }
 
-            if (node is GroupNode<T,TProperty>)
+            if (node is GroupNode<T, TProperty>)
             {
                 return buildGroupNodeExpression(node as GroupNode<T, TProperty>, contextParam, specContainerParam, specNotificationParam);
             }
@@ -56,15 +56,35 @@ namespace SpecExpress.RuleTree
                                               contextParam, specContainerParam, specNotificationParam);
                 if (ruleNode.ChildHasAndRelationship)
                 {
-                    return Expression.And(leftExp,
-                                          BuildExpression(ruleNode.ChildNode, contextParam, specContainerParam,
-                                                          specNotificationParam));
+                    if (ruleNode.ChildRelationshipIsConditional)
+                    {
+                        return Expression.AndAlso(leftExp,
+                      BuildExpression(ruleNode.ChildNode, contextParam, specContainerParam,
+                                      specNotificationParam));
+
+                    }
+                    else
+                    {
+
+                        return Expression.And(leftExp,
+                                              BuildExpression(ruleNode.ChildNode, contextParam, specContainerParam,
+                                                              specNotificationParam));
+                    }
                 }
                 else
                 {
-                    return Expression.Or(leftExp,
-                                         BuildExpression(ruleNode.ChildNode, contextParam, specContainerParam,
-                                                         specNotificationParam));
+                    if (ruleNode.ChildRelationshipIsConditional)
+                    {
+                        return Expression.OrElse(leftExp,
+                                             BuildExpression(ruleNode.ChildNode, contextParam, specContainerParam,
+                                                             specNotificationParam));
+                    }
+                    else
+                    {
+                        return Expression.Or(leftExp,
+                                             BuildExpression(ruleNode.ChildNode, contextParam, specContainerParam,
+                                                             specNotificationParam));
+                    }
                 }
             }
         }
@@ -86,11 +106,25 @@ namespace SpecExpress.RuleTree
 
                 if (groupNode.ChildHasAndRelationship)
                 {
-                    return Expression.MakeBinary(ExpressionType.And, exp, rightExp);
+                    if (groupNode.ChildRelationshipIsConditional)
+                    {
+                        return Expression.MakeBinary(ExpressionType.AndAlso, exp, rightExp);
+                    }
+                    else
+                    {
+                        return Expression.MakeBinary(ExpressionType.And, exp, rightExp);
+                    }
                 }
                 else
                 {
-                    return Expression.MakeBinary(ExpressionType.Or, exp, rightExp);
+                    if (groupNode.ChildRelationshipIsConditional)
+                    {
+                        return Expression.MakeBinary(ExpressionType.OrElse, exp, rightExp);
+                    }
+                    else
+                    {
+                        return Expression.MakeBinary(ExpressionType.Or, exp, rightExp);
+                    }
                 }
             }
         }

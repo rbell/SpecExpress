@@ -23,6 +23,7 @@ namespace SpecExpress.RuleTree
         }
 
         private bool _childHasAndRelationship;
+        private bool _childRelationshipIsConditional = false;
 
         /// <summary>
         /// True if the child has an And relationship with the current node
@@ -40,6 +41,19 @@ namespace SpecExpress.RuleTree
             }
         }
 
+        public bool ChildRelationshipIsConditional
+        {
+            get { return _childRelationshipIsConditional; }
+            set
+            {
+                if (value != _childRelationshipIsConditional)
+                {
+                    _childRelationshipIsConditional = value;
+                    OnNodeAltered();
+                }
+            }
+        }
+
         public bool HasChild
         {
             get { return ChildNode != null;}
@@ -51,9 +65,23 @@ namespace SpecExpress.RuleTree
             ChildNode = child;
         }
 
+        public void ConditionalAndChild(NodeBase<T, TProperty> child)
+        {
+            _childHasAndRelationship = true;
+            _childRelationshipIsConditional = true;
+            ChildNode = child;
+        }
+
         public void OrChild(NodeBase<T, TProperty> child)
         {
             _childHasAndRelationship = false;
+            ChildNode = child;
+        }
+
+        public void ConditionalOrChild(NodeBase<T, TProperty> child)
+        {
+            _childHasAndRelationship = false;
+            _childRelationshipIsConditional = true;
             ChildNode = child;
         }
 
@@ -70,6 +98,5 @@ namespace SpecExpress.RuleTree
             // Raise event on up the tree
             OnNodeAltered();
         }
-
     }
 }

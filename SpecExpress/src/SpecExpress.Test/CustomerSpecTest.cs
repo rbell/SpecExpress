@@ -165,12 +165,14 @@ namespace SpecExpress.Test
         [TestCase(-20, true, Description = "Date before floor should be valid.")]
         [TestCase(10, true, Description = "Date after ceiling should be valid.")]
         [TestCase(-5, false, Description = "Date between floor and ceiling should fail.")]
+        [TestCase(-10, false, Description = "Date equal to floor should fail.")]
+        [TestCase(0, false, Description = "Date equal to ceiling should fail.")]
         public void ActiveDate_GreaterThan_Or_LessThan(int activeDateDaysFromToday, bool isValid)
         {
             var customer = new Customer() { ActiveDate = DateTime.Now.AddDays(activeDateDaysFromToday) };
 
             var spec = new CustomerSpecification();
-            spec.Check(c => c.ActiveDate).Required().LessThan(DateTime.Now.AddDays(-10)).Or.GreaterThan(DateTime.Now);
+            spec.Check(c => c.ActiveDate).Required().GreaterThan(DateTime.Now).Or.LessThan(DateTime.Now.AddDays(-10));
 
             var notification = spec.Validate(customer);
             if (isValid)
@@ -235,7 +237,7 @@ namespace SpecExpress.Test
 
         [Test]
         [TestCase(-15, false, Description = "Date 15 days ago should not be valid.")]
-        [TestCase(10, false, Description = "Date 10 days from now should not be valid.")]
+        [TestCase(11, false, Description = "Date 11 days from now should not be valid.")]
         [TestCase(0, false, Description = "A current date should not be valid.")]
         [TestCase(-7, true, Description = "Date 7 days ago should be valid.")]
         [TestCase(7, true, Description = "Date 7 days from now should be valid.")]

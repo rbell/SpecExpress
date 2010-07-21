@@ -45,9 +45,13 @@ namespace SpecExpress.DSL
         public RuleBuilder(PropertyValidator<T, TProperty> propertyValidator)
         {
             _propertyValidator = propertyValidator;
+            if (_propertyValidator.RuleTree.Root != null)
+            {
+                NextRuleIsConditional = true;
+            }
             JoinBuilder = new ActionJoinBuilder<T, TProperty>(_propertyValidator);
         }
-        
+
         /// <summary>
         /// Negates the current Rule being built.
         /// </summary>
@@ -64,6 +68,7 @@ namespace SpecExpress.DSL
         }
 
         internal bool OrNextRule { get; set; }
+        internal bool NextRuleIsConditional { get; set; }
 
         #region IRuleBuilder<T,TProperty> Members
 
@@ -128,7 +133,6 @@ namespace SpecExpress.DSL
             var specRule = new SpecificationRule<T, TProperty>(specification);
             return AddRuleAndReturnActionJoin(specRule);
         }
-
 
         /// <summary>
         /// Allows the definition of an inline specification to be applied to each item in a collection.
@@ -234,12 +238,29 @@ namespace SpecExpress.DSL
             rules(groupRules);
             if (OrNextRule)
             {
-                _propertyValidator.OrGroup(innerPropertyValidator);
+                if (NextRuleIsConditional)
+                {
+                    _propertyValidator.ConditionalOrGroup(innerPropertyValidator);
+                }
+                else
+                {
+                    _propertyValidator.OrGroup(innerPropertyValidator);
+                }
             }
             else
             {
-                _propertyValidator.AndGroup(innerPropertyValidator);
+                if (NextRuleIsConditional)
+                {
+                    _propertyValidator.ConditionalAndGroup(innerPropertyValidator);
+                }
+                else
+                {
+                    _propertyValidator.AndGroup(innerPropertyValidator);
+                }
             }
+
+            NextRuleIsConditional = false;
+            OrNextRule = false;
 
             return new ActionJoinBuilder<T, TProperty>(_propertyValidator);
         }
@@ -248,16 +269,31 @@ namespace SpecExpress.DSL
         {
             if (OrNextRule)
             {
-                _propertyValidator.OrRule(specRule);
+                if (NextRuleIsConditional)
+                {
+                    _propertyValidator.ConditionalOrRule(specRule);
+                }
+                else
+                {
+                    _propertyValidator.OrRule(specRule);
+                }
             }
             else
             {
-                _propertyValidator.AndRule(specRule);
+                if (NextRuleIsConditional)
+                {
+                    _propertyValidator.ConditionalAndRule(specRule);
+                }
+                else
+                {
+                    _propertyValidator.AndRule(specRule);
+                }
             }
+
             return new ActionJoinBuilder<T, TProperty>(_propertyValidator);
         }
 
-        
+
     }
 
 }

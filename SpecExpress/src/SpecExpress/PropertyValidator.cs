@@ -16,7 +16,7 @@ namespace SpecExpress
     public abstract class PropertyValidator
     {
         private string _propertyNameOverride;
-      
+
 
         protected PropertyValidator(Type entityType, Type propertyType)
         {
@@ -24,8 +24,6 @@ namespace SpecExpress
             PropertyType = propertyType;
         }
 
-
-        public abstract void AndRule(RuleValidator ruleValidator);
         public abstract bool Validate(object instance, SpecificationContainer specificationContainer, ValidationNotification notification);
         public abstract bool Validate(object instance, RuleValidatorContext parentRuleContexts, SpecificationContainer specificationContainer, ValidationNotification notification);
 
@@ -66,9 +64,9 @@ namespace SpecExpress
             protected set { }
         }
 
-       
 
-        public string PropertyNameOverride 
+
+        public string PropertyNameOverride
         {
             get
             {
@@ -78,7 +76,7 @@ namespace SpecExpress
             set { _propertyNameOverride = value; }
         }
 
-       
+
 
         public string PropertyName
         {
@@ -114,9 +112,6 @@ namespace SpecExpress
         }
 
         public ValidationLevelType Level { get; set; }
-        public virtual bool PropertyValueRequired { get; set; }
-
-        public abstract RuleValidator RequiredRule { get; set; }
 
         public LambdaExpression Property { get; set; }
 
@@ -209,13 +204,12 @@ namespace SpecExpress
             }
             set { _propertyNameOverrideExpression = value; }
         }
-       
+
     }
 
     public class PropertyValidator<T, TProperty> : PropertyValidator<T>
     {
         private readonly bool _propertyValueRequired;
-        private Required<T, TProperty> _requiredRule;
         private RuleTree<T, TProperty> _ruleTree = new RuleTree<T, TProperty>();
 
         public PropertyValidator(Expression<Func<T, TProperty>> targetExpression)
@@ -240,42 +234,30 @@ namespace SpecExpress
 
         public Predicate<T> Condition { get; set; }
 
-        public override bool PropertyValueRequired
-        {
-            get { return base.PropertyValueRequired; }
-            set
-            {
-                if (value)
-                {
-                    RequiredRule = new Required<T, TProperty>();
-                }
-                else
-                {
-                    RequiredRule = null;
-                }
-
-                base.PropertyValueRequired = value;
-            }
-        }
-
-        public override RuleValidator RequiredRule
-        {
-            get
-            {
-                return _requiredRule;
-            }
-            set
-            {
-                _requiredRule = value as Required<T, TProperty>;
-            }
-
-        }
-
+        /// <summary>
+        /// Add the RuleValidator to the RuleTree using an Or condition
+        /// </summary>
+        /// <param name="ruleValidator"><see cref="RuleValidator"/></param>
         public void OrRule(RuleValidator ruleValidator)
         {
             OrRule(ruleValidator as RuleValidator<T, TProperty>);
         }
 
+        /// <summary>
+        /// Add the RuleValidator to the RuleTree using an OrElse condition
+        /// where the ruleValidator is evaluated only if the prior rules in the tree
+        /// evaluate to false.
+        /// </summary>
+        /// <param name="ruleValidator"><see cref="RuleValidator"/></param>
+        public void ConditionalOrRule(RuleValidator ruleValidator)
+        {
+            ConditionalOrRule(ruleValidator as RuleValidator<T, TProperty>);
+        }
+
+        /// <summary>
+        /// Add the RuleValidator to the RuleTree using an Or condition
+        /// </summary>
+        /// <param name="validator"><see cref="RuleValidator&lt;T, TProperty&gt;"/></param>
         public void OrRule(RuleValidator<T, TProperty> validator)
         {
             var node = new RuleNode<T, TProperty>(validator);
@@ -289,6 +271,31 @@ namespace SpecExpress
             }
         }
 
+        /// <summary>
+        /// Add the RuleValidator to the RuleTree using an OrElse condition
+        /// where the ruleValidator is evaluated only if the prior rules in the tree
+        /// evaluate to false.
+        /// </summary>
+        /// <param name="validator"><see cref="RuleValidator&lt;T, TProperty&gt;"/></param>
+        public void ConditionalOrRule(RuleValidator<T, TProperty> validator)
+        {
+            var node = new RuleNode<T, TProperty>(validator);
+            if (RuleTree.Root == null)
+            {
+                node.ChildRelationshipIsConditional = true;
+                RuleTree.Root = node;
+            }
+            else
+            {
+                RuleTree.EndNode.ConditionalOrChild(node);
+            }
+        }
+
+        /// <summary>
+        /// Add the RuleTree defined in innerPropertyValidator to the RuleTree as a group
+        /// using an OrElse condition 
+        /// </summary>
+        /// <param name="innerPropertyValidator"><see cref="PropertyValidator&lt;T, TProperty&gt;"/></param>
         public void OrGroup(PropertyValidator<T, TProperty> innerPropertyValidator)
         {
             var node = new GroupNode<T, TProperty>(innerPropertyValidator._ruleTree.Root);
@@ -302,11 +309,50 @@ namespace SpecExpress
             }
         }
 
-        public override void AndRule(RuleValidator ruleValidator)
+        /// <summary>
+        /// Add the RuleTree defined in innerPropertyValidator to the RuleTree as a group
+        /// using an Or condition where the ruleValidator is evaluated only if the
+        /// prior rules in the tree evaluate to false.
+        /// </summary>
+        /// <param name="innerPropertyValidator"><see cref="PropertyValidator&lt;T, TProperty&gt;"/></param>
+        public void ConditionalOrGroup(PropertyValidator<T, TProperty> innerPropertyValidator)
+        {
+            var node = new GroupNode<T, TProperty>(innerPropertyValidator._ruleTree.Root);
+            if (RuleTree.Root == null)
+            {
+                node.ChildRelationshipIsConditional = true;
+                RuleTree.Root = node;
+            }
+            else
+            {
+                RuleTree.EndNode.ConditionalOrChild(node);
+            }
+        }
+
+        /// <summary>
+        /// Add the RuleValidator to the RuleTree using an And condition
+        /// </summary>
+        /// <param name="ruleValidator"><see cref="RuleValidator"/></param>
+        public void AndRule(RuleValidator ruleValidator)
         {
             AndRule(ruleValidator as RuleValidator<T, TProperty>);
         }
 
+        /// <summary>
+        /// Add the RuleValidator to the RuleTree using an AndAlso condition
+        /// where the ruleValidator will only be evaluated if the prior rules
+        /// in the tree evaluate to true.
+        /// </summary>
+        /// <param name="ruleValidator"><see cref="RuleValidator"/></param>
+        public void ConditionalAndRule(RuleValidator ruleValidator)
+        {
+            ConditionalAndRule(ruleValidator as RuleValidator<T, TProperty>);
+        }
+
+        /// <summary>
+        /// Add the RuleValidator to the RuleTree using an And condition
+        /// </summary>
+        /// <param name="ruleValidator"><see cref="RuleValidator"/></param>
         public void AndRule(RuleValidator<T, TProperty> ruleValidator)
         {
             var node = new RuleNode<T, TProperty>(ruleValidator);
@@ -320,6 +366,32 @@ namespace SpecExpress
             }
         }
 
+        /// <summary>
+        /// Add the RuleValidator to the RuleTree using an AndAlso condition
+        /// where the ruleValidator will only be evaluated if the prior rules
+        /// in the tree evaluate to true.
+        /// </summary>
+        /// <param name="ruleValidator"><see cref="RuleValidator"/></param>
+        public void ConditionalAndRule(RuleValidator<T, TProperty> ruleValidator)
+        {
+            var node = new RuleNode<T, TProperty>(ruleValidator);
+            if (RuleTree.Root == null)
+            {
+                node.ChildRelationshipIsConditional = true;
+                RuleTree.Root = node;
+            }
+            else
+            {
+                RuleTree.EndNode.ConditionalAndChild(node);
+            }
+        }
+
+        /// <summary>
+        /// Add the RuleTree defined in innerPropertyValidator to the RuleTree as a group
+        /// using an And condition where the ruleValidator will only be evaluated if 
+        /// the prior rules in the tree evaluate to true.
+        /// </summary>
+        /// <param name="innerPropertyValidator"><see cref="PropertyValidator&lt;T, TProperty&gt;"/></param>
         public void AndGroup(PropertyValidator<T, TProperty> innerPropertyValidator)
         {
             var node = new GroupNode<T, TProperty>(innerPropertyValidator._ruleTree.Root);
@@ -332,39 +404,47 @@ namespace SpecExpress
                 RuleTree.EndNode.AndChild(node);
             }
         }
+
+        /// <summary>
+        /// Add the RuleTree defined in innerPropertyValidator to the RuleTree as a group
+        /// using an AndAlso condition
+        /// </summary>
+        /// <param name="innerPropertyValidator"><see cref="PropertyValidator&lt;T, TProperty&gt;"/></param>
+        public void ConditionalAndGroup(PropertyValidator<T, TProperty> innerPropertyValidator)
+        {
+            var node = new GroupNode<T, TProperty>(innerPropertyValidator._ruleTree.Root);
+            if (RuleTree.Root == null)
+            {
+                RuleTree.Root = node;
+            }
+            else
+            {
+                RuleTree.EndNode.ConditionalAndChild(node);
+            }
+        }
+
         public override bool Validate(T instance, RuleValidatorContext parentRuleContext, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
             if (Condition == null || (Condition != null && Condition(instance)))
             {
                 var context = new RuleValidatorContext<T, TProperty>(instance, this, parentRuleContext);
 
-                if (PropertyValueRequired || (!PropertyValueRequired && !context.PropertyValue.IsNullOrDefault()))
+                var tmpNotification = new ValidationNotification();
+                bool isValid = RuleTree.LambdaExpression(context, specificationContainer, tmpNotification);
+
+                // if lambda is valid but notification returns with errors, there may have been an Or rule that failed
+                // so we need to clear out the notification errors.
+                if (!isValid || !(isValid && !tmpNotification.IsValid))
                 {
-                    //If Property is Required and the Required Rule fails, short-circuit the remaining rules
-                    if (PropertyValueRequired && context.PropertyValue.IsNullOrDefault())
-                    {
-                        _requiredRule.Validate(context, specificationContainer, notification);
-                    }
-                    else
-                    {
-                        var tmpNotification = new ValidationNotification();
-                        bool isValid = RuleTree.LambdaExpression(context, specificationContainer, tmpNotification);
+                    notification.Errors.AddRange(tmpNotification.Errors);
+                }
 
-                        // if lambda is valid but notification returns with errors, there may have been an Or rule that failed
-                        // so we need to clear out the notification errors.
-                        if (!(isValid && !tmpNotification.IsValid))
-                        {
-                            notification.Errors.AddRange(tmpNotification.Errors);
-                        }
-
-                        if (ValidationCatalog.ValidateObjectGraph)
-                        {
-                            //Check if this Property Type has a Registered specification to validate with and the instance of the property
-                            //isn't already invalid. For example if a property is required and the object is null, then 
-                            //don't continue validating the object
-                            ValidateObjectGraph(context, specificationContainer, notification);
-                        }
-                    }
+                if (ValidationCatalog.ValidateObjectGraph)
+                {
+                    //Check if this Property Type has a Registered specification to validate with and the instance of the property
+                    //isn't already invalid. For example if a property is required and the object is null, then 
+                    //don't continue validating the object
+                    ValidateObjectGraph(context, specificationContainer, notification);
                 }
             }
             return notification.IsValid;

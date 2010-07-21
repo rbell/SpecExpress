@@ -27,6 +27,7 @@ namespace SpecExpress.Test
         #endregion
 
         [Test]
+        [Ignore]
         public void Validate_OptionalProperty_WithNoValue_IsValid()
         {
             var emptyContact = new Contact();
@@ -35,8 +36,6 @@ namespace SpecExpress.Test
 
             var propertyValidator =
                 new PropertyValidator<Contact, string>(contact => contact.LastName);
-
-            propertyValidator.PropertyValueRequired = false; //Optional
 
             //add a single rule
             var lengthValidator = new LengthBetween<Contact>(1, 5);
@@ -109,7 +108,6 @@ namespace SpecExpress.Test
             var propertyValidator =
                 new PropertyValidator<Contact, string>(contact => contact.LastName);
 
-            propertyValidator.PropertyValueRequired = true;
             propertyValidator.PropertyNameOverrideExpression = new Func<Contact, string>( o => o.FirstName);
 
             //add a single rule

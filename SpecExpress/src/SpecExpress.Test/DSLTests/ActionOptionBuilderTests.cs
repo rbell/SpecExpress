@@ -32,7 +32,6 @@ namespace SpecExpress.Test.DSLTests
             RuleBuilder<Customer, string> optionalResult = actionOptionBuilder.Optional();
 
             // Assert
-            Assert.That(validator.PropertyValueRequired, Is.False);
             Assert.That(optionalResult, Is.InstanceOf<RuleBuilder<Customer, string>>());
         }
 
@@ -47,7 +46,6 @@ namespace SpecExpress.Test.DSLTests
             RuleBuilder<Customer, string> requiredResult = actionOptionBuilder.Required();
 
             // Assert
-            Assert.That(validator.PropertyValueRequired, Is.True);
             Assert.That(requiredResult, Is.InstanceOf<RuleBuilder<Customer, string>>());
         }
     }
