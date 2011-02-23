@@ -425,7 +425,8 @@ namespace SpecExpress
 
         public override bool Validate(T instance, RuleValidatorContext parentRuleContext, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
-            if (Condition == null || (Condition != null && Condition(instance)))
+            if (Condition == null || (Condition != null && Condition.Try(instance)))
+            //if (Condition == null || (Condition != null && Condition(instance)))
             {
                 var context = new RuleValidatorContext<T, TProperty>(instance, this, parentRuleContext);
 

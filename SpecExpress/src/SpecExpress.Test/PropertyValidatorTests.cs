@@ -121,7 +121,13 @@ namespace SpecExpress.Test
             Assert.That(notification.Errors, Is.Not.Empty);
         }
 
-
-
+        [Test]
+        public void Validate_Property_With_NullCondition_IsValid()
+        {
+            // String.IsNullOrEmpty(c.Addresses[0].City) should throw an exception
+            ValidationCatalog.AddSpecification<Contact>(spec => spec.Check(c => c.FirstName).If( c=> String.IsNullOrEmpty(c.Addresses[0].City)).Required());
+            var vn = ValidationCatalog.Validate(new Contact());
+            Assert.That(vn.IsValid, Is.True);
+        }
     }
 }
