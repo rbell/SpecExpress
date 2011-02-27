@@ -9,7 +9,7 @@ namespace SpecExpress.Rules.GeneralValidators
     {
         public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
-            Specification = specificationContainer.TryGetSpecification<TSpecification>() as Validates<TProperty> ??
+            Specification = specificationContainer.GetSpecification<TSpecification>() as Validates<TProperty> ??
                      new TSpecification();
 
             return base.Validate(context, specificationContainer, notification);
@@ -18,7 +18,7 @@ namespace SpecExpress.Rules.GeneralValidators
 
     public class SpecificationRule<T, TProperty> : RuleValidator<T, TProperty>
     {
-        protected Validates<TProperty> Specification;
+        protected Specification Specification;
         public override object[] Parameters
         {
             get { return new object[] { }; }
@@ -43,13 +43,12 @@ namespace SpecExpress.Rules.GeneralValidators
 
         public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
-
+           
             if (Specification == null)
             {
-                Specification = specificationContainer.GetSpecification<TProperty>();
+                Specification = specificationContainer.GetSpecification(context.PropertyValue.GetType());
             }
 
-            //var list =  _specification.PropertyValidators.SelectMany(x => x.Validate(context.PropertyValue, context, specificationContainer)).ToList();
             var innerNotification = new ValidationNotification();
             foreach (var validator in Specification.PropertyValidators)
             {
