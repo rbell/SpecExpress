@@ -23,6 +23,11 @@ namespace SpecExpress
             }
         }
 
+        public void Add<TSpec>() where TSpec : Specification, new()
+        {
+            _registry.Add(new TSpec());
+        }
+
         public void Add(IEnumerable<Specification> specs)
         {
             if (specs != null)

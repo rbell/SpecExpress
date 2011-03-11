@@ -103,6 +103,12 @@ namespace SpecExpress
                 SpecificationContainer.Add(specification);
             }
 
+
+            public static void AddSpecification<TSpec>() where TSpec : Specification, new()
+            {
+                  SpecificationContainer.Add<TSpec>();
+            }
+            
             /// <summary>
             /// Configure the scanning of Assemblies containing Specifications used by Validate(object)
             /// </summary>

@@ -228,6 +228,21 @@ namespace SpecExpress.Test
             Assert.AreEqual(1, propertyNotification.Errors.Count);
         }
 
+        //[Test]
+        //public void SpecificationContainer_TryGetSpecification_Returns_Spec()
+        //{
+        //    ValidationCatalog.SpecificationContainer.Add<AddressSpecification>();
+        //    var spec = ValidationCatalog.SpecificationContainer.TryGetSpecification<AddressSpecification>();
+        //    Assert.That(spec, Is.Not.Null);
+        //}
+
+        //[Test]
+        //public void SpecificationContainer_GetSpecification_Returns_Spec()
+        //{
+        //    ValidationCatalog.SpecificationContainer.Add<AddressSpecification>();
+        //    var spec = ValidationCatalog.SpecificationContainer.GetSpecification<AddressSpecification>();
+        //    Assert.That(spec, Is.Not.Null);
+        //}
 
     }
 }

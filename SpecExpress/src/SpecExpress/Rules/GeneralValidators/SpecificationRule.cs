@@ -9,7 +9,7 @@ namespace SpecExpress.Rules.GeneralValidators
     {
         public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
-            Specification = specificationContainer.GetSpecification<TSpecification>() as Validates<TProperty> ??
+            Specification = specificationContainer.TryGetSpecification<TSpecification>() as Validates<TProperty> ??
                      new TSpecification();
 
             return base.Validate(context, specificationContainer, notification);
