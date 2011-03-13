@@ -30,7 +30,7 @@ namespace SpecExpress.Test
             var customer = new Customer();
 
             var spec = new CustomerSpecification();
-            spec.Check(cust => cust.Name).Optional().LengthBetween(0, 100);
+            spec.Check(cust => cust.Name).Optional().LengthBetween(2, 100);
 
             var notification = spec.Validate(customer);
             Assert.IsEmpty(notification.Errors);

@@ -209,7 +209,7 @@ namespace SpecExpress
 
     public class PropertyValidator<T, TProperty> : PropertyValidator<T>
     {
-        private readonly bool _propertyValueRequired;
+        private bool _propertyValueRequired = true;
         private RuleTree<T, TProperty> _ruleTree = new RuleTree<T, TProperty>();
 
         public PropertyValidator(Expression<Func<T, TProperty>> targetExpression)
@@ -225,6 +225,18 @@ namespace SpecExpress
             PropertyInfo = parent.PropertyInfo;
             PropertyNameOverride = parent.PropertyNameOverride;
             Property = parent.Property;
+        }
+
+        public bool ValueRequired
+        {
+            get
+            {
+                return _propertyValueRequired;
+            }
+            set
+            {
+                _propertyValueRequired = value;
+            }
         }
 
         public RuleTree.RuleTree<T, TProperty> RuleTree
@@ -425,27 +437,30 @@ namespace SpecExpress
 
         public override bool Validate(T instance, RuleValidatorContext parentRuleContext, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
-            if (Condition == null || (Condition != null && Condition.Try(instance)))
-            //if (Condition == null || (Condition != null && Condition(instance)))
+            var context = new RuleValidatorContext<T, TProperty>(instance, this, parentRuleContext);
+            if ((_propertyValueRequired || !context.PropertyValue.IsNullOrDefault()))
             {
-                var context = new RuleValidatorContext<T, TProperty>(instance, this, parentRuleContext);
-
-                var tmpNotification = new ValidationNotification();
-                bool isValid = RuleTree.LambdaExpression(context, specificationContainer, tmpNotification);
-
-                // if lambda is valid but notification returns with errors, there may have been an Or rule that failed
-                // so we need to clear out the notification errors.
-                if (!isValid || !(isValid && !tmpNotification.IsValid))
+                if (Condition == null || (Condition != null && Condition.Try(instance)))
+                    //if (Condition == null || (Condition != null && Condition(instance)))
                 {
-                    notification.Errors.AddRange(tmpNotification.Errors);
-                }
 
-                if (ValidationCatalog.ValidateObjectGraph)
-                {
-                    //Check if this Property Type has a Registered specification to validate with and the instance of the property
-                    //isn't already invalid. For example if a property is required and the object is null, then 
-                    //don't continue validating the object
-                    ValidateObjectGraph(context, specificationContainer, notification);
+                    var tmpNotification = new ValidationNotification();
+                    bool isValid = RuleTree.LambdaExpression(context, specificationContainer, tmpNotification);
+
+                    // if lambda is valid but notification returns with errors, there may have been an Or rule that failed
+                    // so we need to clear out the notification errors.
+                    if (!isValid || !(isValid && !tmpNotification.IsValid))
+                    {
+                        notification.Errors.AddRange(tmpNotification.Errors);
+                    }
+
+                    if (ValidationCatalog.ValidateObjectGraph)
+                    {
+                        //Check if this Property Type has a Registered specification to validate with and the instance of the property
+                        //isn't already invalid. For example if a property is required and the object is null, then 
+                        //don't continue validating the object
+                        ValidateObjectGraph(context, specificationContainer, notification);
+                    }
                 }
             }
             return notification.IsValid;

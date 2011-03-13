@@ -53,6 +53,7 @@ namespace SpecExpress.DSL
         /// <returns><see cref="WithRuleBuilder&lt;T, TProperty&gt;"/></returns>
         public WithRuleBuilder<T, TProperty> Optional()
         {
+            _propertyValidator.ValueRequired = false;
             return new WithRuleBuilder<T, TProperty>(_propertyValidator);
         }
     }
