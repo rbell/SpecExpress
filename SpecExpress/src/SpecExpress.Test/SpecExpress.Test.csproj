@@ -85,6 +85,7 @@
     <Compile Include="ContactSpecification.cs" />
     <Compile Include="CustomerAddressSpecification.cs" />
     <Compile Include="PolymorphismTests.cs" />
+    <Compile Include="RequiredEnumsTests.cs" />
     <Compile Include="RuleTreeTests\RuleExpressionFactoryTest.cs" />
     <Compile Include="SpecificationInheritanceWithAbstractClasses.cs" />
     <Compile Include="Specifications\DeleteContactSpecification.cs" />

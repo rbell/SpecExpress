@@ -139,6 +139,12 @@ namespace SpecExpress
             }
         }
 
+        public RuleValidator RequiredRule { get; protected set; }
+        public bool PropertyValueRequired
+        {
+            get { return RequiredRule != null; }
+        }
+
         private MemberInfo GetFirstMemberCallFromCallArguments(MethodCallExpression exp)
         {
             foreach (var argument in exp.Arguments)
@@ -395,6 +401,12 @@ namespace SpecExpress
             else
             {
                 RuleTree.EndNode.ConditionalAndChild(node);
+            }
+
+            //Check if the rule is required
+            if (ruleValidator.GetType() == typeof(Required<T, TProperty>))
+            {
+                RequiredRule = ruleValidator;
             }
         }
 
