@@ -285,7 +285,7 @@ namespace SpecExpress
         /// <param name="expression">Instance of <see cref="IRuleBuilder&lt;T, TProperty&gt;"/> that is this method is extending.</param>
         /// <param name="valueToLookFor"><see cref="Expression&lt;Func&lt;T, IEnumerable&gt;&gt;"/> that resolves to another property on T that will be used to specify the object to look for in the collection.</param>
         /// <returns><see cref="ActionJoinBuilder&lt;T, TProperty&gt;"/></returns>
-        public static ActionJoinBuilder<T, TProperty> Contains<T, TProperty>(this IRuleBuilder<T, TProperty> expression, Expression<Func<T, IEnumerable>> valueToLookFor) where TProperty : IEnumerable
+        public static ActionJoinBuilder<T, TProperty> Contains<T, TProperty>(this IRuleBuilder<T, TProperty> expression, Expression<Func<T, object>> valueToLookFor) where TProperty : IEnumerable
         {
             expression.RegisterValidator(new Rules.Collection.Contains<T, TProperty>(valueToLookFor));
             return expression.JoinBuilder;

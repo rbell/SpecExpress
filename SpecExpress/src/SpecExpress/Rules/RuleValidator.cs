@@ -94,7 +94,7 @@ namespace SpecExpress.Rules
         {
             try
             {
-                return (TProperty)expression.Invoke(context.Instance);
+                return expression.Invoke(context.Instance);
             }
             catch (Exception)
             {
