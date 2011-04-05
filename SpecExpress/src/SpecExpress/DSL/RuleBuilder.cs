@@ -217,6 +217,18 @@ namespace SpecExpress.DSL
             return AddRuleAndReturnActionJoin(specRule);
         }
 
+        public IAndOr<T, TProperty> ForEachSpecification()
+        {
+            var specRule = new ForEachSpecificationRuleUntyped<T, TProperty>();
+            return AddRuleAndReturnActionJoin(specRule);
+        }
+
+        public IAndOr<T, TProperty> ForEachSpecification(string itemName)
+        {
+            var specRule = new ForEachSpecificationRuleUntyped<T, TProperty>(itemName);
+            return AddRuleAndReturnActionJoin(specRule);
+        }
+
         /// <summary>
         /// Facilitates the grouping of a subset of rules to dictate precidence for And / Or opertations.
         /// </summary>

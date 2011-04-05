@@ -12,7 +12,12 @@ namespace SpecExpress.Test.Polymorphism
         public string Name { get; set; }
     }
 
-    public class InheritedClass : MyBaseClass
+    public class InheritedClassA : MyBaseClass
+    {
+        public string AdditionalProperty { get; set; }
+    }
+
+    public class InheritedClassB : MyBaseClass
     {
         public string AdditionalProperty { get; set; }
     }
@@ -33,20 +38,30 @@ namespace SpecExpress.Test.Polymorphism
         }
     }
 
-    public class InheritedClassSpecification : Validates<InheritedClass>
+    public class InheritedClassASpecification : Validates<InheritedClassA>
     {
-        public InheritedClassSpecification()
+        public InheritedClassASpecification()
         {
             Using<MyBaseClass,MyBaseClassSpecification>();
             Check(c => c.AdditionalProperty).Required();
         }
     }
 
-    public class ClassASpecificaiton : Validates<ClassA>
+    public class InheritedClassBSpecification : Validates<InheritedClassB>
     {
-        public ClassASpecificaiton()
+        public InheritedClassBSpecification()
+        {
+            Using<MyBaseClass, MyBaseClassSpecification>();
+            Check(c => c.AdditionalProperty).Optional();
+        }
+    }
+
+    public class ClassASpecification : Validates<ClassA>
+    {
+        public ClassASpecification()
         {
             Check(c => c.BaseProperty).Required().Specification();
+            Check(c => c.BasePropertyList).Required().ForEachSpecification();
         }
     }
     #endregion
@@ -54,21 +69,68 @@ namespace SpecExpress.Test.Polymorphism
     [TestFixture]
     public class PolymorphismTests
     {
+        [TestFixtureSetUp]
+        public void Setup()
+        {
+            ValidationCatalog.SpecificationContainer.Add(new MyBaseClassSpecification());
+            ValidationCatalog.SpecificationContainer.Add(new InheritedClassASpecification());
+            ValidationCatalog.SpecificationContainer.Add(new InheritedClassBSpecification());
+            ValidationCatalog.SpecificationContainer.Add(new ClassASpecification());
+        }
+
         [Test]
         public void InheritedSpecifications_PolymorphicProperty_GetsSpecificationForInstanceAndNotClassType()
         {
-            ValidationCatalog.SpecificationContainer.Add(new MyBaseClassSpecification());
-            ValidationCatalog.SpecificationContainer.Add(new InheritedClassSpecification());
-            ValidationCatalog.SpecificationContainer.Add(new ClassASpecificaiton());
-
             var classA = new ClassA()
                              {
-                                 BaseProperty =  new InheritedClass()
+                                 BaseProperty =  new InheritedClassA()
                              };
 
             var vn = ValidationCatalog.ValidateProperty(classA, c => c.BaseProperty);
             var d = vn.FindDescendents(desc => desc.Property.Name == "AdditionalProperty").ToList();
             Assert.That(d.Any() , Is.True);
+        }
+
+        [Test]
+        public void InheritedSpecifications_PolymorphicProperty_GetsSpecificationForInstanceAndNotClassType_Cached()
+        {
+            var classA = new ClassA()
+            {
+                BaseProperty = new InheritedClassB()
+            };
+
+            var vn = ValidationCatalog.ValidateProperty(classA, c => c.BaseProperty);
+            var d = vn.FindDescendents(desc => desc.Property.Name == "AdditionalProperty").ToList();
+            Assert.That(d.Any(), Is.False);
+        }
+
+
+        [Test]
+        public void InheritedSpecifications_PolymorphicListProperty()
+        {
+            var invalidInheritedClassA = new InheritedClassA();
+            invalidInheritedClassA.Name = "valid";
+            //NULL: invalidInheritedClassA.AdditionalProperty
+
+            var validInheritedClassB = new InheritedClassB();
+            validInheritedClassB.Name = "valid";
+
+            
+
+            var classA = new ClassA();
+            classA.BaseProperty = validInheritedClassB;
+            classA.BasePropertyList = new List<MyBaseClass>()
+                                          {
+                                              invalidInheritedClassA,
+                                              validInheritedClassB
+                                          };
+
+
+
+
+            var vn = ValidationCatalog.Validate(classA);
+            var d = vn.FindDescendents(desc => desc.Property.Name == "BasePropertyList").ToList();
+            Assert.That(d.Any(), Is.False);
         }
     }
 }

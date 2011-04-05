@@ -43,11 +43,7 @@ namespace SpecExpress.Rules.GeneralValidators
 
         public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
-           
-            if (Specification == null)
-            {
-                Specification = specificationContainer.GetSpecification(context.PropertyValue.GetType());
-            }
+            Specification = specificationContainer.GetSpecification(context.PropertyValue.GetType());
 
             var innerNotification = new ValidationNotification();
             foreach (var validator in Specification.PropertyValidators)
