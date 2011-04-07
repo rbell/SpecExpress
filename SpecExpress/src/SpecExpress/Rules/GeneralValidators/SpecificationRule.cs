@@ -43,10 +43,21 @@ namespace SpecExpress.Rules.GeneralValidators
 
         public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
-            Specification = specificationContainer.GetSpecification(context.PropertyValue.GetType());
+            Specification specification;
+
+            if (Specification == null)
+            {
+                //Spec not defined, so get from the container, ie .Specification()
+                specification = specificationContainer.GetSpecification(context.PropertyValue.GetType());
+            }
+            else
+            {
+                //Specification explicity defined by DSL .Specification<SomeSpecification>()
+                specification = Specification;
+            }
 
             var innerNotification = new ValidationNotification();
-            foreach (var validator in Specification.PropertyValidators)
+            foreach (var validator in specification.PropertyValidators)
             {
                 validator.Validate(context.PropertyValue, context, specificationContainer, innerNotification);
             }

@@ -130,7 +130,7 @@ namespace SpecExpress.Test.Polymorphism
 
             var vn = ValidationCatalog.Validate(classA);
             var d = vn.FindDescendents(desc => desc.Property.Name == "BasePropertyList").ToList();
-            Assert.That(d.Any(), Is.False);
+            Assert.That(d.Any(), Is.True);
         }
     }
 }
