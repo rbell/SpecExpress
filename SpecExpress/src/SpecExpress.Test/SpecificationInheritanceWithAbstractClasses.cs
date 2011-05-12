@@ -17,7 +17,12 @@ namespace SpecExpress.Test
             public string BaseName { get; set; }
         }
 
-        public class DerivedClass : BaseClass
+        public class DerivedClassA : BaseClass
+        {
+            public string DerivedName { get; set; }
+        }
+
+        public class DerivedClassB : BaseClass
         {
             public string DerivedName { get; set; }
         }
@@ -36,9 +41,18 @@ namespace SpecExpress.Test
             }
         }
 
-        public class DerivedClassSpecification : Validates<DerivedClass>
+        public class DerivedClassASpecification : Validates<DerivedClassA>
         {
-            public DerivedClassSpecification()
+            public DerivedClassASpecification()
+            {
+                Using<BaseClass, BaseClassSpecification>();
+                Check(c => c.DerivedName).Required();
+            }
+        }
+
+        public class DerivedClassBSpecification : Validates<DerivedClassB>
+        {
+            public DerivedClassBSpecification()
             {
                 Using<BaseClass, BaseClassSpecification>();
                 Check(c => c.DerivedName).Required();
@@ -51,7 +65,8 @@ namespace SpecExpress.Test
             public ClassWithAbstractPropertySpecification()
             {
                 Check(c => c.BaseClassProperty).Required().Specification();
-                
+                Check(c => c.BaseClassCollectionProperty).Required().ForEachSpecification<BaseClass>();
+
             }
         }
 
@@ -79,12 +94,18 @@ namespace SpecExpress.Test
         public void SpecificationAbstract_OnObject_WithSpecification_IsValid()
         {
             ValidationCatalog.AddSpecification<BaseClassSpecification>();
-            ValidationCatalog.AddSpecification<DerivedClassSpecification>();
+            ValidationCatalog.AddSpecification<DerivedClassASpecification>();
+            ValidationCatalog.AddSpecification<DerivedClassBSpecification>();
             ValidationCatalog.AddSpecification<ClassWithAbstractPropertySpecification>();
             
-            var t = new DerivedClass();
+            var t = new DerivedClassA();
             var a = new ClassWithAbstractProperty {BaseClassProperty = t};
 
+            //collection
+            a.BaseClassCollectionProperty = new List<BaseClass>();
+            //a.BaseClassCollectionProperty.Add(new DerivedClassA());
+            a.BaseClassCollectionProperty.Add(new DerivedClassB() {BaseName = "Valid"} );
+            
 
             var n = ValidationCatalog.Validate(a); 
 
@@ -96,9 +117,9 @@ namespace SpecExpress.Test
         public void SpecificationInheritance_OnObject_WithSpecification_IsValid()
         {
             ValidationCatalog.AddSpecification<BaseClassSpecification>();
-            ValidationCatalog.AddSpecification<DerivedClassSpecification>();
+            ValidationCatalog.AddSpecification<DerivedClassASpecification>();
 
-            var a = new DerivedClass();
+            var a = new DerivedClassA();
             var n = ValidationCatalog.Validate(a);
 
             Assert.That(n.IsValid, Is.False);

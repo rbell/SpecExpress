@@ -42,6 +42,8 @@ namespace SpecExpress.Test
         [Test]
         public void GetAllValidationResults()
         {
+
+           
             var contact = new SpecExpress.Test.Domain.Entities.Contact()
                                {
                                    Addresses = new List<Address>()
