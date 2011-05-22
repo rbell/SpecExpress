@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecExpress.Test.Concurrenc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecExpress.Web", "SpecExpress.Web\SpecExpress.Web.csproj", "{01482E62-23D8-4A15-B5F1-6594AF297F51}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecExpress.MVC", "SpecExpress.MVC\SpecExpress.MVC.csproj", "{2CB44CB6-F693-4429-A576-D186EA192AF8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecExpress.MVC.Example", "SpecExpress.MVC.Example\SpecExpress.MVC.Example.csproj", "{B6BCE242-E5C6-442C-AA92-4B55AD73C75A}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = SpecExpress.vsmdi
@@ -46,6 +50,14 @@ Global
 		{01482E62-23D8-4A15-B5F1-6594AF297F51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01482E62-23D8-4A15-B5F1-6594AF297F51}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01482E62-23D8-4A15-B5F1-6594AF297F51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CB44CB6-F693-4429-A576-D186EA192AF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CB44CB6-F693-4429-A576-D186EA192AF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CB44CB6-F693-4429-A576-D186EA192AF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CB44CB6-F693-4429-A576-D186EA192AF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6BCE242-E5C6-442C-AA92-4B55AD73C75A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6BCE242-E5C6-442C-AA92-4B55AD73C75A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6BCE242-E5C6-442C-AA92-4B55AD73C75A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6BCE242-E5C6-442C-AA92-4B55AD73C75A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

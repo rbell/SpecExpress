@@ -1,0 +1,45 @@
+﻿@using SpecExpress.MVC.Example.Models
+@model Meeting
+@{HtmlHelper.ClientValidationEnabled = true;
+  HtmlHelper.UnobtrusiveJavaScriptEnabled = true;}
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<h2>@ViewBag.Message</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <p>
+        @Html.LabelFor(m => m.Title)
+    </p>
+    <p>
+        @Html.TextBoxFor(m => m.Title)
+        @Html.ValidationMessageFor(m => m.Title)
+    </p>
+    <p>
+        @Html.LabelFor(m => m.Email)
+    </p>
+    <p>
+        @Html.TextBoxFor(m => m.Email)
+        @Html.ValidationMessageFor(m => m.Email)
+    </p>
+    <p>
+        @Html.LabelFor(m => m.StartDate)
+    </p>
+    <p>
+        @Html.TextBoxFor(m => m.StartDate)
+        @Html.ValidationMessageFor(m => m.StartDate)
+    </p>
+    <p>
+        @Html.LabelFor(m => m.EndDate)
+    </p>
+    <p>
+        @Html.TextBoxFor(m => m.EndDate)
+        @Html.ValidationMessageFor(m => m.EndDate)
+    </p>
+    <p>
+        <input type="submit" value="Save" />
+    </p>
+}
