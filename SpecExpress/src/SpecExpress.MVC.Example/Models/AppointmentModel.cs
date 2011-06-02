@@ -9,10 +9,12 @@ namespace SpecExpress.MVC.Example.Models
 {
     public class AppointmentModel //: IValidatableObject 
     {
+        //[Required]
         public string Name { get; set; }
         public string Location { get; set; }
-        public DateTime Start { get; set; }
-        public DateTime End { get; set; }
+        public bool AllDay { get; set; }
+        public DateTime? Start { get; set; }
+        public DateTime? End { get; set; }
 
         //public IEnumerable<System.ComponentModel.DataAnnotations.ValidationResult> Validate(System.ComponentModel.DataAnnotations.ValidationContext validationContext)
         //{

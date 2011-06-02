@@ -10,7 +10,7 @@
 
 @using (Html.BeginForm())
 {
-    @Html.ValidationSummary(true)
+    @Html.ValidationSummary(false)
     <p>
         @Html.LabelFor(m => m.Name)
     </p>
@@ -25,6 +25,14 @@
         @Html.TextBoxFor(m => m.Location)
         @Html.ValidationMessageFor(m => m.Location)
     </p>
+    <p>
+        @Html.LabelFor(m => m.AllDay)
+    </p>
+    <p>
+        @Html.CheckBoxFor(m => m.AllDay)
+        @Html.ValidationMessageFor(m => m.AllDay)
+    </p>
+    
     <p>
         @Html.LabelFor(m => m.Start)
     </p>

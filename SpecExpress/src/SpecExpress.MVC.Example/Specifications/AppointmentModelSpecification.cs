@@ -12,6 +12,7 @@ namespace SpecExpress.MVC.Example.Specifications
         {
             Check(a => a.Name).Required().MinLength(5).And.MaxLength(7);
             Check(a => a.Location).Required();
+            Check(a => a.Start).If(a => a.AllDay).Required();
         }
     }
 }

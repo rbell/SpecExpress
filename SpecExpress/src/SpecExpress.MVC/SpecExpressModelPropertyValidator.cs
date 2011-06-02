@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using SpecExpress.MessageStore;
 
 namespace SpecExpress.MVC
 {
@@ -18,23 +19,18 @@ namespace SpecExpress.MVC
         public override IEnumerable<ModelValidationResult> Validate(object container)
         {
             var vn = ValidationCatalog.ValidateProperty(container, Metadata.PropertyName);
-            return vn.All().Select(
-                v =>
-                new ModelValidationResult() {Message = v.ToString(), MemberName = v.Property.Name});
+            
+            foreach (var validationResult in vn.Errors)
+            {
+                //Don't set the display name because it won't bind on the view if you do
+                yield return new ModelValidationResult() { Message = validationResult.Message };
+            }
         }
 
         public override IEnumerable<ModelClientValidationRule> GetClientValidationRules()
         {
-           var clientRules = new List<ModelClientValidationRule>();
-
-            if (PropertyValidator.PropertyValueRequired)
-            {
-                //TODO: Format message clientside because we don't have the property value here
-                clientRules.Add(new ModelClientValidationRequiredRule(PropertyValidator.RequiredRule.ErrorMessageTemplate));
-            }
-
-            return clientRules;
+            var clientRulesFactory = new SpecExpressClientRuleFactory();
+            return clientRulesFactory.Create(PropertyValidator, Metadata);
         }
-
     }
 }

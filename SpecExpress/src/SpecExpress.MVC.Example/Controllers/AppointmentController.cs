@@ -21,7 +21,15 @@ namespace SpecExpress.MVC.Example.Controllers
          [HttpPost]
         public ActionResult Index(AppointmentModel model)
         {
-            return View();
+            
+            if (ModelState.IsValid)
+            {
+                return View(model);
+            }
+            else
+            {
+                return View();
+            }
         }
 
     }
