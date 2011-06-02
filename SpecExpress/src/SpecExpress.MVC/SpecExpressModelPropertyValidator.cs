@@ -27,6 +27,7 @@ namespace SpecExpress.MVC
         {
            var clientRules = new List<ModelClientValidationRule>();
 
+            //TODO: How to we map our rules to their ModelClient rules?
             if (PropertyValidator.PropertyValueRequired)
             {
                 //TODO: Format message clientside because we don't have the property value here
