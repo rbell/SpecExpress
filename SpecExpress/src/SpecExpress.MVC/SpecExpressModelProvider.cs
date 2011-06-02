@@ -8,18 +8,28 @@ namespace SpecExpress.MVC
     {
         public override IEnumerable<ModelValidator> GetValidators(ModelMetadata metadata, ControllerContext context)
         {
-            bool catalogCanValidate =
-                (from specification in ValidationCatalog.SpecificationContainer.GetAllSpecifications()
-                 where specification.DefaultForType == true && specification.ForType == metadata.ContainerType &&
-                 specification.PropertyValidators.Exists(v => v.PropertyName == metadata.PropertyName)
-                 select specification).Any();
-
             var validators = new List<ModelValidator>();
-            if (catalogCanValidate)
-            {
-                validators.Add(new SpecExpressModelValidator(metadata, context));
-            }
 
+            var spec = ValidationCatalog.SpecificationContainer.TryGetSpecification(metadata.ContainerType);
+            if (spec != null)
+            {
+                var propertyValidator = spec.PropertyValidators.FirstOrDefault(v => v.PropertyName == metadata.PropertyName);
+
+                if (propertyValidator != null)
+                {
+                    validators.Add(new SpecExpressModelPropertyValidator(metadata, context, propertyValidator));
+                }
+            }
+            
+
+            //bool catalogCanValidate =
+            //    (from specification in ValidationCatalog.SpecificationContainer.GetAllSpecifications()
+            //     where specification.DefaultForType == true && specification.ForType == metadata.ContainerType &&
+            //     specification.PropertyValidators.Exists(v => v.PropertyName == metadata.PropertyName)
+            //     select specification).Any();
+
+           
+          
             return validators;
         }
 

@@ -40,6 +40,7 @@ namespace SpecExpress.MVC.Example
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
 
+            DataAnnotationsModelValidatorProvider.AddImplicitRequiredAttributeForValueTypes = false;
             ModelValidatorProviders.Providers.Add(new SpecExpressModelProvider());
 
         }

@@ -1,0 +1,45 @@
+﻿@using SpecExpress.MVC.Example.Models
+@model AppointmentModel
+       
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Appt</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <p>
+        @Html.LabelFor(m => m.Name)
+    </p>
+    <p>
+        @Html.TextBoxFor(m => m.Name)
+        @Html.ValidationMessageFor(m => m.Name)
+    </p>
+    <p>
+        @Html.LabelFor(m => m.Location)
+    </p>
+    <p>
+        @Html.TextBoxFor(m => m.Location)
+        @Html.ValidationMessageFor(m => m.Location)
+    </p>
+    <p>
+        @Html.LabelFor(m => m.Start)
+    </p>
+    <p>
+        @Html.TextBoxFor(m => m.Start)
+        @Html.ValidationMessageFor(m => m.Start)
+    </p>
+    <p>
+        @Html.LabelFor(m => m.End)
+    </p>
+    <p>
+        @Html.TextBoxFor(m => m.End)
+        @Html.ValidationMessageFor(m => m.End)
+    </p>
+    <p>
+        <input type="submit" value="Save" />
+    </p>
+}
