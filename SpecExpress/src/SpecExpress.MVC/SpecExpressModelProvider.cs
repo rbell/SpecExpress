@@ -20,16 +20,6 @@ namespace SpecExpress.MVC
                     validators.Add(new SpecExpressModelPropertyValidator(metadata, context, propertyValidator));
                 }
             }
-            
-
-            //bool catalogCanValidate =
-            //    (from specification in ValidationCatalog.SpecificationContainer.GetAllSpecifications()
-            //     where specification.DefaultForType == true && specification.ForType == metadata.ContainerType &&
-            //     specification.PropertyValidators.Exists(v => v.PropertyName == metadata.PropertyName)
-            //     select specification).Any();
-
-           
-          
             return validators;
         }
 
