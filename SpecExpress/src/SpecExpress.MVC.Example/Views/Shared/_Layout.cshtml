@@ -8,7 +8,25 @@
     <script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/jquery.validate.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
+<<<<<<< Updated upstream
     <script src="@Url.Content("~/Scripts/specexpress.unobtrusive.js")" type="text/javascript"></script>
+=======
+    <script type="text/javascript">
+//        jQuery.validator.addMethod("required", function (value, element, params) {
+//            if (!value || !value.length) {
+//                return false;
+//            }
+//            else {
+//                return true;
+//            };
+//        }, "");
+
+        jQuery.validator.unobtrusive.adapters.add("title", function (options) {
+            options.rules["required"] = true;
+            options.messages["required"] = "Required!";
+        });       
+    </script>
+>>>>>>> Stashed changes
 </head>
 <body>
     <div class="page">

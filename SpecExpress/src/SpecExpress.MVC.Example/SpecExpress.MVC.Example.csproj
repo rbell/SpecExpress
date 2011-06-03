@@ -115,8 +115,14 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\modernizr-1.7.js" />
     <Content Include="Scripts\modernizr-1.7.min.js" />
+<<<<<<< Updated upstream
     <Content Include="Scripts\specexpress.unobtrusive.js" />
     <Content Include="Web.config" />
+=======
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+>>>>>>> Stashed changes
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -146,9 +152,12 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
   </ItemGroup>
+<<<<<<< Updated upstream
   <ItemGroup>
     <Content Include="Views\Appointment\Index.cshtml" />
   </ItemGroup>
+=======
+>>>>>>> Stashed changes
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
