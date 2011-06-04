@@ -145,6 +145,13 @@ namespace SpecExpress
             get { return RequiredRule != null; }
         }
 
+        private RuleTree.RuleTree _ruleTree;
+        public RuleTree.RuleTree RuleTree
+        {
+            get { return _ruleTree; }
+            protected set { _ruleTree = value; }
+        }
+
         private MemberInfo GetFirstMemberCallFromCallArguments(MethodCallExpression exp)
         {
             foreach (var argument in exp.Arguments)
@@ -216,12 +223,14 @@ namespace SpecExpress
     public class PropertyValidator<T, TProperty> : PropertyValidator<T>
     {
         private bool _propertyValueRequired = true;
-        private RuleTree<T, TProperty> _ruleTree = new RuleTree<T, TProperty>();
+        //private RuleTree<T, TProperty> _ruleTree = new RuleTree<T, TProperty>();
+        
 
         public PropertyValidator(Expression<Func<T, TProperty>> targetExpression)
             : base(targetExpression.Body.Type)
         {
             Property = targetExpression;
+            base.RuleTree = new RuleTree<T, TProperty>();
         }
 
         internal PropertyValidator(PropertyValidator<T, TProperty> parent)
@@ -231,6 +240,7 @@ namespace SpecExpress
             PropertyInfo = parent.PropertyInfo;
             PropertyNameOverride = parent.PropertyNameOverride;
             Property = parent.Property;
+            base.RuleTree = new RuleTree<T, TProperty>();
         }
 
         public bool ValueRequired
@@ -247,7 +257,7 @@ namespace SpecExpress
 
         public RuleTree.RuleTree<T, TProperty> RuleTree
         {
-            get { return _ruleTree; }
+            get { return base.RuleTree as RuleTree.RuleTree<T, TProperty>; }
         }
 
         public Predicate<T> Condition { get; set; }
@@ -278,7 +288,7 @@ namespace SpecExpress
         /// <param name="validator"><see cref="RuleValidator&lt;T, TProperty&gt;"/></param>
         public void OrRule(RuleValidator<T, TProperty> validator)
         {
-            var node = new RuleNode<T, TProperty>(validator);
+            var node = new RuleNode(validator);
             if (RuleTree.Root == null)
             {
                 RuleTree.Root = node;
@@ -297,7 +307,7 @@ namespace SpecExpress
         /// <param name="validator"><see cref="RuleValidator&lt;T, TProperty&gt;"/></param>
         public void ConditionalOrRule(RuleValidator<T, TProperty> validator)
         {
-            var node = new RuleNode<T, TProperty>(validator);
+            var node = new RuleNode(validator);
             if (RuleTree.Root == null)
             {
                 node.ChildRelationshipIsConditional = true;
@@ -316,7 +326,7 @@ namespace SpecExpress
         /// <param name="innerPropertyValidator"><see cref="PropertyValidator&lt;T, TProperty&gt;"/></param>
         public void OrGroup(PropertyValidator<T, TProperty> innerPropertyValidator)
         {
-            var node = new GroupNode<T, TProperty>(innerPropertyValidator._ruleTree.Root);
+            var node = new GroupNode(innerPropertyValidator.RuleTree.Root);
             if (RuleTree.Root == null)
             {
                 RuleTree.Root = node;
@@ -335,7 +345,7 @@ namespace SpecExpress
         /// <param name="innerPropertyValidator"><see cref="PropertyValidator&lt;T, TProperty&gt;"/></param>
         public void ConditionalOrGroup(PropertyValidator<T, TProperty> innerPropertyValidator)
         {
-            var node = new GroupNode<T, TProperty>(innerPropertyValidator._ruleTree.Root);
+            var node = new GroupNode(innerPropertyValidator.RuleTree.Root);
             if (RuleTree.Root == null)
             {
                 node.ChildRelationshipIsConditional = true;
@@ -373,7 +383,7 @@ namespace SpecExpress
         /// <param name="ruleValidator"><see cref="RuleValidator"/></param>
         public void AndRule(RuleValidator<T, TProperty> ruleValidator)
         {
-            var node = new RuleNode<T, TProperty>(ruleValidator);
+            var node = new RuleNode(ruleValidator);
             if (RuleTree.Root == null)
             {
                 RuleTree.Root = node;
@@ -392,7 +402,7 @@ namespace SpecExpress
         /// <param name="ruleValidator"><see cref="RuleValidator"/></param>
         public void ConditionalAndRule(RuleValidator<T, TProperty> ruleValidator)
         {
-            var node = new RuleNode<T, TProperty>(ruleValidator);
+            var node = new RuleNode(ruleValidator);
             if (RuleTree.Root == null)
             {
                 node.ChildRelationshipIsConditional = true;
@@ -418,7 +428,7 @@ namespace SpecExpress
         /// <param name="innerPropertyValidator"><see cref="PropertyValidator&lt;T, TProperty&gt;"/></param>
         public void AndGroup(PropertyValidator<T, TProperty> innerPropertyValidator)
         {
-            var node = new GroupNode<T, TProperty>(innerPropertyValidator._ruleTree.Root);
+            var node = new GroupNode(innerPropertyValidator.RuleTree.Root);
             if (RuleTree.Root == null)
             {
                 RuleTree.Root = node;
@@ -436,7 +446,7 @@ namespace SpecExpress
         /// <param name="innerPropertyValidator"><see cref="PropertyValidator&lt;T, TProperty&gt;"/></param>
         public void ConditionalAndGroup(PropertyValidator<T, TProperty> innerPropertyValidator)
         {
-            var node = new GroupNode<T, TProperty>(innerPropertyValidator._ruleTree.Root);
+            var node = new GroupNode(innerPropertyValidator.RuleTree.Root);
             if (RuleTree.Root == null)
             {
                 RuleTree.Root = node;

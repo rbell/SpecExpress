@@ -13,7 +13,16 @@
         if (options.element.tagName.toUpperCase() !== "INPUT" || options.element.type.toUpperCase() !== "CHECKBOX") {
             setValidationValues(options, "required", true);
         }
-    }); 
+    });
+
+    //map to SpecExpress 
+    $.validator.unobtrusive.adapters.add("specminlength", ["length"], function (options) {
+        setValidationValues(options, "minlength", options.params.length);
+    });
+
+    $.validator.unobtrusive.adapters.add("specmaxlength", ["length"], function (options) {
+        setValidationValues(options, "maxlength", options.params.length);
+    });
     
 
 } (jQuery));

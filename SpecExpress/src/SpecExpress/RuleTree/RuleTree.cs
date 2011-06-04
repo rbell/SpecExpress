@@ -6,31 +6,30 @@ namespace SpecExpress.RuleTree
     /// <summary>
     /// Tree structure that describes RuleValidators and their relations to one another (i.e. And / Or)
     /// </summary>
-    public class RuleTree<T, TProperty>
+    public class RuleTree
     {
-        private NodeBase<T, TProperty> _root;
-        private Func<RuleValidatorContext<T, TProperty>, SpecificationContainer, ValidationNotification, bool> _lambda;
+        private NodeBase _root;
 
         public RuleTree()
         {
         }
 
-        public RuleTree(NodeBase<T, TProperty> rootNode)
+        public RuleTree(NodeBase rootNode)
         {
             Root = rootNode;
         }
 
-        public NodeBase<T, TProperty> Root
+        public virtual NodeBase Root
         {
             get { return _root; }
             set
             {
                 _root = value;
-                _root.NodeAltered += new EventHandler(_root_NodeAltered);
+                //_root.NodeAltered += new EventHandler(_root_NodeAltered);
             }
         }
 
-        public NodeBase<T, TProperty> EndNode
+        public NodeBase EndNode
         {
             get
             {
@@ -43,7 +42,7 @@ namespace SpecExpress.RuleTree
             }
         }
 
-        public RuleNode<T, TProperty> LastRuleNode
+        public RuleNode LastRuleNode
         {
             get
             {
@@ -53,6 +52,74 @@ namespace SpecExpress.RuleTree
                 }
 
                 return getLastRuleNode(Root);
+            }
+        }
+
+        private NodeBase getEndNode(NodeBase current)
+        {
+            if (!current.HasChild)
+            {
+                return current;
+            }
+            else
+            {
+                return getEndNode(current.ChildNode);
+            }
+        }
+
+        private RuleNode getLastRuleNode(NodeBase current)
+        {
+            if (!current.HasChild)
+            {
+                if (current is RuleNode)
+                {
+                    return current as RuleNode;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                if (current.ChildNode is GroupNode)
+                {
+                    return getLastRuleNode(((GroupNode)current.ChildNode).GroupRoot);
+                }
+                else
+                {
+                    return getLastRuleNode(current.ChildNode);
+                }
+            }
+        }
+
+    }
+
+
+    /// <summary>
+    /// Tree structure that describes RuleValidators and their relations to one another (i.e. And / Or)
+    /// </summary>
+    public class RuleTree<T, TProperty> : RuleTree
+    {
+       
+        private Func<RuleValidatorContext<T, TProperty>, SpecificationContainer, ValidationNotification, bool> _lambda;
+
+        public RuleTree()
+        {
+        }
+
+        public RuleTree(NodeBase rootNode)
+        {
+            Root = rootNode;
+        }
+
+        public NodeBase Root
+        {
+            get { return base.Root; }
+            set
+            {
+                base.Root = value;
+                base.Root.NodeAltered += new EventHandler(_root_NodeAltered);
             }
         }
 
@@ -73,44 +140,6 @@ namespace SpecExpress.RuleTree
             // Force recalculation of LambaExpression
             _lambda = null;
         }
-
-        private NodeBase<T, TProperty> getEndNode(NodeBase<T, TProperty> current)
-        {
-            if (!current.HasChild)
-            {
-                return current;
-            }
-            else
-            {
-                return getEndNode(current.ChildNode);
-            }
-        }
-
-        private RuleNode<T, TProperty> getLastRuleNode(NodeBase<T, TProperty> current)
-        {
-            if (!current.HasChild)
-            {
-                if (current is RuleNode<T, TProperty>)
-                {
-                    return current as RuleNode<T, TProperty>;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            else
-            {
-                if (current.ChildNode is GroupNode<T, TProperty>)
-                {
-                    return getLastRuleNode(((GroupNode<T,TProperty>)current.ChildNode).GroupRoot);
-                }
-                else
-                {
-                    return getLastRuleNode(current.ChildNode);
-                }
-            }
-        }
-
     }
+
 }

@@ -19,8 +19,7 @@ namespace SpecExpress.Test.RuleTreeTests
         public bool CreateExpression_SingleRule_BuildsExpression(bool propertyValue)
         {
             var tree = new RuleTree.RuleTree<Contact, bool>(
-                new RuleTree.RuleNode<Contact, bool>(
-                    new IsTrue<Contact>()));
+                new RuleTree.RuleNode(new IsTrue<Contact>()));
 
             Assert.That(tree.LambdaExpression, Is.Not.Null);
 
@@ -45,11 +44,9 @@ namespace SpecExpress.Test.RuleTreeTests
             var testDate = new DateTime(year, month, day);
 
             var tree = new RuleTree.RuleTree<CalendarEvent, DateTime>(
-                new RuleTree.RuleNode<CalendarEvent, DateTime>(
-                    new GreaterThan<CalendarEvent, DateTime>(floorDate)));
+                new RuleTree.RuleNode(new GreaterThan<CalendarEvent, DateTime>(floorDate)));
 
-            tree.Root.AndChild(
-                new RuleNode<CalendarEvent, DateTime>(new LessThan<CalendarEvent, DateTime>(ceilingDate)));
+            tree.Root.AndChild(new RuleNode(new LessThan<CalendarEvent, DateTime>(ceilingDate)));
 
             Assert.That(tree.LambdaExpression, Is.Not.Null);
 
@@ -71,11 +68,9 @@ namespace SpecExpress.Test.RuleTreeTests
             var testDate = new DateTime(year, month, day);
 
             var tree = new RuleTree.RuleTree<CalendarEvent, DateTime>(
-                new RuleTree.RuleNode<CalendarEvent, DateTime>(
-                    new LessThan<CalendarEvent, DateTime>(floorDate)));
+                new RuleTree.RuleNode(new LessThan<CalendarEvent, DateTime>(floorDate)));
 
-            tree.Root.OrChild(
-                new RuleNode<CalendarEvent, DateTime>(new GreaterThan<CalendarEvent, DateTime>(ceilingDate)));
+            tree.Root.OrChild(new RuleNode(new GreaterThan<CalendarEvent, DateTime>(ceilingDate)));
 
             Assert.That(tree.LambdaExpression, Is.Not.Null);
 
@@ -93,9 +88,7 @@ namespace SpecExpress.Test.RuleTreeTests
         public bool CreateExpression_GroupNodeContainingSingleRuleNode_BuildsExpression(bool propertyValue)
         {
             var tree = new RuleTree.RuleTree<Contact, bool>(
-                new GroupNode<Contact,bool>(
-                    new RuleTree.RuleNode<Contact, bool>(
-                     new IsTrue<Contact>())));
+                new GroupNode(new RuleTree.RuleNode(new IsTrue<Contact>())));
 
             Assert.That(tree.LambdaExpression, Is.Not.Null);
 
@@ -126,14 +119,14 @@ namespace SpecExpress.Test.RuleTreeTests
             // build rule / rule node for "d.DayOfWeek == DayOfWeek.Monday
             var dateOneMondayRule = new CustomRule<CalendarEvent, DateTime>((c, d) => d.DayOfWeek == DayOfWeek.Monday);
             dateOneMondayRule.Message = "Date does not fall on a Monday.";
-            var dateOneMondayRuleNode = new RuleNode<CalendarEvent, DateTime>(dateOneMondayRule);
+            var dateOneMondayRuleNode = new RuleNode(dateOneMondayRule);
 
             // build rules / rule nodes for "d < floorDate | d > ceilingDate"
-            var rangeRuleNode = new RuleNode<CalendarEvent, DateTime>(new LessThan<CalendarEvent, DateTime>(floorDate));
-            rangeRuleNode.OrChild(new RuleNode<CalendarEvent, DateTime>(new GreaterThan<CalendarEvent, DateTime>(ceilingDate)));
+            var rangeRuleNode = new RuleNode(new LessThan<CalendarEvent, DateTime>(floorDate));
+            rangeRuleNode.OrChild(new RuleNode(new GreaterThan<CalendarEvent, DateTime>(ceilingDate)));
 
             // put the rules / rule nodes together using a group to enforce the "or" precidence over the "and"
-            var groupNode = new GroupNode<CalendarEvent, DateTime>(rangeRuleNode);
+            var groupNode = new GroupNode(rangeRuleNode);
             groupNode.AndChild(dateOneMondayRuleNode);
 
             var tree = new RuleTree<CalendarEvent, DateTime>(groupNode);
@@ -163,17 +156,17 @@ namespace SpecExpress.Test.RuleTreeTests
             var testDate = new DateTime(year, month, day);
 
             // build rules / rule nodes for "d < floorDate | d > ceilingDate" and put in a group
-            var rangeRuleNode = new RuleNode<CalendarEvent, DateTime>(new LessThan<CalendarEvent, DateTime>(floorDate));
-            rangeRuleNode.OrChild(new RuleNode<CalendarEvent, DateTime>(new GreaterThan<CalendarEvent, DateTime>(ceilingDate)));
-            var groupNode = new GroupNode<CalendarEvent, DateTime>(rangeRuleNode);
+            var rangeRuleNode = new RuleNode(new LessThan<CalendarEvent, DateTime>(floorDate));
+            rangeRuleNode.OrChild(new RuleNode(new GreaterThan<CalendarEvent, DateTime>(ceilingDate)));
+            var groupNode = new GroupNode(rangeRuleNode);
 
             // build rule / rule node for "d.DayOfWeek == DayOfWeek.Monday
             var dateOneMondayRule = new CustomRule<CalendarEvent, DateTime>((c, d) => d.DayOfWeek == DayOfWeek.Monday);
             dateOneMondayRule.Message = "Date does not fall on a Monday.";
-            var dateOneMondayRuleNode = new RuleNode<CalendarEvent, DateTime>(dateOneMondayRule);
-            
+            var dateOneMondayRuleNode = new RuleNode(dateOneMondayRule);
+
             // add the rangeRuleNode as an And child of dateOneMondayRuleNode
-            dateOneMondayRuleNode.AndChild(groupNode);           
+            dateOneMondayRuleNode.AndChild(groupNode);
 
             var tree = new RuleTree<CalendarEvent, DateTime>(dateOneMondayRuleNode);
 

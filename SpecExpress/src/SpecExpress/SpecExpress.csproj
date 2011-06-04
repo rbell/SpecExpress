@@ -146,7 +146,6 @@
     <Compile Include="DSL\WithBuilder.cs" />
     <Compile Include="Enums\ValidationLevelType.cs" />
     <Compile Include="Rules\RuleValidator.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\ExpressionExtensions.cs" />
     <Compile Include="Util\StringExtensions.cs" />
     <Compile Include="Util\RuleValidatorContext.cs" />
@@ -180,6 +179,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="specexpress.key" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
