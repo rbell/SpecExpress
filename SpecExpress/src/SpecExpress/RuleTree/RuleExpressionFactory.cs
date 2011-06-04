@@ -20,7 +20,7 @@ namespace SpecExpress.RuleTree
             return compiledFunc;
         }
 
-        private Expression BuildExpression(NodeBase<T, TProperty> node, ParameterExpression contextParam, ParameterExpression specContainerParam, ParameterExpression specNotificationParam)
+        private Expression BuildExpression(NodeBase node, ParameterExpression contextParam, ParameterExpression specContainerParam, ParameterExpression specNotificationParam)
         {
             // If node is null, simply return True (as in the rule is valid)
             if (node == null)
@@ -28,20 +28,20 @@ namespace SpecExpress.RuleTree
                 return Expression.Constant(true);
             }
 
-            if (node is RuleNode<T, TProperty>)
+            if (node is RuleNode)
             {
-                return buildRuleNodeExpression(node as RuleNode<T, TProperty>, contextParam, specContainerParam, specNotificationParam);
+                return buildRuleNodeExpression(node as RuleNode, contextParam, specContainerParam, specNotificationParam);
             }
 
-            if (node is GroupNode<T, TProperty>)
+            if (node is GroupNode)
             {
-                return buildGroupNodeExpression(node as GroupNode<T, TProperty>, contextParam, specContainerParam, specNotificationParam);
+                return buildGroupNodeExpression(node as GroupNode, contextParam, specContainerParam, specNotificationParam);
             }
 
             return null;
         }
 
-        private Expression buildRuleNodeExpression(RuleNode<T, TProperty> ruleNode, ParameterExpression contextParam, ParameterExpression specContainerParam, ParameterExpression specNotificationParam)
+        private Expression buildRuleNodeExpression(RuleNode ruleNode, ParameterExpression contextParam, ParameterExpression specContainerParam, ParameterExpression specNotificationParam)
         {
 
             var validateMethod = ruleNode.Rule.GetType().GetMethod("Validate");
@@ -89,7 +89,7 @@ namespace SpecExpress.RuleTree
             }
         }
 
-        private Expression buildGroupNodeExpression(GroupNode<T, TProperty> groupNode, ParameterExpression contextParam, ParameterExpression specContainerParam, ParameterExpression specNotificationParam)
+        private Expression buildGroupNodeExpression(GroupNode groupNode, ParameterExpression contextParam, ParameterExpression specContainerParam, ParameterExpression specNotificationParam)
         {
             Expression exp = BuildExpression(groupNode.GroupRoot, contextParam, specContainerParam,
                                              specNotificationParam);
