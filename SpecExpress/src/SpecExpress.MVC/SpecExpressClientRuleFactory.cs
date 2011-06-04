@@ -3,39 +3,66 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
+using SpecExpress.Rules;
+using SpecExpress.Rules.GeneralValidators;
+using SpecExpress.Rules.StringValidators;
+using SpecExpress.RuleTree;
 
 namespace SpecExpress.MVC
 {
     public class SpecExpressClientRuleFactory
     {
+        private ModelMetadata ModelMetaData;
 
         public IEnumerable<ModelClientValidationRule> Create(PropertyValidator propertyValidator, ModelMetadata modelMetadata)
         {
+            ModelMetaData = modelMetadata;
+
             var clientRules = new List<ModelClientValidationRule>();
 
-            //TODO: iterate through each Rule in the PropertyValidator and define client side rule
-            //TODO: Missing way to get all the rules, besides Required
-            if (propertyValidator.PropertyValueRequired)
+            if (propertyValidator.RuleTree.Root is RuleNode)
             {
-                //TODO: Format message clientside because we don't have the property value here
-                var rule = new ModelClientValidationRule()
+
+                var rules = GetAllRuleValidatorsForProperty(propertyValidator.RuleTree.Root as RuleNode);
+
+                //Map RuleValidator to Client Rules
+                foreach (var ruleValidator in rules)
                 {
-                    ErrorMessage =
-                        FormatErrorMessageTemplateWithName(
-                            propertyValidator.RequiredRule.ErrorMessageTemplate, modelMetadata),
-                    ValidationType = "specrequired"
-                };
+                    var clientRule = RuleValidatorClientRuleRegistry.Instance.Create(ruleValidator);
 
-                clientRules.Add(rule);
-
+                    //If a client rule isn't found for the RuleValidator then NULL is returned
+                    if (clientRule != null)
+                    {
+                        clientRule.ErrorMessage = FormatErrorMessageTemplateWithName(clientRule.ErrorMessage);
+                        clientRules.Add(clientRule);
+                    }
+                }
             }
 
             return clientRules;
         }
 
-        private string FormatErrorMessageTemplateWithName(string errorMessageTemplate, ModelMetadata modelMetadata)
+
+        private List<RuleValidator> GetAllRuleValidatorsForProperty(RuleNode node)
         {
-            return errorMessageTemplate.Replace("{PropertyName}", modelMetadata.GetDisplayName());
+            //TODO: Don't add anything with stuff we can't handle (OR,GROUP)
+            var rules = new List<RuleValidator>();
+            rules.Add(node.Rule);
+
+            var childRuleNode = node.ChildNode as RuleNode;
+
+            if (childRuleNode != null)
+            {
+                //rules.Add(childRuleNode.Rule);
+                rules.AddRange(GetAllRuleValidatorsForProperty(childRuleNode));
+            }
+
+            return rules;
+        }
+        
+        private string FormatErrorMessageTemplateWithName(string errorMessageTemplate)
+        {
+            return errorMessageTemplate.Replace("{PropertyName}", ModelMetaData.GetDisplayName());
         }
     }
 }

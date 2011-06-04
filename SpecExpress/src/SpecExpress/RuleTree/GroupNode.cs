@@ -2,13 +2,13 @@ using SpecExpress.Rules;
 
 namespace SpecExpress.RuleTree
 {
-    public class GroupNode<T, TProperty> : NodeBase<T, TProperty>
+    public class GroupNode : NodeBase
     {
-        public GroupNode(NodeBase<T, TProperty> groupRoot)
+        public GroupNode(NodeBase groupRoot)
         {
             GroupRoot = groupRoot;
         }
 
-        public NodeBase<T, TProperty> GroupRoot { get; set; }
+        public NodeBase GroupRoot { get; set; }
     }
 }

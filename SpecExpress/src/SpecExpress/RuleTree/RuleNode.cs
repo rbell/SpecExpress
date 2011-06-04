@@ -2,13 +2,13 @@ using SpecExpress.Rules;
 
 namespace SpecExpress.RuleTree
 {
-    public class RuleNode<T, TProperty> : NodeBase<T, TProperty>
+    public class RuleNode : NodeBase
     {
-        public RuleNode(RuleValidator<T, TProperty> rule)
+        public RuleNode(RuleValidator rule)
         {
             Rule = rule;
         }
 
-        public RuleValidator<T, TProperty> Rule { get; set; }
+        public RuleValidator Rule { get; set; }
     }
 }

@@ -2,16 +2,16 @@ using System;
 
 namespace SpecExpress.RuleTree
 {
-    public abstract class NodeBase<T, TProperty>
+    public abstract class NodeBase
     {
         public event EventHandler NodeAltered;
 
-        private NodeBase<T, TProperty> _childNode;
+        private NodeBase _childNode;
 
         /// <summary>
         /// Reference to a RuleNode
         /// </summary>
-        public NodeBase<T, TProperty> ChildNode
+        public NodeBase ChildNode
         {
             get { return _childNode; }
             private set 
@@ -59,26 +59,26 @@ namespace SpecExpress.RuleTree
             get { return ChildNode != null;}
         }
 
-        public void AndChild(NodeBase<T, TProperty> child)
+        public void AndChild(NodeBase child)
         {
             _childHasAndRelationship = true;
             ChildNode = child;
         }
 
-        public void ConditionalAndChild(NodeBase<T, TProperty> child)
+        public void ConditionalAndChild(NodeBase child)
         {
             _childHasAndRelationship = true;
             _childRelationshipIsConditional = true;
             ChildNode = child;
         }
 
-        public void OrChild(NodeBase<T, TProperty> child)
+        public void OrChild(NodeBase child)
         {
             _childHasAndRelationship = false;
             ChildNode = child;
         }
 
-        public void ConditionalOrChild(NodeBase<T, TProperty> child)
+        public void ConditionalOrChild(NodeBase child)
         {
             _childHasAndRelationship = false;
             _childRelationshipIsConditional = true;
