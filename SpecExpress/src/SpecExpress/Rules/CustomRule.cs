@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.Text.RegularExpressions;
 
 namespace SpecExpress.Rules
@@ -6,9 +7,9 @@ namespace SpecExpress.Rules
     public class CustomRule<T,TProperty> : RuleValidator<T, TProperty>
     {
         private Func<T,TProperty,bool> _expression;
-        public override object[] Parameters
+        public override OrderedDictionary Parameters
         {
-            get { return new object[] {}; }
+            get { return new OrderedDictionary() { }; }
         }
 
         public CustomRule(Func<T, TProperty, bool> rule)

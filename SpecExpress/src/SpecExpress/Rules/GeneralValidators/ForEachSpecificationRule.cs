@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -38,9 +39,9 @@ namespace SpecExpress.Rules.GeneralValidators
         protected string ItemName;
         private Specification _specification;
         protected Validates<TCollectionType> Specification;
-        public override object[] Parameters
+        public override OrderedDictionary Parameters
         {
-            get { return new object[] { }; }
+            get { return new OrderedDictionary() { }; }
         }
 
         /// <summary>
@@ -112,7 +113,12 @@ namespace SpecExpress.Rules.GeneralValidators
                     var childContext = new RuleValidatorContext(item, propertyName, item, context.Level,
                                                                 item.GetType() as MemberInfo, context);
 
-                    var itemError = ValidationResultFactory.Create(this, childContext, Parameters, MessageKey);
+                    var parameters = new List<object>();
+                    foreach (var parameter in Parameters)
+                    {
+                        parameters.Add(parameter);
+                    }
+                    var itemError = ValidationResultFactory.Create(this, childContext, parameters.ToArray(), MessageKey);
 
                     //var itemError = ValidationResultFactory.Create(this, context, Parameters, MessageKey);
                     itemError.NestedValidationResults = innerNotfication.Errors;
@@ -125,7 +131,12 @@ namespace SpecExpress.Rules.GeneralValidators
             {
                 //Errors were found on at least one item in the collection to return a ValidationResult for the Collection property
                 Message = "{PropertyName} is invalid.";
-                collectionValidationResult = ValidationResultFactory.Create(this, context, Parameters, MessageKey);
+                var parameters = new List<object>();
+                foreach (var parameter in Parameters)
+                {
+                    parameters.Add(parameter);
+                }
+                collectionValidationResult = ValidationResultFactory.Create(this, context, parameters.ToArray(), MessageKey);
                 collectionValidationResult.NestedValidationResults = itemsNestedValidationResult;
                 notification.Errors.Add(collectionValidationResult);
                 return false;
@@ -143,9 +154,9 @@ namespace SpecExpress.Rules.GeneralValidators
     {
         protected string ItemName;
      
-        public override object[] Parameters
+        public override OrderedDictionary Parameters
         {
-            get { return new object[] { }; }
+            get { return new OrderedDictionary() { }; }
         }
         
         public ForEachSpecificationRuleUntyped(string itemName)
@@ -198,7 +209,12 @@ namespace SpecExpress.Rules.GeneralValidators
                     var childContext = new RuleValidatorContext(item, propertyName, item, context.Level,
                                                                 item.GetType() as MemberInfo, context);
 
-                    var itemError = ValidationResultFactory.Create(this, childContext, Parameters, MessageKey);
+                    var parameters = new List<object>();
+                    foreach (var parameter in Parameters)
+                    {
+                        parameters.Add(parameter);
+                    }
+                    var itemError = ValidationResultFactory.Create(this, childContext, parameters.ToArray(), MessageKey);
 
                     //var itemError = ValidationResultFactory.Create(this, context, Parameters, MessageKey);
                     itemError.NestedValidationResults = innerNotfication.Errors;
@@ -211,7 +227,12 @@ namespace SpecExpress.Rules.GeneralValidators
             {
                 //Errors were found on at least one item in the collection to return a ValidationResult for the Collection property
                 Message = "{PropertyName} is invalid.";
-                collectionValidationResult = ValidationResultFactory.Create(this, context, Parameters, MessageKey);
+                var parameters = new List<object>();
+                foreach (var parameter in Parameters)
+                {
+                    parameters.Add(parameter);
+                }
+                collectionValidationResult = ValidationResultFactory.Create(this, context, parameters.ToArray(), MessageKey);
                 collectionValidationResult.NestedValidationResults = itemsNestedValidationResult;
                 notification.Errors.Add(collectionValidationResult);
                 return false;

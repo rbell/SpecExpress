@@ -1,12 +1,13 @@
 using System;
+using System.Collections.Specialized;
 
 namespace SpecExpress.Rules.DateValidators
 {
     public class IsInPast<T> : RuleValidator<T, DateTime>
     {
-        public override object[] Parameters
+        public override OrderedDictionary Parameters
         {
-            get { return new object[]{}; }
+            get { return new OrderedDictionary(){}; }
         }
 
         public override bool Validate(RuleValidatorContext<T, DateTime> context, SpecificationContainer specificationContainer, ValidationNotification notification)
@@ -17,9 +18,9 @@ namespace SpecExpress.Rules.DateValidators
 
     public class IsInPastNullable<T> : RuleValidator<T, System.Nullable<DateTime>>
     {
-        public override object[] Parameters
+        public override OrderedDictionary Parameters
         {
-            get { return new object[] { }; }
+            get { return new OrderedDictionary() { }; }
         }
 
         public override bool Validate(RuleValidatorContext<T, DateTime?> context, SpecificationContainer specificationContainer, ValidationNotification notification)

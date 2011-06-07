@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
@@ -19,9 +20,9 @@ namespace SpecExpress.Rules.StringValidators
             SetPropertyExpression(regexPattern);
         }
 
-        public override object[] Parameters
+        public override OrderedDictionary Parameters
         {
-            get { return new string[] {_regexPattern}; }
+            get { return new OrderedDictionary() {{"", _regexPattern }}; }
         }
 
         public override bool Validate(RuleValidatorContext<T, string> context, SpecificationContainer specificationContainer, ValidationNotification notification)

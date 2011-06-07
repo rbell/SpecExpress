@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using SpecExpress.MessageStore;
@@ -41,7 +42,12 @@ namespace SpecExpress.Test
 
             //string errorMessage = messageStore.GetFormattedDefaultMessage(ruleValidator.GetType().Name, context, ruleValidator.Parameters);
             var messageService = new MessageService();
-            var errorMessage = messageService.GetDefaultMessageAndFormat(new MessageContext(context, ruleValidator.GetType(), false, null, null), ruleValidator.Parameters);
+            var parameters = new List<object>();
+            foreach (var parameter in ruleValidator.Parameters)
+            {
+                parameters.Add(parameter);
+            }
+            var errorMessage = messageService.GetDefaultMessageAndFormat(new MessageContext(context, ruleValidator.GetType(), false, null, null), parameters.ToArray());
 
             Assert.That(errorMessage, Is.Not.Null.Or.Empty);
 

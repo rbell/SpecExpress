@@ -62,7 +62,6 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Data\MeetingSpecification.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AppointmentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -115,14 +114,8 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\modernizr-1.7.js" />
     <Content Include="Scripts\modernizr-1.7.min.js" />
-<<<<<<< Updated upstream
     <Content Include="Scripts\specexpress.unobtrusive.js" />
     <Content Include="Web.config" />
-=======
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
->>>>>>> Stashed changes
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -152,12 +145,9 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
   </ItemGroup>
-<<<<<<< Updated upstream
   <ItemGroup>
     <Content Include="Views\Appointment\Index.cshtml" />
   </ItemGroup>
-=======
->>>>>>> Stashed changes
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
@@ -170,6 +160,9 @@
       <Project>{0A8DF7B2-EAFC-457B-93EF-EE3030ABAF46}</Project>
       <Name>SpecExpress</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

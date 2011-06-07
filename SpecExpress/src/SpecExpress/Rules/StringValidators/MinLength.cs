@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -24,9 +25,9 @@ namespace SpecExpress.Rules.StringValidators
             SetPropertyExpression(expression);
         }
 
-        public override object[] Parameters
+        public override OrderedDictionary Parameters
         {
-            get { return new object[] { _min}; }
+            get { return new OrderedDictionary() {{"",_min}}; }
         }
 
         public override bool Validate(RuleValidatorContext<T, string> context, SpecificationContainer specificationContainer, ValidationNotification notification)
