@@ -13,11 +13,11 @@ namespace SpecExpress.MVC
     {
         public RuleValidatorClientRuleMap()
         {
-            Parameters = new Dictionary<string, int>();
+            Parameters = new Dictionary<string, string>();
         }
 
         public string JQueryRuleName { get; set; }
-        public Dictionary<string, int > Parameters { get; set; }
+        public Dictionary<string, string > Parameters { get; set; }
         
     }
     public sealed class RuleValidatorClientRuleRegistry
@@ -40,13 +40,13 @@ namespace SpecExpress.MVC
             //MinLength
             var minLength = new RuleValidatorClientRuleMap();
             minLength.JQueryRuleName = "specminlength";
-            minLength.Parameters.Add("length",0);
+            minLength.Parameters.Add("length","");
             Mapping.Add(typeof(MinLength<>), minLength);
 
             //MaxLength
             var maxLength = new RuleValidatorClientRuleMap();
             maxLength.JQueryRuleName = "specmaxlength";
-            maxLength.Parameters.Add("length", 0);
+            maxLength.Parameters.Add("length", "");
             Mapping.Add(typeof(MaxLength<>), maxLength);
 
             //TODO: Add More Mappings HERE, THEN in specexpress.ubobtrusive.js
@@ -80,8 +80,16 @@ namespace SpecExpress.MVC
             //map all the parameters
             foreach (var parameter in rule.Parameters )
             {
-                //parameter.value is the index of the matching value in the rulevalidator parameters collection
-                clientRule.ValidationParameters.Add(parameter.Key, ruleValidator.Parameters[parameter.Value]);
+                if (ruleValidator.PropertyExpressions.ContainsKey(parameter.Key))
+                {
+                    // parameter.value is index of the matching expression in the rulevalidator PropertyExpressions collection
+                    // TODO: Handle parameters defined as an expression
+                }
+                else
+                {
+                    //parameter.value is the index of the matching value in the rulevalidator parameters collection
+                    clientRule.ValidationParameters.Add(parameter.Key, ruleValidator.Parameters[parameter.Value]);
+                }
             }
 
             return clientRule;

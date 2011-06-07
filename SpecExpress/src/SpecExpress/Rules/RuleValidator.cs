@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Linq.Expressions;
 using SpecExpress.DSL;
@@ -14,11 +15,17 @@ namespace SpecExpress.Rules
         public object MessageKey { get; set; }
         public string MessageStoreName { get; set; }
         public bool Negate { get; set; }
-        public abstract object[] Parameters { get; }
-       
+        public abstract OrderedDictionary Parameters { get; }
+        IDictionary<string, CompiledExpression> _propertyExpressions = new Dictionary<string, CompiledExpression>();
 
         protected bool Evaluate(bool isValid, RuleValidatorContext context, ValidationNotification notification)
         {
+            var parameters = new List<Object>();
+            foreach (var parameter in Parameters)
+            {
+                parameters.Add(parameter);
+            }
+
             if (Negate)
             {
                 if (!isValid)
@@ -27,7 +34,7 @@ namespace SpecExpress.Rules
                 }
                 else
                 {
-                    notification.Errors.Add(ValidationResultFactory.Create(this, context, Parameters, MessageKey));
+                    notification.Errors.Add(ValidationResultFactory.Create(this, context, parameters.ToArray(), MessageKey));
                     return false;
                 }
             }
@@ -39,13 +46,13 @@ namespace SpecExpress.Rules
                 }
                 else
                 {
-                    notification.Errors.Add(ValidationResultFactory.Create(this, context, Parameters,MessageKey));
+                    notification.Errors.Add(ValidationResultFactory.Create(this, context, parameters.ToArray(), MessageKey));
                     return false;
                 }
             }
         }
 
-        protected IDictionary<string, CompiledExpression> PropertyExpressions = new Dictionary<string, CompiledExpression>();
+        public IDictionary<string, CompiledExpression> PropertyExpressions { get { return _propertyExpressions; } }
 
         protected CompiledExpression SetPropertyExpression(LambdaExpression expression)
         {
@@ -100,7 +107,7 @@ namespace SpecExpress.Rules
             {
                 throw;
             }
-            
+
         }
 
         /// <summary>
@@ -120,6 +127,7 @@ namespace SpecExpress.Rules
         }
 
         //public abstract ValidationResult Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, );
-        public abstract bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification);
+        public abstract bool Validate(RuleValidatorContext<T, TProperty> context,
+                                      SpecificationContainer specificationContainer, ValidationNotification notification);
     }
 }

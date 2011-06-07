@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 
@@ -19,9 +20,9 @@ namespace SpecExpress.Rules.GeneralValidators
     public class SpecificationRule<T, TProperty> : RuleValidator<T, TProperty>
     {
         protected Specification Specification;
-        public override object[] Parameters
+        public override OrderedDictionary Parameters
         {
-            get { return new object[] { }; }
+            get { return new OrderedDictionary() { }; }
         }
 
         /// <summary>
@@ -66,7 +67,12 @@ namespace SpecExpress.Rules.GeneralValidators
 
             if (innerNotification.Errors.Any())
             {
-                result = ValidationResultFactory.Create(this, context, Parameters, MessageKey);
+                var parameters = new List<object>();
+                foreach (var parameter in Parameters)
+                {
+                    parameters.Add(parameter);
+                }
+                result = ValidationResultFactory.Create(this, context, parameters.ToArray(), MessageKey);
                 result.NestedValidationResults = innerNotification.Errors;
                 notification.Errors.Add(result);
                 return false;
