@@ -11,7 +11,7 @@ namespace SpecExpress.MVC.Example.Controllers
     {
         public ActionResult Index()
         {
-            var meeting = new Meeting() { StartDate = DateTime.Today, EndDate = DateTime.Today.AddDays(1) };
+            var meeting = new Meeting() { StartDate = DateTime.Today, EndDate = DateTime.Today.AddDays(1), MinTitleLength = 4};
             ViewBag.Message = "Welcome to ASP.NET MVC!";
 
             return View(meeting);
