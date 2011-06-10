@@ -18,6 +18,11 @@ namespace SpecExpress
             _func = _expression.Compile();
         }
 
+        public LambdaExpression Expression
+        {
+            get { return _expression; }
+        }
+
         public object Invoke(object param)
         {
             return _func.DynamicInvoke(new object[] { param });

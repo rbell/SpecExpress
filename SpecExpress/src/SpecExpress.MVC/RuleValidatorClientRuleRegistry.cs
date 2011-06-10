@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Web.Mvc;
 using SpecExpress.Rules;
@@ -40,7 +41,7 @@ namespace SpecExpress.MVC
             //MinLength
             var minLength = new RuleValidatorClientRuleMap();
             minLength.JQueryRuleName = "specminlength";
-            minLength.Parameters.Add("length","");
+            minLength.Parameters.Add("minlength","");
             Mapping.Add(typeof(MinLength<>), minLength);
 
             //MaxLength
@@ -80,10 +81,16 @@ namespace SpecExpress.MVC
             //map all the parameters
             foreach (var parameter in rule.Parameters )
             {
-                if (ruleValidator.PropertyExpressions.ContainsKey(parameter.Key))
+                if (ruleValidator.PropertyExpressions.ContainsKey(parameter.Value))
                 {
                     // parameter.value is index of the matching expression in the rulevalidator PropertyExpressions collection
                     // TODO: Handle parameters defined as an expression
+                    var expression = ruleValidator.PropertyExpressions[parameter.Value].Expression;
+                    if (expression.Body.NodeType == ExpressionType.MemberAccess)
+                    {
+                        var propertyName = ((MemberExpression) expression.Body).Member.Name;
+                        clientRule.ValidationParameters.Add("other", propertyName);
+                    }
                 }
                 else
                 {

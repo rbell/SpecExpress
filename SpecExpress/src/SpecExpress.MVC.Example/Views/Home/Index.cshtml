@@ -10,6 +10,13 @@
 {
     @Html.ValidationSummary(true)
     <p>
+        @Html.LabelFor(m => m.MinTitleLength)
+    </p>
+    <p>
+        @Html.TextBoxFor(m => m.MinTitleLength)
+        @Html.ValidationMessageFor(m => m.MinTitleLength)
+    </p>
+    <p>
         @Html.LabelFor(m => m.Title)
     </p>
     <p>

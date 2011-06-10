@@ -44,7 +44,6 @@
   <ItemGroup>
     <Compile Include="RuleValidatorClientRuleRegistry.cs" />
     <Compile Include="SpecExpressClientRuleFactory.cs" />
-    <Compile Include="SpecExpressHttpHandler.cs" />
     <Compile Include="SpecExpressModelProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpecExpressModelPropertyValidator.cs" />
