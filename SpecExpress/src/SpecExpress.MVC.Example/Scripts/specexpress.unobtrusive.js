@@ -1,7 +1,8 @@
 ﻿(function ($) {
     /*http://devtrends.co.uk/blog/the-complete-guide-to-validation-in-asp.net-mvc-3-part-2*/
 
-    $.validator.format = function (source, params) {
+    $.format = function (source, params) {
+        // My Format
         if (arguments.length == 1)
             return function () {
                 var args = $.makeArray(arguments);
@@ -26,6 +27,8 @@
     };
 
     $.validator.addMethod("specminlength", function (value, element, params) {
+        var validator = $.validator;
+        
         var len = typeof params == "string" ?
             parseInt($(params).val()) :
             params;
