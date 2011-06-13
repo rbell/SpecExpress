@@ -42,6 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RuleRegistration.cs" />
+    <Compile Include="RuleRegistrations\MaxLengthRegistration.cs" />
+    <Compile Include="RuleRegistrations\MinLengthRegistration.cs" />
+    <Compile Include="RuleRegistrations\RequiredRegistration.cs" />
+    <Compile Include="RuleValidatorClientRuleMap.cs" />
     <Compile Include="RuleValidatorClientRuleRegistry.cs" />
     <Compile Include="SpecExpressClientRuleFactory.cs" />
     <Compile Include="SpecExpressModelProvider.cs" />
