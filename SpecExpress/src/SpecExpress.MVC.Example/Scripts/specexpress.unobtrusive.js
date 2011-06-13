@@ -26,16 +26,6 @@
         return source;
     };
 
-    $.validator.addMethod("specminlength", function (value, element, params) {
-        var validator = $.validator;
-        
-        var len = typeof params == "string" ?
-            parseInt($(params).val()) :
-            params;
-
-        return this.optional(element) || this.getLength($.trim(value), element) >= len;
-    });
-
     function setValidationValues(options, ruleName, value) {
         options.rules[ruleName] = value;
         if (options.message) {
@@ -43,6 +33,16 @@
         }
     }
 
+    function parseParam(paramVal) {
+        var jsonParam = eval('(' + paramVal + ')');
+        if (jsonParam.isProperty) {
+            return "#" + jsonParam.propertyName;
+        }
+        else {
+            return paramVal;
+        }
+    }
+    
     $.validator.unobtrusive.adapters.add("specrequired", function (options) {
         // jQuery Validate equates "required" with "mandatory" for checkbox elements
         if (options.element.tagName.toUpperCase() !== "INPUT" || options.element.type.toUpperCase() !== "CHECKBOX") {
@@ -50,19 +50,30 @@
         }
     });
 
-    //map to SpecExpress 
-    $.validator.unobtrusive.adapters.add("specminlength", ["minlength", "other"], function (options) {
-        if (!options.params.minlength) {
-            setValidationValues(options, "specminlength", "#" + options.params.other);
-        }
-        else {
-            setValidationValues(options, "specminlength", options.params.minlength);
-        }
+    $.validator.addMethod("specminlength", function (value, element, param) {
+        var len = param.charAt(0) == "#" ?
+            parseInt($(param).val()) :
+            parseInt(param);
+
+        return this.optional(element) || this.getLength($.trim(value), element) >= len;
+    });
+    
+    $.validator.unobtrusive.adapters.add("specminlength", ["minlength"], function (options) {
+        setValidationValues(options, "specminlength", parseParam(options.params.minlength));
     });
 
-    $.validator.unobtrusive.adapters.add("specmaxlength", ["length"], function (options) {
-        setValidationValues(options, "maxlength", options.params.length);
+    $.validator.addMethod("specmaxlength", function (value, element, param) {
+        var len = param.charAt(0) == "#" ?
+            parseInt($(param).val()) :
+            parseInt(param);
+
+        return this.optional(element) || this.getLength($.trim(value), element) <= len;
     });
+    
+    $.validator.unobtrusive.adapters.add("specmaxlength", ["maxlength"], function (options) {
+        setValidationValues(options, "specmaxlength", parseParam(options.params.maxlength));
+    });
+    
 } (jQuery));
 
 

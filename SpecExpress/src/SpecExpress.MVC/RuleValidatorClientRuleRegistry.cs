@@ -47,7 +47,7 @@ namespace SpecExpress.MVC
             //MaxLength
             var maxLength = new RuleValidatorClientRuleMap();
             maxLength.JQueryRuleName = "specmaxlength";
-            maxLength.Parameters.Add("length", "");
+            maxLength.Parameters.Add("maxlength", "");
             Mapping.Add(typeof(MaxLength<>), maxLength);
 
             //TODO: Add More Mappings HERE, THEN in specexpress.ubobtrusive.js
@@ -89,7 +89,7 @@ namespace SpecExpress.MVC
                     if (expression.Body.NodeType == ExpressionType.MemberAccess)
                     {
                         var propertyName = ((MemberExpression) expression.Body).Member.Name;
-                        clientRule.ValidationParameters.Add("other", propertyName);
+                        clientRule.ValidationParameters.Add(parameter.Key, new PropertyExpressionParam(){PropertyName = propertyName});
                     }
                 }
                 else
@@ -102,6 +102,22 @@ namespace SpecExpress.MVC
             return clientRule;
         }
 
+        public class PropertyExpressionParam
+        {
+            public PropertyExpressionParam()
+            {
+                IsProperty = true;
+            }
+
+            public bool IsProperty { get; private set; }
+
+            public string PropertyName { get; set; }
+
+            public override string ToString()
+            {
+                return "{\"isProperty\":\"true\",\"propertyName\":\"" + PropertyName + "\"}";
+            }
+        }
 
     }
 

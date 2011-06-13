@@ -11,7 +11,7 @@ namespace SpecExpress.MVC.Example.Specifications
         public MeetingModelSpecification()
         {
             IsDefaultForType();
-            Check(m => m.Title).Required().MinLength(m => m.MinTitleLength);
+            Check(m => m.Title).Required().MinLength(m => m.MinTitleLength).And.MaxLength(10);
         }
     }
 }
