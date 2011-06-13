@@ -11,6 +11,9 @@ using SpecExpress.Rules.StringValidators;
 
 namespace SpecExpress.MVC
 {
+    /// <summary>
+    /// A container for all SpecExpress to Client Side Rule mappings.
+    /// </summary>
     public sealed class RuleValidatorClientRuleRegistry
     {
         static readonly RuleValidatorClientRuleRegistry instance = new RuleValidatorClientRuleRegistry();

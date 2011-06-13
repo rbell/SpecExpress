@@ -2,6 +2,9 @@ using System.Collections.Generic;
 
 namespace SpecExpress.MVC
 {
+    /// <summary>
+    /// Defines how a SpecExpress Rule is mapped to a Client Side Rule - inlcuding any parameters.
+    /// </summary>
     public class RuleValidatorClientRuleMap
     {
         public RuleValidatorClientRuleMap()
