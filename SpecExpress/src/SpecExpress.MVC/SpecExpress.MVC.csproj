@@ -43,6 +43,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RuleRegistration.cs" />
+    <Compile Include="RuleRegistrations\BetweenRegistration.cs" />
+    <Compile Include="RuleRegistrations\AlphaRegistration.cs" />
+    <Compile Include="RuleRegistrations\LengthBetweenRegistration.cs" />
+    <Compile Include="RuleRegistrations\EqualToRegistration.cs" />
+    <Compile Include="RuleRegistrations\GreaterThanEqualToRegistration.cs" />
+    <Compile Include="RuleRegistrations\LessThanEqualToRegistration.cs" />
+    <Compile Include="RuleRegistrations\GreaterThanRegistration.cs" />
+    <Compile Include="RuleRegistrations\LessThanRegistration.cs" />
     <Compile Include="RuleRegistrations\MaxLengthRegistration.cs" />
     <Compile Include="RuleRegistrations\MinLengthRegistration.cs" />
     <Compile Include="RuleRegistrations\RequiredRegistration.cs" />

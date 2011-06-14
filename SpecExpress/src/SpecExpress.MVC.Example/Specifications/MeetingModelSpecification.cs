@@ -12,6 +12,8 @@ namespace SpecExpress.MVC.Example.Specifications
         {
             IsDefaultForType();
             Check(m => m.Title).Required().MinLength(m => m.MinTitleLength).And.MaxLength(10);
+            Check(m => m.StartDate).Required().LessThan(m => m.EndDate);
+            Check(m => m.EndDate).Required().GreaterThan(m => m.StartDate);
         }
     }
 }
