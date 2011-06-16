@@ -1,25 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Web.Mvc;
+using SpecExpress.MVC.RuleRegistrations;
 using SpecExpress.Rules;
 using SpecExpress.Rules.GeneralValidators;
 using SpecExpress.Rules.StringValidators;
 
 namespace SpecExpress.MVC
 {
-    class RuleValidatorClientRuleMap
-    {
-        public RuleValidatorClientRuleMap()
-        {
-            Parameters = new Dictionary<string, int>();
-        }
-
-        public string JQueryRuleName { get; set; }
-        public Dictionary<string, int > Parameters { get; set; }
-        
-    }
+    /// <summary>
+    /// A container for all SpecExpress to Client Side Rule mappings.
+    /// </summary>
     public sealed class RuleValidatorClientRuleRegistry
     {
         static readonly RuleValidatorClientRuleRegistry instance = new RuleValidatorClientRuleRegistry();
@@ -33,33 +27,26 @@ namespace SpecExpress.MVC
         RuleValidatorClientRuleRegistry()
         {
             Mapping = new Dictionary<Type, RuleValidatorClientRuleMap>();
+
+            // TODO: Refactor to allow user to specify additional assemblies to scan for RuleRegistrations
+
+            var thisAssembly = this.GetType().Assembly;
+
+            var registrationTypes = from type in thisAssembly.GetTypes()
+                                where type.BaseType == typeof (RuleRegistration)
+                                select type;
+
+            foreach (var registrationType in registrationTypes)
+            {
+                var registration = Activator.CreateInstance(registrationType) as RuleRegistration;
+                Mapping.Add(registration.RuleType, registration.ClientRuleMap);
+            }
             
-            //Required
-            Mapping.Add(typeof(Required<,>), new RuleValidatorClientRuleMap() { JQueryRuleName = "specrequired"});
-
-            //MinLength
-            var minLength = new RuleValidatorClientRuleMap();
-            minLength.JQueryRuleName = "specminlength";
-            minLength.Parameters.Add("length",0);
-            Mapping.Add(typeof(MinLength<>), minLength);
-
-            //MaxLength
-            var maxLength = new RuleValidatorClientRuleMap();
-            maxLength.JQueryRuleName = "specmaxlength";
-            maxLength.Parameters.Add("length", 0);
-            Mapping.Add(typeof(MaxLength<>), maxLength);
-
-            //TODO: Add More Mappings HERE, THEN in specexpress.ubobtrusive.js
-
-
         }
 
         public static RuleValidatorClientRuleRegistry Instance
         {
-            get
-            {
-                return instance;
-            }
+            get { return instance; }
         }
 
         public ModelClientValidationRule Create(RuleValidator ruleValidator)
@@ -78,15 +65,46 @@ namespace SpecExpress.MVC
             clientRule.ErrorMessage = ruleValidator.ErrorMessageTemplate;
 
             //map all the parameters
-            foreach (var parameter in rule.Parameters )
+            foreach (var parameter in rule.Parameters)
             {
-                //parameter.value is the index of the matching value in the rulevalidator parameters collection
-                clientRule.ValidationParameters.Add(parameter.Key, ruleValidator.Parameters[parameter.Value]);
+                if (ruleValidator.PropertyExpressions.ContainsKey(parameter.Value))
+                {
+                    // parameter.value is index of the matching expression in the rulevalidator PropertyExpressions collection
+                    // TODO: Handle parameters defined as an expression
+                    var expression = ruleValidator.PropertyExpressions[parameter.Value].Expression;
+                    if (expression.Body.NodeType == ExpressionType.MemberAccess)
+                    {
+                        var propertyName = ((MemberExpression) expression.Body).Member.Name;
+                        clientRule.ValidationParameters.Add(parameter.Key,
+                                                            new PropertyExpressionParam() {PropertyName = propertyName});
+                    }
+                }
+                else
+                {
+                    //parameter.value is the index of the matching value in the rulevalidator parameters collection
+                    clientRule.ValidationParameters.Add(parameter.Key, ruleValidator.Parameters[parameter.Value]);
+                }
             }
 
             return clientRule;
         }
 
+        public class PropertyExpressionParam
+        {
+            public PropertyExpressionParam()
+            {
+                IsProperty = true;
+            }
+
+            public bool IsProperty { get; private set; }
+
+            public string PropertyName { get; set; }
+
+            public override string ToString()
+            {
+                return "{\"isProperty\":\"true\",\"propertyName\":\"" + PropertyName + "\"}";
+            }
+        }
 
     }
 

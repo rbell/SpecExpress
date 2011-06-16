@@ -7,6 +7,8 @@ namespace SpecExpress.MVC.Example.Models
     {
         public string Title { get; set; }
 
+        public int MinTitleLength { get; set; }
+
         [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
 

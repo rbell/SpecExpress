@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -19,9 +20,9 @@ namespace SpecExpress.Rules.Collection
             SetPropertyExpression(expression);
         }
 
-        public override object[] Parameters
+        public override OrderedDictionary Parameters
         {
-            get { return new object[] { _countLessThanEqualTo }; }
+            get { return new OrderedDictionary() {{"", _countLessThanEqualTo }}; }
         }
 
         public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)

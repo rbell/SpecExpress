@@ -1,7 +1,5 @@
 ﻿@using SpecExpress.MVC.Example.Models
 @model Meeting
-@{HtmlHelper.ClientValidationEnabled = true;
-  HtmlHelper.UnobtrusiveJavaScriptEnabled = true;}
 @{
     ViewBag.Title = "Home Page";
 }
@@ -11,6 +9,13 @@
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
+    <p>
+        @Html.LabelFor(m => m.MinTitleLength)
+    </p>
+    <p>
+        @Html.TextBoxFor(m => m.MinTitleLength)
+        @Html.ValidationMessageFor(m => m.MinTitleLength)
+    </p>
     <p>
         @Html.LabelFor(m => m.Title)
     </p>

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Reflection;
 using System.Text;
 using SpecExpress.MessageStore;
@@ -20,9 +21,9 @@ namespace SpecExpress.Rules.Collection
         }
 
 
-        public override object[] Parameters
+        public override OrderedDictionary Parameters
         {
-            get { return new object[]{}; }
+            get { return new OrderedDictionary() { }; }
         }
 
         public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)

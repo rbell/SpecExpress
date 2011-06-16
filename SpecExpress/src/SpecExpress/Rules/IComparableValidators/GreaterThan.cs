@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -30,9 +31,9 @@ namespace SpecExpress.Rules.IComparableValidators
             return Evaluate( comparer.Compare(context.PropertyValue, _greaterThan)  > 0, context, notification);
         }
 
-        public override object[] Parameters
+        public override OrderedDictionary Parameters
         {
-            get { return new object[] {_greaterThan}; }
+            get { return new OrderedDictionary() {{"", _greaterThan}}; }
         }
     }
 }

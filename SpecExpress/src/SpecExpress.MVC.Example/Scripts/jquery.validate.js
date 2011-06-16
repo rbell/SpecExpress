@@ -180,7 +180,9 @@ $.validator = function( options, form ) {
 	this.init();
 };
 
-$.validator.format = function(source, params) {
+$.validator.format = function (source, params) {
+    var validator = $.validator;
+
 	if ( arguments.length == 1 )
 		return function() {
 			var args = $.makeArray(arguments);
