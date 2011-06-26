@@ -31,18 +31,20 @@ namespace SpecExpress.MVC.Example
 
         protected void Application_Start()
         {
-            // Catalog must be initialized before the SpecExpressModelProvider is added to the modelValidatorProperties
+            // Initialize the Validation Catalog.  This must be done before adding SpecExpress' Model Validator
+            // Provider to the ModelValidatorProviders collection.
             ValidationCatalog.Scan(a => a.TheCallingAssembly());
 
+            // Don't imply that value types are required
+            DataAnnotationsModelValidatorProvider.AddImplicitRequiredAttributeForValueTypes = false;
+
+            // Add the SpecExpressModelProvider to the collection of ModelValidators
+            ModelValidatorProviders.Providers.Add(new SpecExpressModelProvider());
 
             AreaRegistration.RegisterAllAreas();
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
-
-            DataAnnotationsModelValidatorProvider.AddImplicitRequiredAttributeForValueTypes = false;
-            ModelValidatorProviders.Providers.Add(new SpecExpressModelProvider());
-
         }
     }
 }
