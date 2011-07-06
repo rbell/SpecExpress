@@ -7,7 +7,7 @@ namespace SpecExpress.MVC.RuleRegistrations
     {
         public override Type RuleType
         {
-            get { return typeof(LessThan<,>); }
+            get { return typeof(LessThanEqualTo<,>); }
         }
 
         public override RuleValidatorClientRuleMap ClientRuleMap

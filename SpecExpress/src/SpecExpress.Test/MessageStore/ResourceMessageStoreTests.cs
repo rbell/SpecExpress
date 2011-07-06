@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -45,7 +46,7 @@ namespace SpecExpress.Test
             var parameters = new List<object>();
             foreach (var parameter in ruleValidator.Parameters)
             {
-                parameters.Add(parameter);
+                parameters.Add(((DictionaryEntry)parameter).Value);
             }
             var errorMessage = messageService.GetDefaultMessageAndFormat(new MessageContext(context, ruleValidator.GetType(), false, null, null), parameters.ToArray());
 
