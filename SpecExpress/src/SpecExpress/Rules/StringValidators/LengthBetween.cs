@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -38,9 +39,9 @@ namespace SpecExpress.Rules.StringValidators
              SetPropertyExpression("max",max);
         }
 
-        public override object[] Parameters
+        public override OrderedDictionary Parameters
         {
-            get { return new object[] { _min, _max }; }
+            get { return new OrderedDictionary() {{"min", _min}, {"max", _max}}; }
         }
 
         public override bool Validate(RuleValidatorContext<T, string> context, SpecificationContainer specificationContainer, ValidationNotification notification)

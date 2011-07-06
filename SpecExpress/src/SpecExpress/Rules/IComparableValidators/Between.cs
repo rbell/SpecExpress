@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq.Expressions;
 
 namespace SpecExpress.Rules.IComparableValidators
@@ -50,9 +51,9 @@ namespace SpecExpress.Rules.IComparableValidators
             return Evaluate(comparer.Compare(context.PropertyValue, _ceiling) <= 0 && comparer.Compare(context.PropertyValue, _floor) >= 0 , context, notification);
         }
 
-        public override object[] Parameters
+        public override OrderedDictionary Parameters
         {
-            get { return new object[] {_floor, _ceiling}; }
+            get { return new OrderedDictionary() {{"floor", _floor}, {"ceiling", _ceiling}}; }
         }
     }
 }

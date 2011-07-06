@@ -1,13 +1,14 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.Text.RegularExpressions;
 
 namespace SpecExpress.Rules.StringValidators
 {
     public class Numeric<T> : RuleValidator<T, string>
     {
-        public override object[] Parameters
+        public override OrderedDictionary Parameters
         {
-            get { return new object[] {}; }
+            get { return new OrderedDictionary() { }; }
         }
 
         public override bool Validate(RuleValidatorContext<T, string> context, SpecificationContainer specificationContainer, ValidationNotification notification)

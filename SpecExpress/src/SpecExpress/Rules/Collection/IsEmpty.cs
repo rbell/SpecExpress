@@ -1,15 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 
 namespace SpecExpress.Rules.Collection
 {
     public class IsEmpty<T, TProperty> : RuleValidator<T, TProperty> where TProperty : IEnumerable
     {
-        public override object[] Parameters
+        public override OrderedDictionary Parameters
         {
-            get { return new object[] {}; }
+            get { return new OrderedDictionary() { }; }
         }
 
         public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
