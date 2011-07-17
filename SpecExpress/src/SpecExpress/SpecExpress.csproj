@@ -100,6 +100,7 @@
     <Compile Include="Rules\Collection\ForEach.cs" />
     <Compile Include="Rules\Collection\Contains.cs" />
     <Compile Include="Rules\Collection\IsEmpty.cs" />
+    <Compile Include="Rules\Collection\ItemsAreUnique.cs" />
     <Compile Include="Rules\GeneralValidators\IsInSet.cs" />
     <Compile Include="Rules\CustomRule.cs" />
     <Compile Include="Rules\DateValidators\IsInPast.cs" />

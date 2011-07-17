@@ -151,6 +151,20 @@ namespace SpecExpress.Test.RuleValidatorTests
             return validator.Validate(context, null, notification);
         }
 
+        [TestCase(PopulateListAction.Populate, Result = true, TestName = "ExpectItemsAreUniqueWhenCollectionIsUnique")]
+        [TestCase(PopulateListAction.NonUnique, Result = false, TestName = "ExpectItemsAreUniqueWhenCollectionIsNotUnique")]
+        public bool ItemsAreUnique_IsValid(PopulateListAction action)
+        {
+            //Create Validator
+            var validator = new ItemsAreUnique<Contact, IEnumerable>();
+            var context = BuildContextForAliases(action);
+
+            var notification = new ValidationNotification();
+
+            //Validate the validator only, return true of no error returned
+            return validator.Validate(context, null, notification);
+        }
+
         public RuleValidatorContext<Contact, IEnumerable> BuildContextForAliases(PopulateListAction action)
         {
             Contact contact = new Contact();
@@ -163,8 +177,11 @@ namespace SpecExpress.Test.RuleValidatorTests
                 case PopulateListAction.Empty:
                     contact.Aliases = new List<string>();
                     break;
+                case PopulateListAction.NonUnique:
+                    contact.Aliases = NonUniqueStrings();
+                    break;
                 default:
-                    contact.Aliases = Strings();
+                    contact.Aliases = UniqueStrings();
                     break;
             }
 
@@ -173,15 +190,21 @@ namespace SpecExpress.Test.RuleValidatorTests
             return context;
         }
 
-        private List<string> Strings()
+        private List<string> UniqueStrings()
         {
-            return new List<string>(new string[] {"string1", "string2", "string3"});
+            return new List<string>(new string[] { "string1", "string2", "string3" });
+        }
+
+        private List<string> NonUniqueStrings()
+        {
+            return new List<string>(new string[] { "string1", "string1", "string2" });
         }
 
         public enum PopulateListAction
         {
             Null,
             Empty,
+            NonUnique,
             Populate
         }
     }
