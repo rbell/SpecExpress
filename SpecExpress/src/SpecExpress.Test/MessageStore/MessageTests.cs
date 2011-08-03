@@ -44,6 +44,23 @@ namespace SpecExpress.Test
         }
 
         [Test]
+        public void When_MessageContainsParameters()
+        {
+           
+            ValidationCatalog.AddSpecification<Contact>(
+                spec => spec.Check(c => c.LastName).Required().EqualTo("Johnson"));
+
+            //dummy data 
+            var contact = new Contact() { FirstName = "Joesph", LastName = "Smith" };
+
+            //Validate
+            var valNot = ValidationCatalog.Validate(contact);
+
+            Assert.That(valNot.Errors, Is.Not.Empty);
+            Assert.That(valNot.Errors.First().Message, Is.EqualTo("Last Name must equal Johnson."));
+        }
+
+        [Test]
         public void When_WithMessageKeyIsSupplied_DefaultMessageIsOverridden()
         {   
             //Add a rule

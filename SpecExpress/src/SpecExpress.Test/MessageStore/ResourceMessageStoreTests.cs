@@ -43,12 +43,8 @@ namespace SpecExpress.Test
 
             //string errorMessage = messageStore.GetFormattedDefaultMessage(ruleValidator.GetType().Name, context, ruleValidator.Parameters);
             var messageService = new MessageService();
-            var parameters = new List<object>();
-            foreach (var parameter in ruleValidator.Parameters)
-            {
-                parameters.Add(((DictionaryEntry)parameter).Value);
-            }
-            var errorMessage = messageService.GetDefaultMessageAndFormat(new MessageContext(context, ruleValidator.GetType(), false, null, null), parameters.ToArray());
+           
+            var errorMessage = messageService.GetDefaultMessageAndFormat(new MessageContext(context, ruleValidator.GetType(), false, null, null), ruleValidator.Parameters);
 
             Assert.That(errorMessage, Is.Not.Null.Or.Empty);
 

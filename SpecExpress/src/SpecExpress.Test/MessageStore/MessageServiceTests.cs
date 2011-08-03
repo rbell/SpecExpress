@@ -1,3 +1,4 @@
+using System.Collections.Specialized;
 using NUnit.Framework;
 using SpecExpress.Enums;
 using SpecExpress.MessageStore;
@@ -22,7 +23,7 @@ namespace SpecExpress.Test
         public void FormatMessage_IsValid(string message, string propertyValue, string parm1, string parm2, string expectedResult)
         {
             var context = BuildContext(propertyValue);
-            string result = new MessageService().FormatMessage(message, context, new object[] {parm1, parm2});
+            string result = new MessageService().FormatMessage(message, context, new OrderedDictionary() {{"", parm1}, {"", parm2}});
             Assert.That(result,Is.EqualTo(expectedResult));
         }
 
