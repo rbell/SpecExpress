@@ -292,6 +292,19 @@ namespace SpecExpress
         }
 
         /// <summary>
+        /// Enforces that items in a collection are unique.
+        /// </summary>
+        /// <typeparam name="T">Type that Specification is being defined for.</typeparam>
+        /// <typeparam name="TProperty">Type of the Collection which must implement IEnumerable.</typeparam>
+        /// <param name="expression">Instance of <see cref="IRuleBuilder&lt;T, TProperty&gt;"/> that is this method is extending.</param>
+        /// <returns><see cref="ActionJoinBuilder&lt;T, TProperty&gt;"/></returns>
+        public static ActionJoinBuilder<T, TProperty> ItemsAreUnique<T, TProperty>(this IRuleBuilder<T, TProperty> expression) where TProperty : IEnumerable
+        {
+            expression.RegisterValidator(new Rules.Collection.ItemsAreUnique<T, TProperty>());
+            return expression.JoinBuilder;
+        }
+
+        /// <summary>
         /// Applies a predicate to each instance in the collection and enforces that the predicate must return true for each instance.
         /// </summary>
         /// <typeparam name="T">Type that Specification is being defined for.</typeparam>

@@ -168,6 +168,9 @@
   <data name="IsTrue" xml:space="preserve">
     <value>{PropertyName} must be true.</value>
   </data>
+  <data name="ItemsAreUnique" xml:space="preserve">
+    <value>{PropertyName} should be unique.  The duplicates of the following: {0}</value>
+  </data>
   <data name="LengthBetween" xml:space="preserve">
     <value>{PropertyName} must be between {0} and {1} characters.</value>
   </data>
@@ -239,6 +242,9 @@
   </data>
   <data name="Not_IsTrue" xml:space="preserve">
     <value>{PropertyName} must not be true.</value>
+  </data>
+  <data name="Not_ItemsAreUnique" xml:space="preserve">
+    <value>{PropertyName} should not be unique.</value>
   </data>
   <data name="Not_LengthBetween" xml:space="preserve">
     <value>{PropertyName} must not be between {0} and {1} characters.</value>
