@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using SpecExpress.DSL;
@@ -11,7 +12,7 @@ namespace SpecExpress.MessageStore
 {
     public class MessageService
     {
-        public string GetDefaultMessageAndFormat(MessageContext context, object[] parameters)
+        public string GetDefaultMessageAndFormat(MessageContext context, OrderedDictionary parameters)
         {
             string messageTemplate = GetMessageTemplate(context);
           
@@ -43,12 +44,12 @@ namespace SpecExpress.MessageStore
         }
 
 
-        public string FormatMessage(string message, RuleValidatorContext context, object[] parameters)
+        public string FormatMessage(string message, RuleValidatorContext context, OrderedDictionary parameters)
         {
             return FormatMessage(message, context, parameters, null);
         }
 
-        public string FormatMessage(string message, RuleValidatorContext context, object[] parameters, Func<object, string> propertyValueFormatter)
+        public string FormatMessage(string message, RuleValidatorContext context, OrderedDictionary parameters, Func<object, string> propertyValueFormatter)
         {
             //Replace known keywords with actual values
             var formattedMessage = message.Replace("{PropertyName}", buildPropertyName(context));
@@ -72,14 +73,7 @@ namespace SpecExpress.MessageStore
                 formattedMessage = formattedMessage.Replace("{PropertyValue}", formattedPropertyValue);
             }
 
-            //create param list for String.Format
-            var errorMessageParams = new List<object>();
-            if (parameters != null && parameters.Any())
-            {
-                errorMessageParams.AddRange(parameters);
-            }
-
-            return System.String.Format(formattedMessage, errorMessageParams.ToArray());
+            return System.String.Format(formattedMessage, parameters.Values.Cast<string>().ToArray());
         }
 
         public string BuildRuleKeyFromContext(MessageContext context)

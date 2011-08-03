@@ -20,11 +20,7 @@ namespace SpecExpress.Rules
 
         protected bool Evaluate(bool isValid, RuleValidatorContext context, ValidationNotification notification)
         {
-            var parameters = new List<Object>();
-            foreach (var parameter in Parameters)
-            {
-                parameters.Add(parameter);
-            }
+           
 
             if (Negate)
             {
@@ -34,7 +30,7 @@ namespace SpecExpress.Rules
                 }
                 else
                 {
-                    notification.Errors.Add(ValidationResultFactory.Create(this, context, parameters.ToArray(), MessageKey));
+                    notification.Errors.Add(ValidationResultFactory.Create(this, context, Parameters, MessageKey));
                     return false;
                 }
             }
@@ -46,7 +42,7 @@ namespace SpecExpress.Rules
                 }
                 else
                 {
-                    notification.Errors.Add(ValidationResultFactory.Create(this, context, parameters.ToArray(), MessageKey));
+                    notification.Errors.Add(ValidationResultFactory.Create(this, context, Parameters, MessageKey));
                     return false;
                 }
             }

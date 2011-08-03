@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using SpecExpress.MessageStore;
@@ -9,7 +10,7 @@ namespace SpecExpress
 {
     internal static class ValidationResultFactory
     {
-        public static ValidationResult Create(RuleValidator validator, RuleValidatorContext context, object[] parameters, object messageKey)
+        public static ValidationResult Create(RuleValidator validator, RuleValidatorContext context, OrderedDictionary parameters, object messageKey)
         {
             string message = string.Empty;
             var messageService = new MessageService();

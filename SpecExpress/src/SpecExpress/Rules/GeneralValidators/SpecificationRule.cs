@@ -66,13 +66,8 @@ namespace SpecExpress.Rules.GeneralValidators
             ValidationResult result = null;
 
             if (innerNotification.Errors.Any())
-            {
-                var parameters = new List<object>();
-                foreach (var parameter in Parameters)
-                {
-                    parameters.Add(parameter);
-                }
-                result = ValidationResultFactory.Create(this, context, parameters.ToArray(), MessageKey);
+            {   
+                result = ValidationResultFactory.Create(this, context, Parameters, MessageKey);
                 result.NestedValidationResults = innerNotification.Errors;
                 notification.Errors.Add(result);
                 return false;
