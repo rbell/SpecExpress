@@ -8,6 +8,7 @@ using SpecExpress.DSL;
 using SpecExpress.Rules;
 using SpecExpress.Util;
 
+
 namespace SpecExpress.MessageStore
 {
     public class MessageService
@@ -73,7 +74,7 @@ namespace SpecExpress.MessageStore
                 formattedMessage = formattedMessage.Replace("{PropertyValue}", formattedPropertyValue);
             }
 
-            return System.String.Format(formattedMessage, parameters.Values.Cast<string>().ToArray());
+            return parameters == null ? formattedMessage : String.Format(formattedMessage, parameters.Values.ToStringEnum().ToArray());
         }
 
         public string BuildRuleKeyFromContext(MessageContext context)

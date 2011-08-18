@@ -136,6 +136,7 @@
     <Compile Include="SpecificationContainer.cs" />
     <Compile Include="SpecificationExpression.cs" />
     <Compile Include="SpecificationScanner.cs" />
+    <Compile Include="Util\EnumerableExtensions.cs" />
     <Compile Include="Util\ObjectExtensions.cs" />
     <Compile Include="Util\PredicateExtensions.cs" />
     <Compile Include="Util\TypeExtensions.cs" />
