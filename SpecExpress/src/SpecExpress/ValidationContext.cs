@@ -15,13 +15,13 @@ namespace SpecExpress
             
         }
         
-        public void AddSpecifications(Func<IEnumerable<Specification>,IEnumerable<Specification>>  selectedSpecs)
+        public void AddSpecifications(Func<IEnumerable<SpecificationBase>,IEnumerable<SpecificationBase>>  selectedSpecs)
         {  
             //Add Specification returned by the function to the Context
             _specContainer.Add(selectedSpecs(ValidationCatalog.SpecificationContainer.GetAllSpecifications()));
         }
 
-        public void AddSpecification<TSpecType>() where TSpecType : Specification, new()
+        public void AddSpecification<TSpecType>() where TSpecType : SpecificationBase, new()
         {
             _specContainer.Add(new TSpecType());
         }

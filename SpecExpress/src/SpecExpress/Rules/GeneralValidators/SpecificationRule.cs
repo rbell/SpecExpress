@@ -10,7 +10,7 @@ namespace SpecExpress.Rules.GeneralValidators
     {
         public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
-            Specification = specificationContainer.TryGetSpecification<TSpecification>() as Validates<TProperty> ??
+            SpecificationBase = specificationContainer.TryGetSpecification<TSpecification>() as Validates<TProperty> ??
                      new TSpecification();
 
             return base.Validate(context, specificationContainer, notification);
@@ -19,7 +19,7 @@ namespace SpecExpress.Rules.GeneralValidators
 
     public class SpecificationRule<T, TProperty> : RuleValidator<T, TProperty>
     {
-        protected Specification Specification;
+        protected SpecificationBase SpecificationBase;
         public override OrderedDictionary Parameters
         {
             get { return new OrderedDictionary() { }; }
@@ -28,10 +28,10 @@ namespace SpecExpress.Rules.GeneralValidators
         /// <summary>
         /// Validate using designated specification
         /// </summary>
-        /// <param name="specification"></param>
-        public SpecificationRule(Validates<TProperty> specification) 
+        /// <param name="specificationBase"></param>
+        public SpecificationRule(Validates<TProperty> specificationBase) 
         {
-            Specification = specification;
+            SpecificationBase = specificationBase;
         }
 
         /// <summary>
@@ -44,21 +44,21 @@ namespace SpecExpress.Rules.GeneralValidators
 
         public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
-            Specification specification;
+            SpecificationBase specificationBase;
 
-            if (Specification == null)
+            if (SpecificationBase == null)
             {
                 //Spec not defined, so get from the container, ie .Specification()
-                specification = specificationContainer.GetSpecification(context.PropertyValue.GetType());
+                specificationBase = specificationContainer.GetSpecification(context.PropertyValue.GetType());
             }
             else
             {
                 //Specification explicity defined by DSL .Specification<SomeSpecification>()
-                specification = Specification;
+                specificationBase = SpecificationBase;
             }
 
             var innerNotification = new ValidationNotification();
-            foreach (var validator in specification.PropertyValidators)
+            foreach (var validator in specificationBase.PropertyValidators)
             {
                 validator.Validate(context.PropertyValue, context, specificationContainer, innerNotification);
             }

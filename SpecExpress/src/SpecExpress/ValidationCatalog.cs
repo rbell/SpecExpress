@@ -22,16 +22,16 @@ namespace SpecExpress
             return ValidationCatalog.Validate(instance, context.SpecificationContainer, null);
         }
 
-        public static ValidationNotification Validate(object instance, Specification specification)
+        public static ValidationNotification Validate(object instance, SpecificationBase specificationBase)
         {
             var context = new TContext();
-            return ValidationCatalog.Validate(instance, context.SpecificationContainer, specification);
+            return ValidationCatalog.Validate(instance, context.SpecificationContainer, specificationBase);
         }
 
-        public static ValidationNotification Validate<TSpec>(object instance) where TSpec : Specification, new()
+        public static ValidationNotification Validate<TSpec>(object instance) where TSpec : SpecificationBase, new()
         {
             var context = new TContext();
-            var spec = context.SpecificationContainer.TryGetSpecification<TSpec>() ?? new TSpec() as Specification;
+            var spec = context.SpecificationContainer.TryGetSpecification<TSpec>() ?? new TSpec() as SpecificationBase;
             return ValidationCatalog.Validate(instance, context.SpecificationContainer, spec);
         }
 
@@ -50,10 +50,10 @@ namespace SpecExpress
         }
 
         public static ValidationNotification ValidateProperty(object instance, string propertyName,
-                                                              Specification specification)
+                                                              SpecificationBase specificationBase)
         {
             var context = new TContext();
-            return ValidationCatalog.ValidateProperty(instance, propertyName, specification, context.SpecificationContainer);
+            return ValidationCatalog.ValidateProperty(instance, propertyName, specificationBase, context.SpecificationContainer);
         }
 
         public static ValidationNotification ValidateProperty<T>(T instance, Expression<Func<T, object>> property)
@@ -64,11 +64,11 @@ namespace SpecExpress
         }
 
         public static ValidationNotification ValidateProperty<T>(T instance, Expression<Func<T, object>> property,
-                                                              Specification specification)
+                                                              SpecificationBase specificationBase)
         {
             var context = new TContext();
             var prop = new PropertyValidator<T, object>(property);
-            return ValidationCatalog.ValidateProperty(instance, prop.PropertyInfo.Name, specification, context.SpecificationContainer);
+            return ValidationCatalog.ValidateProperty(instance, prop.PropertyInfo.Name, specificationBase, context.SpecificationContainer);
         }
 
 
@@ -108,7 +108,7 @@ namespace SpecExpress
         }
 
 
-        public static void AddSpecification<TSpec>() where TSpec : Specification, new()
+        public static void AddSpecification<TSpec>() where TSpec : SpecificationBase, new()
         {
             lock (_syncLock)
             {
@@ -211,7 +211,7 @@ namespace SpecExpress
 
         #region Object Validation
 
-        internal static ValidationNotification Validate(object instance, SpecificationContainer container, Specification specification)
+        internal static ValidationNotification Validate(object instance, SpecificationContainer container, SpecificationBase specificationBase)
         {
             //Guard for null
             if (instance == null)
@@ -227,12 +227,12 @@ namespace SpecExpress
             }
 
 
-            if (specification == null)
+            if (specificationBase == null)
             {
-                specification = container.TryGetSpecification(instance.GetType());
+                specificationBase = container.TryGetSpecification(instance.GetType());
 
                 //Check if a Specification wasn't found for the Type
-                if (specification == null)
+                if (specificationBase == null)
                 {
                     //No spec found for type, try for Collection
                     if (instance is IEnumerable)
@@ -253,15 +253,15 @@ namespace SpecExpress
             //check if the Specification and instance type match up the use them
 
 
-            if (instance.GetType().CanBeCastTo(specification.ForType))
+            if (instance.GetType().CanBeCastTo(specificationBase.ForType))
             {
                 var notification = new ValidationNotification();
-                specification.Validate(instance, container, notification);
+                specificationBase.Validate(instance, container, notification);
                 return notification;
             }
             else
             {
-                throw new SpecExpressConfigurationException("Specification is invalid for the instance. Specification is for type " + specification.ForType.ToString() + " and instance is type " + instance.GetType().ToString() + ".");
+                throw new SpecExpressConfigurationException("Specification is invalid for the instance. Specification is for type " + specificationBase.ForType.ToString() + " and instance is type " + instance.GetType().ToString() + ".");
             }
         }
 
@@ -275,15 +275,15 @@ namespace SpecExpress
             return Validate(instance, null, null);
         }
 
-        public static ValidationNotification Validate(object instance, Specification specification)
+        public static ValidationNotification Validate(object instance, SpecificationBase specificationBase)
         {
-            return Validate(instance, null, specification);
+            return Validate(instance, null, specificationBase);
         }
 
-        public static ValidationNotification Validate<TSpec>(object instance) where TSpec : Specification, new()
+        public static ValidationNotification Validate<TSpec>(object instance) where TSpec : SpecificationBase, new()
         {
             var spec = SpecificationContainer.GetAllSpecifications()
-                .FirstOrDefault(s => s.GetType() == typeof(TSpec)) ?? new TSpec() as Specification;
+                .FirstOrDefault(s => s.GetType() == typeof(TSpec)) ?? new TSpec() as SpecificationBase;
 
             return Validate(instance, SpecificationContainer, spec);
         }
@@ -306,7 +306,7 @@ namespace SpecExpress
             }
         }
 
-        private static ValidationNotification ValidateCollection(IEnumerable instance, Specification specification, SpecificationContainer specificationContainer)
+        private static ValidationNotification ValidateCollection(IEnumerable instance, SpecificationBase specificationBase, SpecificationContainer specificationContainer)
         {
             //Guard for null
             if (instance == null)
@@ -322,7 +322,7 @@ namespace SpecExpress
             while (enumerator.MoveNext())
             {
                 //validate the object with the given specification
-                specification.Validate(enumerator.Current, specificationContainer, notification);
+                specificationBase.Validate(enumerator.Current, specificationContainer, notification);
             }
             return notification;
         }
@@ -337,9 +337,9 @@ namespace SpecExpress
         }
 
         public static ValidationNotification ValidateProperty(object instance, string propertyName,
-                                                                Specification specification)
+                                                                SpecificationBase specificationBase)
         {
-            return ValidateProperty(instance, propertyName, specification, SpecificationContainer);
+            return ValidateProperty(instance, propertyName, specificationBase, SpecificationContainer);
         }
 
         public static ValidationNotification ValidateProperty<T>(T instance, Expression<Func<T, object>> property)
@@ -348,21 +348,21 @@ namespace SpecExpress
         }
 
         public static ValidationNotification ValidateProperty<T>(T instance, Expression<Func<T, object>> property,
-                                                                Specification specification)
+                                                                SpecificationBase specificationBase)
         {
             var prop = new PropertyValidator<T, object>(property);
-            return ValidateProperty(instance, prop.PropertyInfo.Name, specification, SpecificationContainer);
+            return ValidateProperty(instance, prop.PropertyInfo.Name, specificationBase, SpecificationContainer);
 
         }
 
-        internal static ValidationNotification ValidateProperty(object instance, string propertyName, Specification specification, SpecificationContainer container)
+        internal static ValidationNotification ValidateProperty(object instance, string propertyName, SpecificationBase specificationBase, SpecificationContainer container)
         {
-            if (specification == null)
+            if (specificationBase == null)
             {
-                specification = container.TryGetSpecification(instance.GetType());
+                specificationBase = container.TryGetSpecification(instance.GetType());
             }
 
-            var validators = from validator in specification.PropertyValidators
+            var validators = from validator in specificationBase.PropertyValidators
                                 where validator.PropertyInfo != null && validator.PropertyInfo.Name == propertyName
                                 select validator;
 

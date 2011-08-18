@@ -8,14 +8,14 @@ namespace SpecExpress
 {
     public class SpecificationContainer
     {
-        private List<Specification> _registry = new List<Specification>();
+        private List<SpecificationBase> _registry = new List<SpecificationBase>();
 
         public void Add<TEntity>(Validates<TEntity> expression)
         {
-            Add((Specification) expression);
+            Add((SpecificationBase) expression);
         }
 
-        public void Add(Specification spec)
+        public void Add(SpecificationBase spec)
         {
             if (spec != null)
             {
@@ -23,12 +23,12 @@ namespace SpecExpress
             }
         }
 
-        public void Add<TSpec>() where TSpec : Specification, new()
+        public void Add<TSpec>() where TSpec : SpecificationBase, new()
         {
             _registry.Add(new TSpec());
         }
 
-        public void Add(IEnumerable<Specification> specs)
+        public void Add(IEnumerable<SpecificationBase> specs)
         {
             if (specs != null)
             {
@@ -58,7 +58,7 @@ namespace SpecExpress
 
         #region Container
 
-        public Specification TryGetSpecification(Type type)
+        public SpecificationBase TryGetSpecification(Type type)
         {
             //Attempt to find Specification where the Types are equal
            var specs = from r in _registry
@@ -109,7 +109,7 @@ namespace SpecExpress
         
         }
 
-        public Specification GetSpecification(Type type)
+        public SpecificationBase GetSpecification(Type type)
         {
             var spec = TryGetSpecification(type);
 
@@ -131,10 +131,10 @@ namespace SpecExpress
             return TryGetSpecification(typeof(TType)) as Validates<TType>;
         }
 
-        public IList<Specification> GetAllSpecifications()
+        public IList<SpecificationBase> GetAllSpecifications()
         {
             // For thread safety, return a copy of the registry
-            return new List<Specification>(_registry);
+            return new List<SpecificationBase>(_registry);
         }
 
         #endregion
@@ -154,7 +154,7 @@ namespace SpecExpress
                 {
                     try
                     {
-                        var s = Activator.CreateInstance(spec) as Specification;
+                        var s = Activator.CreateInstance(spec) as SpecificationBase;
 
                         Add(s);
                     }

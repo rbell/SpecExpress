@@ -19,7 +19,7 @@ namespace SpecExpress.Web
         private string _type;
 
         private Type _resolvedType;
-        private Specification _resolvedSpecification;
+        private SpecificationBase _resolvedSpecificationBase;
         
         public string TypeToValidate { set { _type = value; } }
 
@@ -49,15 +49,15 @@ namespace SpecExpress.Web
             return _resolvedType;
         }
 
-        public Specification GetSpecification()
+        public SpecificationBase GetSpecification()
         {
-            if (_resolvedSpecification == null)
+            if (_resolvedSpecificationBase == null)
             {
                 //Lazy Load Specification
                 if (String.IsNullOrEmpty(_specificationType))
                 {
                     //No Specification specified, so get Default Specification For Type from Validation Catalog
-                    _resolvedSpecification = ValidationCatalog.SpecificationContainer.TryGetSpecification(GetTypeToValidate());
+                    _resolvedSpecificationBase = ValidationCatalog.SpecificationContainer.TryGetSpecification(GetTypeToValidate());
                 }
                 else
                 {
@@ -73,13 +73,13 @@ namespace SpecExpress.Web
                     else
                     {
                         //Query the Validation Catalog from the specification that matches type in the Catalog
-                        _resolvedSpecification = ValidationCatalog.SpecificationContainer.GetAllSpecifications().Where(
+                        _resolvedSpecificationBase = ValidationCatalog.SpecificationContainer.GetAllSpecifications().Where(
                             x => x.GetType() == specType).FirstOrDefault();
                     }
                 }
             }
 
-            return _resolvedSpecification;
+            return _resolvedSpecificationBase;
         }
 
         protected override bool OnServerValidate(string value)
@@ -198,7 +198,7 @@ namespace SpecExpress.Web
                 var convertedControlVal = TryConvertControlValue(controlValue, x.PropertyName);
                 if (convertedControlVal != null)
                 {
-                    _resolvedSpecification.ForType.GetProperty(x.PropertyName).SetValue(objectToValidate, convertedControlVal, null);
+                    _resolvedSpecificationBase.ForType.GetProperty(x.PropertyName).SetValue(objectToValidate, convertedControlVal, null);
                 }
             });
 

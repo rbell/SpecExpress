@@ -73,7 +73,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssertSpecification.cs" />
+    <Compile Include="Specification.cs" />
     <Compile Include="CompiledFunctionExpression.cs" />
     <Compile Include="DSL\ActionJoinBuilder.cs" />
     <Compile Include="CoreValidatorExtensions.cs" />
@@ -132,7 +132,7 @@
     <Compile Include="RuleTree\NodeBase.cs" />
     <Compile Include="RuleTree\RuleTree.cs" />
     <Compile Include="SpecExpressConfigurationException.cs" />
-    <Compile Include="Specification.cs" />
+    <Compile Include="SpecificationBase.cs" />
     <Compile Include="SpecificationContainer.cs" />
     <Compile Include="SpecificationExpression.cs" />
     <Compile Include="SpecificationScanner.cs" />

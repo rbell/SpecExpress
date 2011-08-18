@@ -15,7 +15,7 @@ namespace SpecExpress.Web
     public class Validator : BaseValidator
     {
         private PropertyValidator _currentPropertyValidator;
-        private Specification _currentSpecification;
+        private SpecificationBase _currentSpecificationBase;
         private ValidationSummaryDisplayMode displayMode;
         private string _defaultErrorMessage = "Default error message";
 
@@ -31,21 +31,21 @@ namespace SpecExpress.Web
             {
                 if (_currentPropertyValidator == null)
                 {
-                    if (CurrentSpecification == null)
+                    if (CurrentSpecificationBase == null)
                     {
                         //added for support for designer
                         return null;
                     }
 
                     _currentPropertyValidator =
-                        CurrentSpecification.PropertyValidators.Where(x => x.PropertyInfo.Name == PropertyName).FirstOrDefault();
+                        CurrentSpecificationBase.PropertyValidators.Where(x => x.PropertyInfo.Name == PropertyName).FirstOrDefault();
                 }
 
                 return _currentPropertyValidator;
             }
         }
 
-        protected  Specification CurrentSpecification
+        protected  SpecificationBase CurrentSpecificationBase
         {
             get
             {
@@ -212,7 +212,7 @@ namespace SpecExpress.Web
             var controlValue = GetControlValidationValue(ControlToValidate);
             var value = TryConvertControlValue(controlValue);
             var objToValidate = setPropertyOnProxyObject(value);
-            var results = ValidationCatalog.ValidateProperty(objToValidate, PropertyName, CurrentSpecification).Errors;
+            var results = ValidationCatalog.ValidateProperty(objToValidate, PropertyName, CurrentSpecificationBase).Errors;
             return results;
         }
         
@@ -242,7 +242,7 @@ namespace SpecExpress.Web
         private object setPropertyOnProxyObject(object value)
         {
             //Create a placeholder object for the type we are validating
-            var obj = Activator.CreateInstance(CurrentSpecification.ForType, true);
+            var obj = Activator.CreateInstance(CurrentSpecificationBase.ForType, true);
 
             //Only set the property value if it's not null, otherwise the value will be the types default
             //for example, if the type is Double and the value is passed in, the resulting value will be 0.0, 
@@ -250,7 +250,7 @@ namespace SpecExpress.Web
             if (value != null)
             {
                 //set the value of the Property we are validating
-                CurrentSpecification.ForType.GetProperty(this.PropertyName).SetValue(obj, value, null);
+                CurrentSpecificationBase.ForType.GetProperty(this.PropertyName).SetValue(obj, value, null);
             }
 
             return obj;
@@ -258,7 +258,7 @@ namespace SpecExpress.Web
 
         private Type getTypeForProperty()
         {
-            var property = CurrentSpecification.ForType.GetProperty(this.PropertyName);
+            var property = CurrentSpecificationBase.ForType.GetProperty(this.PropertyName);
             return property.PropertyType;
         }
 

@@ -29,7 +29,7 @@ namespace SpecExpress
 
         public Type PropertyType { get; private set; }
         public Type EntityType { get; private set; }
-        public Specification CustomSpecification { get; set; }
+        public SpecificationBase CustomSpecificationBase { get; set; }
 
         public MemberInfo PropertyInfo
         {
@@ -493,9 +493,9 @@ namespace SpecExpress
             if (!notification.Errors.Any() && specificationContainer.TryGetSpecification(typeof(TProperty)) != null)
             {
                 //Spec found, use it to validate
-                Specification specification = specificationContainer.GetSpecification(typeof(TProperty));
+                SpecificationBase specificationBase = specificationContainer.GetSpecification(typeof(TProperty));
                 //Add any errors to the existing list of errors
-                foreach (var validator in specification.PropertyValidators)
+                foreach (var validator in specificationBase.PropertyValidators)
                 {
                     validator.Validate(context.PropertyValue, context, specificationContainer, notification);
                 }

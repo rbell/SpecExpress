@@ -24,7 +24,7 @@ namespace SpecExpress
     /// }
     /// </example>
     /// <typeparam name="T">The type to validate.</typeparam>
-    public abstract class Validates<T> : Specification
+    public abstract class Validates<T> : SpecificationBase
     {
         private Type _forType;
         

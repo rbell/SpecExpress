@@ -81,7 +81,7 @@ namespace SpecExpress
             IEnumerable<Type> specs = from a in assemblies
                         select a.GetExportedTypes() into types
                         from type in types
-                        where typeof(Specification).IsAssignableFrom(type) && !type.IsAbstract
+                        where typeof(SpecificationBase).IsAssignableFrom(type) && !type.IsAbstract
                         select type;
 
             _specifications.AddRange(specs);

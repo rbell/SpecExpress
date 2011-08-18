@@ -23,15 +23,18 @@ namespace SpecExpress.Test
             get { return s0; }   
         }
 
-        public bool DoWorkAssert(string s1, string s2)
+        public bool DoWorkAssert(string samSpade, string s2)
         {
             string str = "hello";
           
 
-            AssertSpecification.Assert(sp =>
-            {
-                sp.Check(s => s1).Required().EqualTo(PString);
-            });
+            //Specification.Assert(sp =>
+            //{
+            //    sp.Check(s => s1).Required().EqualTo(PString);
+            //});
+
+
+            var vn = Specification.Validate(sp => sp.Check(s => samSpade).Required().EqualTo(PString));
 
             return true;
         }

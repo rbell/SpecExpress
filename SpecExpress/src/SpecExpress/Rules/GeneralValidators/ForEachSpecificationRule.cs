@@ -37,7 +37,7 @@ namespace SpecExpress.Rules.GeneralValidators
     public class ForEachSpecificationRule<T, TProperty, TCollectionType> : RuleValidator<T, TProperty> 
     {
         protected string ItemName;
-        private Specification _specification;
+        private SpecificationBase _specificationBase;
         protected Validates<TCollectionType> Specification;
         public override OrderedDictionary Parameters
         {
@@ -76,11 +76,11 @@ namespace SpecExpress.Rules.GeneralValidators
         {
             if (Specification == null)
             {
-                _specification = specificationContainer.GetSpecification<TCollectionType>();
+                _specificationBase = specificationContainer.GetSpecification<TCollectionType>();
             }
             else
             {
-                _specification = Specification;
+                _specificationBase = Specification;
             }
 
             ValidationResult collectionValidationResult = null;
@@ -104,7 +104,7 @@ namespace SpecExpress.Rules.GeneralValidators
             foreach (var item in propertyEnumerable)
             {
                 var innerNotfication = new ValidationNotification();
-                if (!_specification.Validate(item, specificationContainer, innerNotfication))
+                if (!_specificationBase.Validate(item, specificationContainer, innerNotfication))
                 {
                     var propertyName = String.IsNullOrEmpty(ItemName) ? item.GetType().Name : ItemName;
 

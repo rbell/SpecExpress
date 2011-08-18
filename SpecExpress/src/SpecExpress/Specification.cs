@@ -5,42 +5,23 @@ using System.Text;
 
 namespace SpecExpress
 {
-    public abstract class Specification
+    public static class Specification
     {
-        private List<PropertyValidator> _propertyValidators = new List<PropertyValidator>();
-
-        public abstract Type ForType { get; }
-
-        public bool DefaultForType { get; private set; }
-
-        public List<PropertyValidator> PropertyValidators
+        public static void Assert(Action<Validates<object>> rules)
         {
-            get { return _propertyValidators; }
-            set
+            var spec = new SpecificationExpression<object>(rules);
+
+            var vn = spec.Validate(spec.Instance);
+            if (!vn.IsValid)
             {
-                lock (this)
-                {
-                    _propertyValidators = value;
-                }
+                throw new ValidationException("Invalid " + spec.Instance.GetType().ToString(), vn);
             }
         }
 
-        public bool Validate(object instance, SpecificationContainer specificationContainer, ValidationNotification notification)
+        public static ValidationNotification Validate(Action<Validates<object>> rules)
         {
-            lock (this)
-            {
-                foreach (var validator in PropertyValidators)
-                {
-                    validator.Validate(instance, specificationContainer, notification);
-                }
-                return notification.IsValid;
-            }
-        }
-
-        public void IsDefaultForType()
-        {
-            DefaultForType = true;
+            var spec = new SpecificationExpression<object>(rules);
+            return spec.Validate(spec.Instance);
         }
     }
-
 }
