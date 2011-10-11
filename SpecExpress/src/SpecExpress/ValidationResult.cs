@@ -7,7 +7,9 @@ using SpecExpress.Enums;
 
 namespace SpecExpress
 {
+    #if !SILVERLIGHT
     [Serializable]
+    #endif
     public class ValidationResult
     {
         private readonly String _message;

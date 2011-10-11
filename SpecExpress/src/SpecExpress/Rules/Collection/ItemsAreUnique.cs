@@ -25,7 +25,7 @@ namespace SpecExpress.Rules.Collection
 
         private string duplicateItems(IEnumerable collection)
         {
-            var tmp = new ArrayList();
+            var tmp = new List<object>();
             var dups = new List<string>();
 
             foreach (object instance in collection)

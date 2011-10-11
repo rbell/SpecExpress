@@ -23,11 +23,6 @@ namespace SpecExpress
             _message = message;
         }
 
-        protected ValidationException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-
         public ValidationNotification ValidationNotification
         {
             get { return _notification; }

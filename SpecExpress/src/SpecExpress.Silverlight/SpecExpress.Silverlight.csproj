@@ -88,9 +88,6 @@
     <Compile Include="..\SpecExpress\DSL\ActionOptionConditionBuilder.cs">
       <Link>DSL\ActionOptionConditionBuilder.cs</Link>
     </Compile>
-    <Compile Include="..\SpecExpress\DSL\ActionOptionConditionSatisfiedBuilder.cs">
-      <Link>DSL\ActionOptionConditionSatisfiedBuilder.cs</Link>
-    </Compile>
     <Compile Include="..\SpecExpress\DSL\RuleBuilder.cs">
       <Link>DSL\RuleBuilder.cs</Link>
     </Compile>
@@ -154,6 +151,9 @@
     <Compile Include="..\SpecExpress\Rules\Collection\IsEmpty.cs">
       <Link>Rules\Collection\IsEmpty.cs</Link>
     </Compile>
+    <Compile Include="..\SpecExpress\Rules\Collection\ItemsAreUnique.cs">
+      <Link>Rules\Collection\ItemsAreUnique.cs</Link>
+    </Compile>
     <Compile Include="..\SpecExpress\Rules\CustomRule.cs">
       <Link>Rules\CustomRule.cs</Link>
     </Compile>
@@ -193,6 +193,9 @@
     <Compile Include="..\SpecExpress\Rules\IComparableValidators\LessThanEqualTo.cs">
       <Link>Rules\IComparableValidators\LessThanEqualTo.cs</Link>
     </Compile>
+    <Compile Include="..\SpecExpress\Rules\RuleParameter.cs">
+      <Link>Rules\RuleParameter.cs</Link>
+    </Compile>
     <Compile Include="..\SpecExpress\Rules\RuleValidator.cs">
       <Link>Rules\RuleValidator.cs</Link>
     </Compile>
@@ -217,11 +220,29 @@
     <Compile Include="..\SpecExpress\Rules\StringValidators\Numeric.cs">
       <Link>Rules\StringValidators\Numeric.cs</Link>
     </Compile>
+    <Compile Include="..\SpecExpress\RuleTree\GroupNode.cs">
+      <Link>RuleTree\GroupNode.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\RuleTree\NodeBase.cs">
+      <Link>RuleTree\NodeBase.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\RuleTree\RuleExpressionFactory.cs">
+      <Link>RuleTree\RuleExpressionFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\RuleTree\RuleNode.cs">
+      <Link>RuleTree\RuleNode.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\RuleTree\RuleTree.cs">
+      <Link>RuleTree\RuleTree.cs</Link>
+    </Compile>
     <Compile Include="..\SpecExpress\SpecExpressConfigurationException.cs">
       <Link>SpecExpressConfigurationException.cs</Link>
     </Compile>
     <Compile Include="..\SpecExpress\Specification.cs">
       <Link>Specification.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\SpecificationBase.cs">
+      <Link>SpecificationBase.cs</Link>
     </Compile>
     <Compile Include="..\SpecExpress\SpecificationContainer.cs">
       <Link>SpecificationContainer.cs</Link>
@@ -232,11 +253,17 @@
     <Compile Include="..\SpecExpress\SpecificationScanner.cs">
       <Link>SpecificationScanner.cs</Link>
     </Compile>
+    <Compile Include="..\SpecExpress\Util\EnumerableExtensions.cs">
+      <Link>Util\EnumerableExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\SpecExpress\Util\ExpressionExtensions.cs">
       <Link>Util\ExpressionExtensions.cs</Link>
     </Compile>
     <Compile Include="..\SpecExpress\Util\ObjectExtensions.cs">
       <Link>Util\ObjectExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Util\PredicateExtensions.cs">
+      <Link>Util\PredicateExtensions.cs</Link>
     </Compile>
     <Compile Include="..\SpecExpress\Util\RuleValidatorContext.cs">
       <Link>Util\RuleValidatorContext.cs</Link>
@@ -275,11 +302,6 @@
     <Compile Include="Util\ArrayExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\SpecExpress\MessageStore\RuleErrorMessages.resx">
-      <Link>MessageStore\RuleErrorMessages.resx</Link>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
@@ -296,6 +318,17 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\SpecExpress\specexpress.key">
+      <Link>specexpress.key</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\SpecExpress\MessageStore\RuleErrorMessages.resx">
+      <Link>MessageStore\RuleErrorMessages.resx</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

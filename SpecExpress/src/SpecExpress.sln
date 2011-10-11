@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecExpress.MVC", "SpecExpr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecExpress.MVC.Example", "SpecExpress.MVC.Example\SpecExpress.MVC.Example.csproj", "{B6BCE242-E5C6-442C-AA92-4B55AD73C75A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecExpress.Silverlight", "SpecExpress.Silverlight\SpecExpress.Silverlight.csproj", "{E5640A72-5D0D-41D7-85A9-CB7C39D63662}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = SpecExpress.vsmdi
@@ -58,6 +60,10 @@ Global
 		{B6BCE242-E5C6-442C-AA92-4B55AD73C75A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6BCE242-E5C6-442C-AA92-4B55AD73C75A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6BCE242-E5C6-442C-AA92-4B55AD73C75A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5640A72-5D0D-41D7-85A9-CB7C39D63662}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5640A72-5D0D-41D7-85A9-CB7C39D63662}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5640A72-5D0D-41D7-85A9-CB7C39D63662}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5640A72-5D0D-41D7-85A9-CB7C39D63662}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

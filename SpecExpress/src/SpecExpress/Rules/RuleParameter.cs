@@ -33,7 +33,7 @@ namespace SpecExpress.Rules
         {
             if (IsExpressionParam)
             {
-                throw new System.ApplicationException("Cannot get Param Value for an Expression Param without context.");
+                throw new System.ArgumentException("Cannot get Param Value for an Expression Param without context.");
             }
             return paramValue;
         }
@@ -44,7 +44,7 @@ namespace SpecExpress.Rules
             {
                 if (context == null)
                 {
-                    throw new System.ApplicationException(
+                    throw new System.ArgumentException(
                         "Cannot get Param Value for an Expression Param without context.");
                 }
 
