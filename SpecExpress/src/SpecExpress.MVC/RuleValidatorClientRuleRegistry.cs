@@ -33,15 +33,15 @@ namespace SpecExpress.MVC
             var thisAssembly = this.GetType().Assembly;
 
             var registrationTypes = from type in thisAssembly.GetTypes()
-                                where type.BaseType == typeof (RuleRegistration)
-                                select type;
+                                    where type.BaseType == typeof(RuleRegistration)
+                                    select type;
 
             foreach (var registrationType in registrationTypes)
             {
                 var registration = Activator.CreateInstance(registrationType) as RuleRegistration;
                 Mapping.Add(registration.RuleType, registration.ClientRuleMap);
             }
-            
+
         }
 
         public static RuleValidatorClientRuleRegistry Instance
@@ -67,22 +67,29 @@ namespace SpecExpress.MVC
             //map all the parameters
             foreach (var parameter in rule.Parameters)
             {
-                if (ruleValidator.PropertyExpressions.ContainsKey(parameter.Value))
+                // parameter.value is index of the matching expression in the rulevalidator PropertyExpressions collection
+                var ruleParamQry = from ruleParameter in ruleValidator.Params
+                                   where ruleParameter.PropertyName == parameter.Value
+                                   select ruleParameter;
+
+                if (ruleParamQry.Any())
                 {
-                    // parameter.value is index of the matching expression in the rulevalidator PropertyExpressions collection
-                    // TODO: Handle parameters defined as an expression
-                    var expression = ruleValidator.PropertyExpressions[parameter.Value].Expression;
-                    if (expression.Body.NodeType == ExpressionType.MemberAccess)
+                    var ruleParam = ruleParamQry.First();
+                    if (ruleParam.IsExpressionParam)
                     {
-                        var propertyName = ((MemberExpression) expression.Body).Member.Name;
-                        clientRule.ValidationParameters.Add(parameter.Key,
-                                                            new PropertyExpressionParam() {PropertyName = propertyName});
+                        var expression = ruleParam.CompiledExpression.Expression;
+                        if (expression.Body.NodeType == ExpressionType.MemberAccess)
+                        {
+                            var propertyName = ((MemberExpression)expression.Body).Member.Name;
+                            clientRule.ValidationParameters.Add(parameter.Key,
+                                                                new PropertyExpressionParam() { PropertyName = propertyName });
+                        }
                     }
-                }
-                else
-                {
-                    //parameter.value is the index of the matching value in the rulevalidator parameters collection
-                    clientRule.ValidationParameters.Add(parameter.Key, ruleValidator.Parameters[parameter.Value]);
+                    else
+                    {
+                        //parameter.value is the index of the matching value in the rulevalidator parameters collection
+                        clientRule.ValidationParameters.Add(parameter.Key, ruleParam.GetParamValue());
+                    }
                 }
             }
 
