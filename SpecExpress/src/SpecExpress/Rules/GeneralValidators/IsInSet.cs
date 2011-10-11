@@ -8,32 +8,21 @@ namespace SpecExpress.Rules.GeneralValidators
 {
     public class IsInSet<T, TProperty> : RuleValidator<T,TProperty>
     {
-        private Func<T,IEnumerable<TProperty>> _expression;
-        private IEnumerable<TProperty> _set;
-
         public IsInSet(IEnumerable<TProperty> set)
         {
-            _set = set;
+            Params.Add(new RuleParameter("set", set));
         }
 
         public IsInSet(Func<T,IEnumerable<TProperty>> expression)
         {
-            _expression = expression;
-        }
-
-        public override OrderedDictionary Parameters
-        {
-            get { return new OrderedDictionary() { }; }
+            Params.Add(new RuleParameter("set", expression));
         }
 
         public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
-            if (_expression != null)
-            {
-                _set = _expression.Invoke(context.Instance);                
-            }
+            var set = (IEnumerable<TProperty>)Params[0].GetParamValue(context);
 
-            return Evaluate(context.PropertyValue != null && _set.Contains(context.PropertyValue), context, notification);
+            return Evaluate(context.PropertyValue != null && set.Contains(context.PropertyValue), context, notification);
         }
     }
 }

@@ -6,11 +6,6 @@ namespace SpecExpress.Rules.StringValidators
 {
     public class Alpha<T> : RuleValidator<T, string>
     {
-        public override OrderedDictionary Parameters
-        {
-            get { return new OrderedDictionary() { }; }
-        }
-
         public override bool Validate(RuleValidatorContext<T, string> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {   
             //Guard against null in Regex Match

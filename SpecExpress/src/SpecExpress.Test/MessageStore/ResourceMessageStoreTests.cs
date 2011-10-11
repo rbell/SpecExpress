@@ -43,8 +43,12 @@ namespace SpecExpress.Test
 
             //string errorMessage = messageStore.GetFormattedDefaultMessage(ruleValidator.GetType().Name, context, ruleValidator.Parameters);
             var messageService = new MessageService();
-           
-            var errorMessage = messageService.GetDefaultMessageAndFormat(new MessageContext(context, ruleValidator.GetType(), false, null, null), ruleValidator.Parameters);
+
+            var messageContext = new MessageContext(context, ruleValidator.GetType(), false, null, null);
+            var paramValues =
+                (from ruleParameter in ruleValidator.Params select (object) ruleParameter.GetParamValue())
+                    .ToList();
+            var errorMessage = messageService.GetDefaultMessageAndFormat(messageContext, paramValues);
 
             Assert.That(errorMessage, Is.Not.Null.Or.Empty);
 
@@ -57,7 +61,7 @@ namespace SpecExpress.Test
         [Test]
         public void GetMessageForRuleWithMessageOverrride()
         {
-            ValidationCatalog.Configure( x=>x.AddMessageStore(new ResourceMessageStore(TestRuleErrorMessages.ResourceManager), "OverrideMessages"));
+            ValidationCatalog.Configure(x => x.AddMessageStore(new ResourceMessageStore(TestRuleErrorMessages.ResourceManager), "OverrideMessages"));
 
             ValidationCatalog.AddSpecification<Contact>(c =>
                                                             {
@@ -79,7 +83,7 @@ namespace SpecExpress.Test
         public void GetMessageForRuleWithMessageOverrrideAndMessageKey()
         {
             ValidationCatalog.Configure(x => x.AddMessageStore(new ResourceMessageStore(TestRuleErrorMessages.ResourceManager), "OverrideMessages"));
-            
+
             ValidationCatalog.AddSpecification<Contact>(c =>
             {
                 c.Check(x => x.LastName).Required().IsAlpha().With(m => m.MessageKey = "TestRule");
@@ -97,6 +101,6 @@ namespace SpecExpress.Test
         }
     }
 
-    
+
 
 }

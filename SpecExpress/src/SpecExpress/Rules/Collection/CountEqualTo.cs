@@ -8,29 +8,19 @@ namespace SpecExpress.Rules.Collection
 {
     public class CountEqualTo<T, TProperty> : RuleValidator<T, TProperty> where TProperty : IEnumerable
     {
-        private int _countEquals;
-
         public CountEqualTo(int countEquals)
         {
-            _countEquals = countEquals;
+            Params.Add(new RuleParameter("countEquals", countEquals));
         }
 
         public CountEqualTo(Expression<Func<T, int>> expression)
         {
-            SetPropertyExpression(expression);
-        }
-
-        public override OrderedDictionary Parameters
-        {
-            get { return new OrderedDictionary() {{"", _countEquals}}; }
+            Params.Add(new RuleParameter("countEquals", expression));
         }
 
         public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
-            if (PropertyExpressions.Any())
-            {
-                _countEquals = (int)GetExpressionValue(context);
-            }
+            var countEquals = (int)Params[0].GetParamValue(context);
 
             int collectionCount = 0;
             if (context.PropertyValue != null)
@@ -41,7 +31,7 @@ namespace SpecExpress.Rules.Collection
                 }
             }
 
-            return Evaluate(collectionCount == _countEquals, context, notification);
+            return Evaluate(collectionCount == countEquals, context, notification);
         }
     }
 }

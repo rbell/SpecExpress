@@ -5,11 +5,6 @@ namespace SpecExpress.Rules.Boolean
 {
     public class IsFalse<T> : RuleValidator<T, bool>
     {
-        public override OrderedDictionary Parameters
-        {
-            get { return new OrderedDictionary() { }; }
-        }
-
         public override bool Validate(RuleValidatorContext<T, bool> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
             return Evaluate(!context.PropertyValue, context, notification);

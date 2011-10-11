@@ -8,11 +8,6 @@ namespace SpecExpress.Rules.Collection
 {
     public class IsEmpty<T, TProperty> : RuleValidator<T, TProperty> where TProperty : IEnumerable
     {
-        public override OrderedDictionary Parameters
-        {
-            get { return new OrderedDictionary() { }; }
-        }
-
         public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
             int count = 0;

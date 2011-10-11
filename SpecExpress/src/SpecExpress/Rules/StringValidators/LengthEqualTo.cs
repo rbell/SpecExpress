@@ -17,17 +17,12 @@ namespace SpecExpress.Rules.StringValidators
             {
                 throw new ArgumentOutOfRangeException("length", "Length should be greater than 0");
             }
-            _length = length;
+            Params.Add(new RuleParameter("length", length));
         }
 
         public LengthEqualTo(Expression<Func<T, int>> expression)
         {
-            SetPropertyExpression(expression);
-        }
-
-        public override OrderedDictionary Parameters
-        {
-            get { return new OrderedDictionary() {{"", _length }}; }
+            Params.Add(new RuleParameter("length", expression));
         }
 
         public override bool Validate(RuleValidatorContext<T, string> context, SpecificationContainer specificationContainer, ValidationNotification notification)
@@ -38,13 +33,9 @@ namespace SpecExpress.Rules.StringValidators
             var contextWithLength = new RuleValidatorContext<T, string>(context.Instance, context.PropertyName, length.ToString(),
                                                                            context.PropertyInfo, context.Level, null);
 
-            if (PropertyExpressions.Any())
-            {
-                //Get value manually because Type of TProperty is int instead of string
-                _length = (int)PropertyExpressions.First().Value.Invoke(context.Instance);
-            }
-            
-            return Evaluate(length == _length, contextWithLength, notification);
+            var lengthParamVal = (int)Params[0].GetParamValue(context);
+
+            return Evaluate(length == lengthParamVal, contextWithLength, notification);
         }
     }
 }

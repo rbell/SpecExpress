@@ -21,11 +21,6 @@ namespace SpecExpress.Rules.Collection
         }
 
 
-        public override OrderedDictionary Parameters
-        {
-            get { return new OrderedDictionary() { }; }
-        }
-
         public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
             StringBuilder sb = new StringBuilder();

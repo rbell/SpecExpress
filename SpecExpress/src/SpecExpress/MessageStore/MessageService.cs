@@ -13,11 +13,11 @@ namespace SpecExpress.MessageStore
 {
     public class MessageService
     {
-        public string GetDefaultMessageAndFormat(MessageContext context, OrderedDictionary parameters)
+        public string GetDefaultMessageAndFormat(MessageContext context, IList<Object> parameterValues)
         {
             string messageTemplate = GetMessageTemplate(context);
           
-            return FormatMessage(messageTemplate, context.RuleContext, parameters, context.PropertyValueFormatter);
+            return FormatMessage(messageTemplate, context.RuleContext, parameterValues, context.PropertyValueFormatter);
         }
 
         public string GetMessageTemplate(MessageContext context)
@@ -45,12 +45,12 @@ namespace SpecExpress.MessageStore
         }
 
 
-        public string FormatMessage(string message, RuleValidatorContext context, OrderedDictionary parameters)
+        public string FormatMessage(string message, RuleValidatorContext context, IList<Object> parameterValues)
         {
-            return FormatMessage(message, context, parameters, null);
+            return FormatMessage(message, context, parameterValues, null);
         }
 
-        public string FormatMessage(string message, RuleValidatorContext context, OrderedDictionary parameters, Func<object, string> propertyValueFormatter)
+        public string FormatMessage(string message, RuleValidatorContext context, IList<Object> parameterValues, Func<object, string> propertyValueFormatter)
         {
             //Replace known keywords with actual values
             var formattedMessage = message.Replace("{PropertyName}", buildPropertyName(context));
@@ -74,7 +74,7 @@ namespace SpecExpress.MessageStore
                 formattedMessage = formattedMessage.Replace("{PropertyValue}", formattedPropertyValue);
             }
 
-            return parameters == null ? formattedMessage : String.Format(formattedMessage, parameters.Values.ToStringEnum().ToArray());
+            return parameterValues == null ? formattedMessage : String.Format(formattedMessage, parameterValues.ToStringEnum().ToArray());
         }
 
         public string BuildRuleKeyFromContext(MessageContext context)

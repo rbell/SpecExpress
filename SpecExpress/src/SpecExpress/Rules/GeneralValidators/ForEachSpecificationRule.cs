@@ -39,10 +39,6 @@ namespace SpecExpress.Rules.GeneralValidators
         protected string ItemName;
         private SpecificationBase _specificationBase;
         protected Validates<TCollectionType> Specification;
-        public override OrderedDictionary Parameters
-        {
-            get { return new OrderedDictionary() { }; }
-        }
 
         /// <summary>
         /// Validate using designated specification
@@ -69,8 +65,6 @@ namespace SpecExpress.Rules.GeneralValidators
         {
             ItemName = itemName;
         }
-
-
 
         public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
@@ -113,7 +107,7 @@ namespace SpecExpress.Rules.GeneralValidators
                     var childContext = new RuleValidatorContext(item, propertyName, item, context.Level,
                                                                 item.GetType() as MemberInfo, context);
                     
-                    var itemError = ValidationResultFactory.Create(this, childContext, Parameters, MessageKey);
+                    var itemError = ValidationResultFactory.Create(this, childContext, new List<object>(), MessageKey);
 
                     //var itemError = ValidationResultFactory.Create(this, context, Parameters, MessageKey);
                     itemError.NestedValidationResults = innerNotfication.Errors;
@@ -127,7 +121,7 @@ namespace SpecExpress.Rules.GeneralValidators
                 //Errors were found on at least one item in the collection to return a ValidationResult for the Collection property
                 Message = "{PropertyName} is invalid.";
                
-                collectionValidationResult = ValidationResultFactory.Create(this, context, Parameters, MessageKey);
+                collectionValidationResult = ValidationResultFactory.Create(this, context, new List<object>(), MessageKey);
                 collectionValidationResult.NestedValidationResults = itemsNestedValidationResult;
                 notification.Errors.Add(collectionValidationResult);
                 return false;
@@ -144,12 +138,7 @@ namespace SpecExpress.Rules.GeneralValidators
     public class ForEachSpecificationRuleUntyped<T, TProperty> : RuleValidator<T, TProperty>
     {
         protected string ItemName;
-     
-        public override OrderedDictionary Parameters
-        {
-            get { return new OrderedDictionary() { }; }
-        }
-        
+            
         public ForEachSpecificationRuleUntyped(string itemName)
         {
             ItemName = itemName;
@@ -200,7 +189,7 @@ namespace SpecExpress.Rules.GeneralValidators
                     var childContext = new RuleValidatorContext(item, propertyName, item, context.Level,
                                                                 item.GetType() as MemberInfo, context);
 
-                    var itemError = ValidationResultFactory.Create(this, childContext, Parameters, MessageKey);
+                    var itemError = ValidationResultFactory.Create(this, childContext, new List<object>(), MessageKey);
 
                     //var itemError = ValidationResultFactory.Create(this, context, Parameters, MessageKey);
                     itemError.NestedValidationResults = innerNotfication.Errors;
@@ -213,7 +202,7 @@ namespace SpecExpress.Rules.GeneralValidators
             {
                 //Errors were found on at least one item in the collection to return a ValidationResult for the Collection property
                 Message = "{PropertyName} is invalid.";
-                collectionValidationResult = ValidationResultFactory.Create(this, context, Parameters, MessageKey);
+                collectionValidationResult = ValidationResultFactory.Create(this, context, new List<object>(), MessageKey);
                 collectionValidationResult.NestedValidationResults = itemsNestedValidationResult;
                 notification.Errors.Add(collectionValidationResult);
                 return false;

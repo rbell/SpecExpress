@@ -1,59 +1,47 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace SpecExpress.Rules.IComparableValidators
 {
     public class Between<T, TProperty> : RuleValidator<T, TProperty>
     {
-        private TProperty _floor;
-        private TProperty _ceiling;
-
-        public Between(TProperty floor, TProperty ceiling)
+        public Between(TProperty floor, TProperty ceiling) : base()
         {
-            _floor = floor;
-            _ceiling = ceiling;
+            Params.Add(new RuleParameter("floor",floor));
+            Params.Add(new RuleParameter("ceiling",ceiling));
         }
 
         public Between(Expression<Func<T, TProperty>> floor, TProperty ceiling)
+            : base()
         {
-            SetPropertyExpression("floor", floor);
-            _ceiling = ceiling;
+            Params.Add(new RuleParameter("floor",floor));
+            Params.Add(new RuleParameter("ceiling",ceiling));
         }
 
         public Between(TProperty floor, Expression<Func<T, TProperty>> ceiling)
+            : base()
         {
-            _floor = floor;
-            SetPropertyExpression("ceiling", ceiling);
+            Params.Add(new RuleParameter("floor", floor));
+            Params.Add(new RuleParameter("ceiling", ceiling));
         }
 
         public Between(Expression<Func<T, TProperty>> floor, Expression<Func<T, TProperty>> ceiling)
+            : base()
         {
-            SetPropertyExpression("floor", floor);
-            SetPropertyExpression("ceiling",ceiling);
+            Params.Add(new RuleParameter("floor", floor));
+            Params.Add(new RuleParameter("ceiling", ceiling));
         }
 
         public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
-            if (PropertyExpressions.ContainsKey("floor"))
-            {
-                _floor = (TProperty)GetExpressionValue("floor", context);
-            }
-
-            if (PropertyExpressions.ContainsKey("ceiling"))
-            {
-                _ceiling = (TProperty)GetExpressionValue("ceiling", context);
-            }
-
+            var floor = (TProperty)Params[0].GetParamValue(context);
+            var ceiling = (TProperty)Params[1].GetParamValue(context);
             Comparer<TProperty> comparer = System.Collections.Generic.Comparer<TProperty>.Default;
            
-            return Evaluate(comparer.Compare(context.PropertyValue, _ceiling) <= 0 && comparer.Compare(context.PropertyValue, _floor) >= 0 , context, notification);
-        }
-
-        public override OrderedDictionary Parameters
-        {
-            get { return new OrderedDictionary() {{"floor", _floor}, {"ceiling", _ceiling}}; }
+            return Evaluate(comparer.Compare(context.PropertyValue, ceiling) <= 0 && comparer.Compare(context.PropertyValue, floor) >= 0 , context, notification);
         }
     }
 }

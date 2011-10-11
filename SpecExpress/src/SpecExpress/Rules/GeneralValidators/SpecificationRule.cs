@@ -20,10 +20,6 @@ namespace SpecExpress.Rules.GeneralValidators
     public class SpecificationRule<T, TProperty> : RuleValidator<T, TProperty>
     {
         protected SpecificationBase SpecificationBase;
-        public override OrderedDictionary Parameters
-        {
-            get { return new OrderedDictionary() { }; }
-        }
 
         /// <summary>
         /// Validate using designated specification
@@ -67,7 +63,7 @@ namespace SpecExpress.Rules.GeneralValidators
 
             if (innerNotification.Errors.Any())
             {   
-                result = ValidationResultFactory.Create(this, context, Parameters, MessageKey);
+                result = ValidationResultFactory.Create(this, context, new List<object>(), MessageKey);
                 result.NestedValidationResults = innerNotification.Errors;
                 notification.Errors.Add(result);
                 return false;

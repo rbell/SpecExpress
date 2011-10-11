@@ -8,31 +8,22 @@ namespace SpecExpress.Rules.StringValidators
 {
     public class Matches<T> : RuleValidator<T,string>
     {
-        private string _regexPattern;
-
         public Matches(string regexPattern)
         {
-            _regexPattern = regexPattern;
+            Params.Add(new RuleParameter("regexPattern", regexPattern));
         }
 
         public Matches(Expression<Func<T, string>> regexPattern)
         {
-            SetPropertyExpression(regexPattern);
+            Params.Add(new RuleParameter("regexPattern", regexPattern));
         }
 
-        public override OrderedDictionary Parameters
-        {
-            get { return new OrderedDictionary() {{"", _regexPattern }}; }
-        }
 
         public override bool Validate(RuleValidatorContext<T, string> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
-            if (PropertyExpressions.Any())
-            {
-                _regexPattern = (string) GetExpressionValue(context);
-            }
+            var regexPattern = (string)Params[0].GetParamValue(context);
 
-            Regex regex = new Regex(_regexPattern);
+            Regex regex = new Regex(regexPattern);
             bool isMatch = regex.IsMatch(context.PropertyValue);
             return Evaluate(isMatch, context, notification);
         }

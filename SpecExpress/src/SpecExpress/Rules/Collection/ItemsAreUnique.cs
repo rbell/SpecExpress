@@ -11,9 +11,9 @@ namespace SpecExpress.Rules.Collection
     {
         private string _dups;
 
-        public override OrderedDictionary Parameters
+        public override IList<RuleParameter> Params
         {
-            get { return new OrderedDictionary() { { "", _dups }}; }
+            get { return new List<RuleParameter>() { new RuleParameter("duplicates", _dups) }; }
         }
 
         public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
@@ -52,6 +52,6 @@ namespace SpecExpress.Rules.Collection
             {
                 return string.Empty;
             }
-        } 
+        }
     }
 }

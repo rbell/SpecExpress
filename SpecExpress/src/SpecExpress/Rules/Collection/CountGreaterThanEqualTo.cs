@@ -8,29 +8,19 @@ namespace SpecExpress.Rules.Collection
 {
     public class CountGreaterThanEqualTo<T, TProperty> : RuleValidator<T, TProperty> where TProperty : IEnumerable
     {
-        private int _countGreaterThanEqualTo;
-
         public CountGreaterThanEqualTo(int countGreaterThanEqualTo)
         {
-            _countGreaterThanEqualTo = countGreaterThanEqualTo;
+            Params.Add(new RuleParameter("countGreaterThanEqualTo", countGreaterThanEqualTo));
         }
 
         public CountGreaterThanEqualTo(Expression<Func<T, int>> expression)
         {
-            SetPropertyExpression(expression);
-        }
-
-        public override OrderedDictionary Parameters
-        {
-            get { return new OrderedDictionary() {{"", _countGreaterThanEqualTo }}; }
+            Params.Add(new RuleParameter("countGreaterThanEqualTo", expression));
         }
 
         public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
-            if (PropertyExpressions.Any())
-            {
-                _countGreaterThanEqualTo = (int)GetExpressionValue(context);
-            }
+            var countGreaterThanEqualTo = (int)Params[0].GetParamValue(context);
 
             int collectionCount = 0;
             if (context.PropertyValue != null)
@@ -41,7 +31,7 @@ namespace SpecExpress.Rules.Collection
                 }
             }
 
-            return Evaluate(collectionCount >= _countGreaterThanEqualTo, context, notification);
+            return Evaluate(collectionCount >= countGreaterThanEqualTo, context, notification);
         }
     }
 }

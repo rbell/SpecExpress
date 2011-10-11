@@ -7,10 +7,6 @@ namespace SpecExpress.Rules
     public class CustomRule<T,TProperty> : RuleValidator<T, TProperty>
     {
         private Func<T,TProperty,bool> _expression;
-        public override OrderedDictionary Parameters
-        {
-            get { return new OrderedDictionary() { }; }
-        }
 
         public CustomRule(Func<T, TProperty, bool> rule)
         {

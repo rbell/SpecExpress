@@ -7,9 +7,6 @@ namespace SpecExpress.Rules.StringValidators
 {
     public class LengthBetween<T> : RuleValidator<T, string>
     {
-        private int _min;
-        private int _max;
-
         public LengthBetween(int min, int max)
         {
             if (max < min)
@@ -17,31 +14,26 @@ namespace SpecExpress.Rules.StringValidators
                 throw new ArgumentOutOfRangeException("max", "Max should be larger than min.");
             }
 
-            _max = max;
-            _min = min;
+            Params.Add(new RuleParameter("min", min));
+            Params.Add(new RuleParameter("max", max));
         }
 
         public LengthBetween(Expression<Func<T, int>> min, Expression<Func<T, int>> max)
         {
-            SetPropertyExpression("min", min);
-            SetPropertyExpression("max", max);
+            Params.Add(new RuleParameter("min", min));
+            Params.Add(new RuleParameter("max", max));
         }
 
         public LengthBetween(Expression<Func<T, int>> min , int max)
         {
-             SetPropertyExpression("min", min);
-            _max = max;
+            Params.Add(new RuleParameter("min", min));
+            Params.Add(new RuleParameter("max", max));
         }
 
          public LengthBetween(int min, Expression<Func<T, int>> max)
         {
-             _min = min;
-             SetPropertyExpression("max",max);
-        }
-
-        public override OrderedDictionary Parameters
-        {
-            get { return new OrderedDictionary() {{"min", _min}, {"max", _max}}; }
+            Params.Add(new RuleParameter("min", min));
+            Params.Add(new RuleParameter("max", max));
         }
 
         public override bool Validate(RuleValidatorContext<T, string> context, SpecificationContainer specificationContainer, ValidationNotification notification)
@@ -51,17 +43,10 @@ namespace SpecExpress.Rules.StringValidators
             var contextWithLength = new RuleValidatorContext<T, string>(context.Instance, context.PropertyName, length.ToString(),
                                                                            context.PropertyInfo, context.Level, null);
 
-            if (PropertyExpressions.ContainsKey("min"))
-            {
-                _min = (int)PropertyExpressions["min"].Invoke(context.Instance);
-            }
+            var min = (int)Params[0].GetParamValue(context);
+            var max = (int)Params[1].GetParamValue(context);
 
-            if (PropertyExpressions.ContainsKey("max"))
-            {
-                _max = (int)PropertyExpressions["max"].Invoke(context.Instance);
-            }
-
-            return Evaluate(length >= _min && length <= _max, contextWithLength, notification);
+            return Evaluate(length >= min && length <= max, contextWithLength, notification);
         }
     }
 }

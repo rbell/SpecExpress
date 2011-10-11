@@ -8,33 +8,24 @@ namespace SpecExpress.Rules.IComparableValidators
 {
     public class EqualTo<T, TProperty> : RuleValidator<T, TProperty> 
     {
-        private TProperty _equalTo;
-
-        public EqualTo(TProperty greaterThan)
+        public EqualTo(TProperty equalTo)
         {
-            _equalTo = greaterThan;
+            Params.Add(new RuleParameter("equalTo", equalTo));
         }
 
         public EqualTo(Expression<Func<T, TProperty>> expression)
         {
-            SetPropertyExpression(expression);
+            Params.Add(new RuleParameter("equalTo", expression));
         }
 
         public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
-            if (PropertyExpressions.Any())
-            {
-                _equalTo = (TProperty)GetExpressionValue(context);
-            }
+            var equalTo = (TProperty)Params[0].GetParamValue(context);
 
             Comparer<TProperty> comparer = System.Collections.Generic.Comparer<TProperty>.Default;
 
-            return Evaluate(comparer.Compare(context.PropertyValue, _equalTo) == 0, context, notification);
+            return Evaluate(comparer.Compare(context.PropertyValue, equalTo) == 0, context, notification);
         }
 
-        public override OrderedDictionary Parameters
-        {
-            get { return new OrderedDictionary() {{"", _equalTo}}; }
-        }
     }
 }

@@ -8,35 +8,26 @@ namespace SpecExpress.Rules.Collection
 {
     public class Contains<T, TProperty> : RuleValidator<T, TProperty> where TProperty:IEnumerable
     {
-        private object _contains;
-
-        public Contains(object contains)
+        public Contains(object contains) : base()
         {
-            _contains = contains;
+            Params.Add(new RuleParameter("contains", contains));
         }
 
-        public Contains(Expression<Func<T,object>> expression)
+        public Contains(Expression<Func<T, object>> expression)
+            : base()
         {
-            SetPropertyExpression(expression);
-        }
-
-        public override OrderedDictionary Parameters
-        {
-            get { return new OrderedDictionary() {{"", _contains }}; }
+            Params.Add(new RuleParameter("contains", expression));
         }
 
         public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
             bool contains = false;
 
-            if (PropertyExpressions.Any())
-            {
-                _contains = GetExpressionValue(context);
-            }
+            var containsParamVal = Params[0].GetParamValue(context);
 
             foreach (var value in context.PropertyValue)
             {
-                if (value.Equals(_contains))
+                if (value.Equals(containsParamVal))
                 {
                     contains = true;
                     break;

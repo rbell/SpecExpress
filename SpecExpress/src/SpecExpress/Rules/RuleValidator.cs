@@ -15,51 +15,12 @@ namespace SpecExpress.Rules
         public object MessageKey { get; set; }
         public string MessageStoreName { get; set; }
         public bool Negate { get; set; }
-        public abstract OrderedDictionary Parameters { get; }
-        IDictionary<string, CompiledExpression> _propertyExpressions = new Dictionary<string, CompiledExpression>();
 
-        protected bool Evaluate(bool isValid, RuleValidatorContext context, ValidationNotification notification)
+        public virtual IList<RuleParameter> Params { get; private set; }
+
+        protected RuleValidator()
         {
-           
-
-            if (Negate)
-            {
-                if (!isValid)
-                {
-                    return true;
-                }
-                else
-                {
-                    notification.Errors.Add(ValidationResultFactory.Create(this, context, Parameters, MessageKey));
-                    return false;
-                }
-            }
-            else
-            {
-                if (isValid)
-                {
-                    return true;
-                }
-                else
-                {
-                    notification.Errors.Add(ValidationResultFactory.Create(this, context, Parameters, MessageKey));
-                    return false;
-                }
-            }
-        }
-
-        public IDictionary<string, CompiledExpression> PropertyExpressions { get { return _propertyExpressions; } }
-
-        protected CompiledExpression SetPropertyExpression(LambdaExpression expression)
-        {
-            return SetPropertyExpression(string.Empty, expression);
-        }
-
-        protected CompiledExpression SetPropertyExpression(string key, LambdaExpression expression)
-        {
-            var compiledExpression = new CompiledExpression(expression);
-            PropertyExpressions[key] = compiledExpression;
-            return compiledExpression;
+            Params = new List<RuleParameter>();
         }
 
         public string ErrorMessageTemplate
@@ -106,23 +67,37 @@ namespace SpecExpress.Rules
 
         }
 
-        /// <summary>
-        /// Defaults to first PropertyExpression
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        protected object GetExpressionValue(string key, RuleValidatorContext<T, TProperty> context)
+        protected bool Evaluate(bool isValid, RuleValidatorContext<T, TProperty> context, ValidationNotification notification)
         {
-            return GetExpressionValue(PropertyExpressions[key], context);
+            var paramValues =
+                (from ruleParameter in Params select (object) ruleParameter.GetParamValue(context)).ToList();
+
+            if (Negate)
+            {
+                if (!isValid)
+                {
+                    return true;
+                }
+                else
+                {
+                    notification.Errors.Add(ValidationResultFactory.Create(this, context, paramValues, MessageKey));
+                    return false;
+                }
+            }
+            else
+            {
+                if (isValid)
+                {
+                    return true;
+                }
+                else
+                {
+                    notification.Errors.Add(ValidationResultFactory.Create(this, context, paramValues, MessageKey));
+                    return false;
+                }
+            }
         }
 
-        protected object GetExpressionValue(RuleValidatorContext<T, TProperty> context)
-        {
-            return GetExpressionValue(PropertyExpressions.First().Value, context);
-        }
-
-        //public abstract ValidationResult Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, );
         public abstract bool Validate(RuleValidatorContext<T, TProperty> context,
                                       SpecificationContainer specificationContainer, ValidationNotification notification);
     }

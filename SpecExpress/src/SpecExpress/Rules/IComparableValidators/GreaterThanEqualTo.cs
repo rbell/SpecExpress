@@ -8,33 +8,24 @@ namespace SpecExpress.Rules.IComparableValidators
 {
     public class GreaterThanEqualTo<T, TProperty> : RuleValidator<T, TProperty>
     {
-        private TProperty _greaterThanEqualTo;
-
         public GreaterThanEqualTo(TProperty greaterThanEqualTo)
         {
-            _greaterThanEqualTo = greaterThanEqualTo;
+            Params.Add(new RuleParameter("greaterThanEqualTo", greaterThanEqualTo));
         }
 
         public GreaterThanEqualTo(Expression<Func<T, TProperty>> expression)
         {
-            SetPropertyExpression(expression);
+            Params.Add(new RuleParameter("greaterThanEqualTo", expression));
         }
 
         public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
-        {
-            if (PropertyExpressions.Any())
-            {
-                _greaterThanEqualTo = (TProperty)GetExpressionValue(context);
-            }
-
+       {
+            var greaterThanEqualTo = (TProperty)Params[0].GetParamValue(context);
+            
             Comparer<TProperty> comparer = System.Collections.Generic.Comparer<TProperty>.Default;
 
-            return Evaluate(comparer.Compare(context.PropertyValue, _greaterThanEqualTo) >= 0, context, notification);
+            return Evaluate(comparer.Compare(context.PropertyValue, greaterThanEqualTo) >= 0, context, notification);
         }
 
-        public override OrderedDictionary Parameters
-        {
-            get { return new OrderedDictionary() {{"", _greaterThanEqualTo }}; }
-        }
     }
 }

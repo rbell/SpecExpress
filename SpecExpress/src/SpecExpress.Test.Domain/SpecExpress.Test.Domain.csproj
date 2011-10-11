@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SpecExpress.Test.Domain</RootNamespace>
     <AssemblyName>SpecExpress.Test.Domain</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -31,6 +31,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -84,12 +85,6 @@
     <Compile Include="Values\Address.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SpecExpress\SpecExpress.csproj">
-      <Project>{0A8DF7B2-EAFC-457B-93EF-EE3030ABAF46}</Project>
-      <Name>SpecExpress</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Factories\" />
   </ItemGroup>
   <ItemGroup>
@@ -108,6 +103,12 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SpecExpress\SpecExpress.csproj">
+      <Project>{0A8DF7B2-EAFC-457B-93EF-EE3030ABAF46}</Project>
+      <Name>SpecExpress</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

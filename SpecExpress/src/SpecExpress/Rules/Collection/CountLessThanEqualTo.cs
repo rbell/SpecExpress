@@ -8,29 +8,19 @@ namespace SpecExpress.Rules.Collection
 {
     public class CountLessThanEqualTo<T, TProperty> : RuleValidator<T, TProperty> where TProperty : IEnumerable
     {
-        private int _countLessThanEqualTo;
-
         public CountLessThanEqualTo(int countLessThanEqualTo)
         {
-            _countLessThanEqualTo = countLessThanEqualTo;
+            Params.Add(new RuleParameter("countLessThanEqualTo", countLessThanEqualTo));
         }
 
         public CountLessThanEqualTo(Expression<Func<T, int>> expression)
         {
-            SetPropertyExpression(expression);
-        }
-
-        public override OrderedDictionary Parameters
-        {
-            get { return new OrderedDictionary() {{"", _countLessThanEqualTo }}; }
+            Params.Add(new RuleParameter("countLessThanEqualTo", expression));
         }
 
         public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
-            if (PropertyExpressions.Any())
-            {
-                _countLessThanEqualTo = (int)GetExpressionValue(context);
-            }
+            var countLessThanEqualTo = (int)Params[0].GetParamValue(context);
 
             int collectionCount = 0;
             if (context.PropertyValue != null)
@@ -41,7 +31,7 @@ namespace SpecExpress.Rules.Collection
                 }
             }
 
-            return Evaluate(collectionCount <= _countLessThanEqualTo, context, notification);
+            return Evaluate(collectionCount <= countLessThanEqualTo, context, notification);
         }
     }
 }

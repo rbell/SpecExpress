@@ -9,25 +9,18 @@ namespace SpecExpress.Rules.StringValidators
 {   
     public class MinLength<T> : RuleValidator<T, string>
     {
-        private int _min;
-
         public MinLength(int min)
         {
             if (min < 0)
             {
                 throw new ArgumentOutOfRangeException("min", "Min should be greater than 0");
             }
-            _min = min;
+            Params.Add(new RuleParameter("min", min));
         }
 
         public MinLength(Expression<Func<T, int>> expression)
         {
-            SetPropertyExpression(expression);
-        }
-
-        public override OrderedDictionary Parameters
-        {
-            get { return new OrderedDictionary() {{"",_min}}; }
+            Params.Add(new RuleParameter("min", expression));
         }
 
         public override bool Validate(RuleValidatorContext<T, string> context, SpecificationContainer specificationContainer, ValidationNotification notification)
@@ -38,13 +31,9 @@ namespace SpecExpress.Rules.StringValidators
             var contextWithLength = new RuleValidatorContext<T, string>(context.Instance, context.PropertyName, length.ToString(),
                                                                            context.PropertyInfo, context.Level, null);
 
-            if (PropertyExpressions.Any())
-            {
-                //Get value manually because Type of TProperty is int instead of string
-                _min = (int)PropertyExpressions.First().Value.Invoke(context.Instance);
-            }
+            var min = (int)Params[0].GetParamValue(context);
             
-            return Evaluate(length >= _min, contextWithLength, notification);
+            return Evaluate(length >= min, contextWithLength, notification);
         }
     }
 }

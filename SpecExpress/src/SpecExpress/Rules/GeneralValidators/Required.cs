@@ -8,11 +8,6 @@ namespace SpecExpress.Rules.GeneralValidators
 {
     public class Required<T, TProperty> : RuleValidator<T, TProperty>
     {
-        public override OrderedDictionary Parameters
-        {
-            get { return new OrderedDictionary() { }; }
-        }
-
         public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
             return Evaluate(!context.PropertyValue.IsNullOrDefault(), context, notification);      
