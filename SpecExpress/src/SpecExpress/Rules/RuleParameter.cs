@@ -15,6 +15,7 @@ namespace SpecExpress.Rules
             PropertyName = propName;
             this.paramValue = paramValue;
             IsExpressionParam = false;
+            IsDelegate = false;
         }
 
         public RuleParameter(string propName, LambdaExpression expression)
@@ -22,12 +23,23 @@ namespace SpecExpress.Rules
             PropertyName = propName;
             this.CompiledExpression = new CompiledExpression(expression);
             IsExpressionParam = true;
+            IsDelegate = false;
+        }
+
+        public RuleParameter(string propName, Delegate dDelegate)
+        {
+            PropertyName = propName;
+            Delegate = dDelegate;
+            IsExpressionParam = false;
+            IsDelegate = true;
         }
 
         public string PropertyName { get; private set; }
         public bool IsExpressionParam { get; private set; }
+        public bool IsDelegate { get; private set; }
         private object paramValue { get; set; }
         public CompiledExpression CompiledExpression { get; private set; }
+        public Delegate Delegate { get; private set; }
 
         public object GetParamValue()
         {
@@ -52,7 +64,14 @@ namespace SpecExpress.Rules
             }
             else
             {
-                return paramValue;
+                if (IsDelegate)
+                {
+                    return Delegate.DynamicInvoke(new object[] {context.Instance});
+                }
+                else
+                {
+                    return paramValue;
+                }
             }
         }
 
