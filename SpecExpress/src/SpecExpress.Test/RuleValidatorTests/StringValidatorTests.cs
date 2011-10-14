@@ -152,11 +152,11 @@ namespace SpecExpress.Test.RuleValidatorTests
         }
 
 
-        [TestCase("US", Result = true, TestName = "InSet")]
-        [TestCase("zz", Result = false, TestName = "NotInSet")]
+        //[TestCase("US", Result = true, TestName = "InSet")]
+        //[TestCase("zz", Result = false, TestName = "NotInSet")]
         [TestCase("US ", Result = false, TestName = "ValidValue With whitespace")]
-        [TestCase("  ", Result = false, TestName = "Whitespace")]
-        [TestCase(null, Result = false, TestName = "Null")]
+        //[TestCase("  ", Result = false, TestName = "Whitespace")]
+        //[TestCase(null, Result = false, TestName = "Null")]
         public bool IsInSet_GenericList_IsValid(string propertyValue)
         {
             //List
