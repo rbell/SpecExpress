@@ -18,7 +18,7 @@ properties {
 $framework = '4.0'
 task default -depends PackNuget
 
-task PackNuget -depends Build,Test,Deploy{
+task PackNuget {
 	if (test-path $NuGetPackDir\SpecExpress) {  
 		remove-item -force -recurse $NuGetPackDir\SpecExpress -ErrorAction SilentlyContinue | Out-Null
 	}
