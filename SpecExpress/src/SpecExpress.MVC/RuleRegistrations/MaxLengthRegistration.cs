@@ -20,7 +20,7 @@ namespace SpecExpress.MVC.RuleRegistrations
                 };
 
                 // Map the jquery "maxlength" parameter to the specexpress parameter keyed by an empty string.
-                map.Parameters.Add("maxlength", "");
+                map.Parameters.Add("maxlength", "max");
                 return map;
             }
         }

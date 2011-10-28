@@ -81,14 +81,23 @@ namespace SpecExpress.MVC
                         if (expression.Body.NodeType == ExpressionType.MemberAccess)
                         {
                             var propertyName = ((MemberExpression)expression.Body).Member.Name;
+                            var propertyType = ((MemberExpression) expression.Body).Type;
                             clientRule.ValidationParameters.Add(parameter.Key,
-                                                                new PropertyExpressionParam() { PropertyName = propertyName });
+                                                                new PropertyExpressionParam() { PropertyName = propertyName, IsDate = propertyType == typeof(DateTime)});
                         }
                     }
                     else
                     {
-                        //parameter.value is the index of the matching value in the rulevalidator parameters collection
-                        clientRule.ValidationParameters.Add(parameter.Key, ruleParam.GetParamValue());
+                        var paramValue = ruleParam.GetParamValue();
+                        if (paramValue is DateTime)
+                        {
+                            clientRule.ValidationParameters.Add(parameter.Key, new DateTimeParam(ruleParam.GetParamValue()));
+                        }
+                        else
+                        {
+                            //parameter.value is the index of the matching value in the rulevalidator parameters collection
+                            clientRule.ValidationParameters.Add(parameter.Key, ruleParam.GetParamValue());
+                        }
                     }
                 }
             }
@@ -103,14 +112,36 @@ namespace SpecExpress.MVC
                 IsProperty = true;
             }
 
+            public bool IsDate { get; set; }
+
             public bool IsProperty { get; private set; }
 
             public string PropertyName { get; set; }
 
             public override string ToString()
             {
-                return "{\"isProperty\":\"true\",\"propertyName\":\"" + PropertyName + "\"}";
+                return "{\"isProperty\":\"true\",\"isDate\":\"" + IsDate.ToString() + "\",\"propertyName\":\"" + PropertyName + "\"}";
             }
+        }
+
+        public class DateTimeParam
+        {
+            public DateTimeParam(object dateTime)
+            {
+                DateTimeVal = (DateTime)dateTime;
+            }
+
+            public DateTime DateTimeVal { get; set; }
+
+            public override string ToString()
+            {
+                DateTime d1 = new DateTime(1970, 1, 1);
+                DateTime d2 = DateTimeVal.ToUniversalTime();
+                TimeSpan ts = new TimeSpan(d2.Ticks - d1.Ticks);
+
+                return "{\"isDate\":\"true\",\"dateTimeVal\":\"" + ts.TotalMilliseconds.ToString() + "\"}";
+            }
+
         }
 
     }

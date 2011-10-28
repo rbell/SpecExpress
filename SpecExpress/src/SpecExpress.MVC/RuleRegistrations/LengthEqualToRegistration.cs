@@ -19,7 +19,7 @@ namespace SpecExpress.MVC.RuleRegistrations
                                JQueryRuleName = "speclengthequalto"
                            };
                 // Map the jquery "minlength" parameter to the specexpress parameter keyed by an empty string.
-                map.Parameters.Add("length", "");
+                map.Parameters.Add("length", "length");
                 return map;
             }
         }

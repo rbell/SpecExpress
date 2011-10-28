@@ -34,15 +34,51 @@
     }
 
     function parseParam(paramVal) {
-        var jsonParam = eval('(' + paramVal + ')');
-        if (jsonParam.isProperty) {
-            return "#" + jsonParam.propertyName;
+        var parm = paramVal;
+
+        try {
+            var jsonParam = eval('(' + paramVal + ')');
+            if (jsonParam.isProperty) {
+                parm = jsonParam;
+                parm.toString = function ()
+                { return parm.propertyName; };
+            }
+            else {
+                if (jsonParam.isDate) {
+                    var dt = new Date();
+                    dt.setTime(parseInt(jsonParam.dateTimeVal));
+                    jsonParam.dateTimeVal = dt;
+                    parm = jsonParam;
+                    parm.toString = function ()
+                    { return parm.dateTimeVal.toString(); };
+                }
+            }
+        } catch (e) {
+        }
+        return parm;
+    }
+
+    function getParamValue(param) {
+        if (param.isProperty) {
+            var parmLookup = "#" + param.propertyName;
+            var parmVal = $(parmLookup).val();
+            if (param.isDate) {
+                return Date.parse(parmVal);
+            }
+            else {
+                return $(param.propertyName).val();
+            }
         }
         else {
-            return paramVal;
+            if (param.isDate) {
+                return param.dateTimeVal;
+            }
+            else {
+                return param;
+            }
         }
     }
-    
+
     $.validator.unobtrusive.adapters.add("specrequired", function (options) {
         // jQuery Validate equates "required" with "mandatory" for checkbox elements
         if (options.element.tagName.toUpperCase() !== "INPUT" || options.element.type.toUpperCase() !== "CHECKBOX") {
@@ -51,7 +87,7 @@
     });
 
     $.validator.unobtrusive.adapters.add("specalpha", function (options) {
-           setValidationValues(options, "specalpha", true);
+        setValidationValues(options, "specalpha", true);
     });
 
     $.validator.addMethod("specalpha", function (value, element, param) {
@@ -81,10 +117,8 @@
     });
 
     $.validator.addMethod("specmatches", function (value, element, param) {
-        var match = param.charAt(0) == "#" ?
-            parseInt($(param).val()) :
-            parseInt(param);
-        
+        var match = getParamValue(param);
+
         if (typeof value == "string") {
             return value.match(match);
         }
@@ -92,19 +126,15 @@
             return true;
         }
     });
-    
+
     $.validator.unobtrusive.adapters.add("speclengthbetween", ["minlength", "maxlength"], function (options) {
-        setValidationValues(options, "speclengthbetween", [parseParam(options.params.minlength),parseParam(options.params.maxlength)]);
+        setValidationValues(options, "speclengthbetween", [parseParam(options.params.minlength), parseParam(options.params.maxlength)]);
     });
 
     $.validator.addMethod("speclengthbetween", function (value, element, params) {
-        var minlen = params[0].charAt(0) == "#" ?
-            parseInt($(params[0]).val()) :
-            parseInt(params[0]);
+        var minlen = parseInt(getParamValue(params[0]));
 
-        var maxlen = params[1].charAt(0) == "#" ?
-            parseInt($(params[1]).val()) :
-            parseInt(params[1]);
+        var maxlen = parseInt(getParamValue(params[1]));
 
         return this.optional(element) || (this.getLength($.trim(value), element) >= minlen && this.getLength($.trim(value), element) <= maxlen);
     });
@@ -114,9 +144,7 @@
     });
 
     $.validator.addMethod("speclengthequalto", function (value, element, param) {
-        var len = param.charAt(0) == "#" ?
-            parseInt($(param).val()) :
-            parseInt(param);
+        var len = parseInt(getParamValue(param));
 
         return this.optional(element) || this.getLength($.trim(value), element) == len;
     });
@@ -126,9 +154,7 @@
     });
 
     $.validator.addMethod("specminlength", function (value, element, param) {
-        var len = param.charAt(0) == "#" ?
-            parseInt($(param).val()) :
-            parseInt(param);
+        var len = parseInt(getParamValue(param));
 
         return this.optional(element) || this.getLength($.trim(value), element) >= len;
     });
@@ -138,23 +164,20 @@
     });
 
     $.validator.addMethod("specmaxlength", function (value, element, param) {
-        var len = param.charAt(0) == "#" ?
-            parseInt($(param).val()) :
-            parseInt(param);
+        var len = parseInt(getParamValue(param));
 
         return this.optional(element) || this.getLength($.trim(value), element) <= len;
     });
-    
+
     $.validator.unobtrusive.adapters.add("specgreaterthan", ["greaterthan"], function (options) {
         setValidationValues(options, "specgreaterthan", parseParam(options.params.greaterthan));
     });
 
     $.validator.addMethod("specgreaterthan", function (value, element, param) {
-        var greaterThan = param.charAt(0) == "#" ?
-            $(param).val() :
-            param;
+        var greaterThan = getParamValue(param);
 
-        return this.optional(element) || value > greaterThan;
+        var compVal = param.isDate ? Date.parse(value) : value;
+        return this.optional(element) || compVal > greaterThan;
     });
 
     $.validator.unobtrusive.adapters.add("speclessthan", ["lessthan"], function (options) {
@@ -162,21 +185,17 @@
     });
 
     $.validator.addMethod("speclessthan", function (value, element, param) {
-        var lessThan = param.charAt(0) == "#" ?
-            $(param).val() :
-            param;
+        var lessThan = getParamValue(param);
 
         return this.optional(element) || value < lessThan;
     });
-    
+
     $.validator.unobtrusive.adapters.add("specgreaterthanequalto", ["greaterthanequalto"], function (options) {
-        setValidationValues(options, "specgreaterthanequalto", parseParam(options.params.greaterthan));
+        setValidationValues(options, "specgreaterthanequalto", parseParam(options.params.greaterthanequalto));
     });
 
     $.validator.addMethod("specgreaterthanequalto", function (value, element, param) {
-        var greaterThan = param.charAt(0) == "#" ?
-            $(param).val() :
-            param;
+        var greaterThan = getParamValue(param);
 
         return this.optional(element) || value >= greaterThan;
     });
@@ -186,25 +205,19 @@
     });
 
     $.validator.addMethod("speclessthanequalto", function (value, element, param) {
-        var lessThan = param.charAt(0) == "#" ?
-            $(param).val() :
-            param;
+        var lessThan = getParamValue(param);
 
         return this.optional(element) || value <= lessThan;
     });
 
-    $.validator.unobtrusive.adapters.add("specbetween", ["floor","ceiling"], function (options) {
-        setValidationValues(options, "specbetween", [parseParam(options.params.floor),parseParam(options.params.ceiling)]);
+    $.validator.unobtrusive.adapters.add("specbetween", ["floor", "ceiling"], function (options) {
+        setValidationValues(options, "specbetween", [parseParam(options.params.floor), parseParam(options.params.ceiling)]);
     });
 
     $.validator.addMethod("specbetween", function (value, element, params) {
-        var floor = params[0].charAt(0) == "#" ?
-            $(params[0]).val() :
-            param[0];
+        var floor = getParamValue(params[0]);
 
-        var ceiling = params[1].charAt(0) == "#" ?
-            $(params[1]).val() :
-            param[1];
+        var ceiling = getParamValue(params[1]);
 
         return this.optional(element) || (value >= floor && value <= ceiling);
     });
@@ -213,10 +226,8 @@
         setValidationValues(options, "specequalto", parseParam(options.params.equalto));
     });
 
-    $.validator.addMethod("specequalto", function (value, element, params) {
-        var equalto = params[0].charAt(0) == "#" ?
-            $(param).val() :
-            param;
+    $.validator.addMethod("specequalto", function (value, element, param) {
+        var equalto = getParamValue(param);
 
         return this.optional(element) || value == equalto;
     });
