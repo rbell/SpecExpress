@@ -81,7 +81,7 @@ task PackNuget {
 
 }
 
-task PublishNuget -depends PackNuget {
+task PublishNuget {
     #We don't care if deleting fails..
     nuget delete SpecExpress $version -NoPrompt
     nuget delete SpecExpress.MVC3 $version -NoPrompt
