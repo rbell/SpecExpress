@@ -19,6 +19,7 @@ $framework = '4.0'
 task default -depends PackNuget
 
 task PackNuget {
+	#Package normal dll
 	if (test-path $NuGetPackDir\SpecExpress) {  
 		remove-item -force -recurse $NuGetPackDir\SpecExpress -ErrorAction SilentlyContinue | Out-Null
 	}
@@ -35,13 +36,62 @@ task PackNuget {
     $Spec.Save("$NuGetPackDir\SpecExpress\SpecExpress.nuspec")
 	
     exec { nuget pack "$NuGetPackDir\SpecExpress\SpecExpress.nuspec" -OutputDirectory "$NuGetPackDir" }
+	
+	# Package MVC
+	if (test-path $NuGetPackDir\SpecExpressMVC) {  
+		remove-item -force -recurse $NuGetPackDir\SpecExpressMVC -ErrorAction SilentlyContinue | Out-Null
+	}
+	
+	mkdir $NuGetPackDir\SpecExpressMVC
+	
+    cp "$src_directory\NuGetSpecs\SpecExpress.MVC3.nuspec" "$NuGetPackDir\SpecExpressMVC"
+
+    mkdir "$NuGetPackDir\SpecExpressMVC\lib"
+    cp "$release_directory\SpecExpress.MVC.dll" "$NuGetPackDir\SpecExpressMVC\lib"
+    
+    mkdir "$NuGetPackDir\SpecExpressMVC\content\Scripts"
+    cp "$src_directory\SpecExpress.MVC.Example\Scripts\specexpress.unobtrusive.js" "$NuGetPackDir\SpecExpressMVC\content\Scripts"
+    cp "$src_directory\SpecExpress.MVC.Example\Scripts\date.js" "$NuGetPackDir\SpecExpressMVC\content\Scripts"
+    
+	[xml] $Spec = gc "$NuGetPackDir\SpecExpressMVC\SpecExpress.MVC3.nuspec"
+    $Spec.package.metadata.version = $version
+    $Spec.package.metadata.dependencies.dependency.version = $version
+    $Spec.Save("$NuGetPackDir\SpecExpressMVC\SpecExpress.MVC3.nuspec")
+	
+    exec { nuget pack "$NuGetPackDir\SpecExpressMVC\SpecExpress.MVC3.nuspec" -OutputDirectory "$NuGetPackDir" }
+
+	#Package Silverlight
+	if (test-path $NuGetPackDir\SpecExpressSL) {  
+		remove-item -force -recurse $NuGetPackDir\SpecExpressSL -ErrorAction SilentlyContinue | Out-Null
+	}
+	
+	mkdir $NuGetPackDir\SpecExpressSL
+	
+    cp "$src_directory\NuGetSpecs\SpecExpress.Silverlight.nuspec" "$NuGetPackDir\SpecExpressSL"
+
+    mkdir "$NuGetPackDir\SpecExpressSL\lib"
+    cp "$release_directory\SpecExpress.Silverlight.dll" "$NuGetPackDir\SpecExpressSL\lib"
+    
+	[xml] $Spec = gc "$NuGetPackDir\SpecExpressSL\SpecExpress.Silverlight.nuspec"
+    $Spec.package.metadata.version = $version
+    $Spec.package.metadata.dependencies.dependency.version = $version
+    $Spec.Save("$NuGetPackDir\SpecExpressSL\SpecExpress.Silverlight.nuspec")
+	
+    exec { nuget pack "$NuGetPackDir\SpecExpressSL\SpecExpress.Silverlight.nuspec" -OutputDirectory "$NuGetPackDir" }
+
 }
 
 task PublishNuget -depends PackNuget {
-    $PackageName = gci *.nupkg
     #We don't care if deleting fails..
-    nuget delete $NuGetPackageName $version -NoPrompt
-    exec { nuget push $PackageName }
+    nuget delete SpecExpress $version -NoPrompt
+    nuget delete SpecExpress.MVC3 $version -NoPrompt
+    nuget delete SpecExpress.Silverlight $version -NoPrompt
+
+    $PackageNames = gci "$NuGetPackDir\*.nupkg"
+	foreach ($packageName in $PackageNames)
+	{
+      exec { nuget push $PackageName }
+	}  
 }
 
 function Get-RevisionFromGit([string]$path) {
