@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>SpecExpress.Silverlight</id>
+    <version>1.6.1.25</version>
+    <title>SpecExpress Silverlight</title>
+    <authors>Alan Baker and Randy Bell</authors>
+    <owners>Alan Baker and Randy Bell</owners>
+    <licenseUrl>http://specexpress.codeplex.com/license</licenseUrl>
+    <projectUrl>http://specexpress.codeplex.com/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Supports SpecExpress Validation for Silverlight applications.</description>
+    <summary>Silverlight support for SpecExpress: A fluent validation framework and container for .Net that makes it easier to write validation rules and validate your objects.</summary>
+    <language>en-US</language>
+    <dependencies>
+      <dependency id="SpecExpress" version="1.6.1.25" />
+    </dependencies>
+  </metadata>
+</package>
