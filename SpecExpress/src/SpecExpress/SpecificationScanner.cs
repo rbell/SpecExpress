@@ -77,8 +77,10 @@ namespace SpecExpress
 
         private void scanAssembliesForSpecifications(List<Assembly> assemblies)
         {
+            var thisAssembly = this.GetType().Assembly.FullName;
+
             //Find all types in all assemblies that inherit from Specification
-            IEnumerable<Type> specs = from a in assemblies
+            IEnumerable<Type> specs = from a in assemblies where a.FullName != thisAssembly
                         select a.GetExportedTypes() into types
                         from type in types
                         where typeof(SpecificationBase).IsAssignableFrom(type) && !type.IsAbstract
