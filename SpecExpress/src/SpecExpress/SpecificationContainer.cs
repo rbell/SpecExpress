@@ -93,13 +93,13 @@ namespace SpecExpress
                 //No default specs defined
                 if (!defaultSpecs.Any())
                 {
-                    throw new SpecExpressConfigurationException("Multiple Specifications found and none are defined as default.");
+                    throw new SpecExpressConfigurationException(string.Format("Multiple Specifications found and none are defined as default for {0}.", type.FullName));
                 }
 
                 //Multiple specs defined as Default
                 if (defaultSpecs.Count() > 1)
                 {
-                    throw new SpecExpressConfigurationException("Multiple Specifications found and multiple are defined as default.");
+                    throw new SpecExpressConfigurationException(string.Format("Multiple Specifications found and none are defined as default for {0}.", type.FullName));
                 }
 
                 return defaultSpecs.First();
