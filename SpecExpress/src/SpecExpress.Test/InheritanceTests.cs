@@ -46,7 +46,7 @@ namespace SpecExpress.Test
             
             Assert.That(results.Errors.Count, Is.EqualTo(2));
             var errorMessages = results.Errors.Select(x => x.ToString());
-            Assert.That(errorMessages.Contains("Name is required."));
+            Assert.That(errorMessages.Contains("Cust Name is required."));
             Assert.That(errorMessages.Contains("Special Greeting is required."));
         }
 

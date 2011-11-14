@@ -1,4 +1,6 @@
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Reflection;
 using SpecExpress.Enums;
 using SpecExpress.Util;
@@ -14,7 +16,7 @@ namespace SpecExpress.Rules
         public Object Instance { get; set; }
         public ValidationLevelType Level { get; protected set; }
 
-        public RuleValidatorContext(object instance, string propertyName, object propertyValue,ValidationLevelType level, MemberInfo propertyInfo, RuleValidatorContext parentContext)
+        public RuleValidatorContext(object instance, string propertyName, object propertyValue, ValidationLevelType level, MemberInfo propertyInfo, RuleValidatorContext parentContext)
         {
             Instance = instance;
             PropertyName = propertyName;
@@ -26,25 +28,44 @@ namespace SpecExpress.Rules
 
         public RuleValidatorContext(object instance, PropertyValidator validator, RuleValidatorContext parentContext)
         {
-           
+
             PropertyValue = validator.GetValueForProperty(instance);
 
 
-
-            PropertyName = String.IsNullOrEmpty(validator.PropertyNameOverride)
-                             ? validator.PropertyName.SplitPascalCase()
-                             : validator.PropertyNameOverride;
-
-        
+            if (validator.PropertyNameOverride == null)
+            {
+                var instanceType = instance.GetType();
+                var validationProperty = instanceType.GetProperty(validator.PropertyName);
+                if (validationProperty != null)
+                {
+                    var displayAttributeQry = from attribute in validationProperty.GetCustomAttributes(true)
+                                              where attribute is DisplayAttribute
+                                              select attribute;
+                    if (displayAttributeQry.Any())
+                    {
+                        var displayAttribute = displayAttributeQry.First() as DisplayAttribute;
+                        PropertyName = displayAttribute.GetName();
+                    }
+                }
+                if (String.IsNullOrEmpty(PropertyName))
+                {
+                    PropertyName = validator.PropertyName.SplitPascalCase();
+                }
+            }
+            else
+            {
+                PropertyName = validator.PropertyNameOverride;
+            }
 
             PropertyInfo = validator.PropertyInfo;
             Parent = parentContext;
             Instance = instance;
             Level = validator.Level;
         }
+
     }
 
-    
+
 
     /// <summary>
     /// Retrieves the name and value of the Property given an Expression
@@ -55,25 +76,48 @@ namespace SpecExpress.Rules
     {
         public RuleValidatorContext(T instance, PropertyValidator<T, TProperty> validator,
                                     RuleValidatorContext parentContext)
-            : base(instance, validator, parentContext) 
+            : base(instance, validator, parentContext)
         {
-                PropertyName = validator.PropertyNameOverrideExpression == null ? validator.PropertyName.SplitPascalCase()
-                       : validator.PropertyNameOverrideExpression(instance);
-            
+            if (validator.PropertyNameOverrideExpression == null)
+            {
+                var instanceType = typeof(T);
+                var validationProperty = instanceType.GetProperty(validator.PropertyName);
+                if (validationProperty != null)
+                {
+                    var displayAttributeQry = from attribute in validationProperty.GetCustomAttributes(true)
+                                              where attribute is DisplayAttribute
+                                              select attribute;
+                    if (displayAttributeQry.Any())
+                    {
+                        var displayAttribute = displayAttributeQry.First() as DisplayAttribute;
+                        PropertyName = displayAttribute.GetName();
+                    }
+                }
+                if (String.IsNullOrEmpty(PropertyName))
+                {
+                    PropertyName = validator.PropertyName.SplitPascalCase();
+                }
+            }
+            else
+            {
+                PropertyName = validator.PropertyNameOverrideExpression(instance);
+            }
+
         }
 
         public RuleValidatorContext(T instance, string propertyName, TProperty propertyValue, MemberInfo propertyInfo, ValidationLevelType level,
-                                    RuleValidatorContext parentContext) : base(instance, propertyName, propertyValue, level, propertyInfo, parentContext ){}
+                                    RuleValidatorContext parentContext)
+            : base(instance, propertyName, propertyValue, level, propertyInfo, parentContext) { }
 
         public new TProperty PropertyValue
         {
-            get { return (TProperty) base.PropertyValue; }
+            get { return (TProperty)base.PropertyValue; }
             set { base.PropertyValue = value; }
         }
 
         public new T Instance
         {
-            get { return (T) base.Instance; }
+            get { return (T)base.Instance; }
             set { base.Instance = value; }
         }
     }

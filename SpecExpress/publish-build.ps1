@@ -81,6 +81,8 @@ task PackNuget {
 
 }
 
+task Publish -depends PublishCodePlexRelease, PublishNuget
+
 task PublishNuget {
     #We don't care if deleting fails..
     nuget delete SpecExpress $version -NoPrompt
@@ -92,6 +94,30 @@ task PublishNuget {
 	{
       exec { nuget push $PackageName }
 	}  
+}
+
+task PublishCodePlexRelease {
+    $codeplexUser = Read-Host "Please enter CodePlex User Name:"
+	$codeplexPassword = Read-Host "Please enter CodePlex Password:"
+	$realeaseDescription = Read-Host "Please enter description for release:"
+	$releaseName = "SpecExpress $version"
+    $codeplexPath = resolve-path ".\tools\codeplex-api"
+	[Reflection.Assembly]::LoadFrom("$codeplexPath\CodePlex.WebServices.Client.dll")
+	[Reflection.Assembly]::LoadFrom("$codeplexPath\ccnet.codeplex.plugin.dll")
+	[Reflection.Assembly]::LoadFrom("$codeplexPath\CodePlex.WebServices.Client.XmlSerializers.dll")
+	$credentials = newObject System.Net.NetworkCredential("$codeplexUser","$codeplexPassword")
+	$client = newObject CodePlex.WebServices.Client.ReleaseService
+	$client.Credentials = $credentials
+	$client.CreateARelease("specexpress","$releaseName","$releaseDescription",[system.datetime]::now,[CodePlex.WebServices.Client.ReleaseStatus]::Planned, $false, $false)
+	
+	$releaseFiles = new-Object "System.Collections.ObjectModel.Collection``1[CodePlex.WebServices.Client.ReleaseFile]"
+	$releaseFile = new-Object CodePlex.WebServices.Client.ReleaseFile
+	$releaseFile.Name = "SpecExpress $version"
+	$releaseFile.FileName = "SpecExpress-$version.zip"
+	$releaseFile.FileType = [CodePlex.WebServices.Client.ReleaseFileType]::RuntimeBinary
+	$releaseFile.FileDate = File.ReadAllBytes("$archive_directory\SpecExpress-$version.zip")
+	$releaseFiles.Add($releaseFile)
+	$client.UploadReleaseFiles("specexpress","$releaseName",$releaseFiles)
 }
 
 function Get-RevisionFromGit([string]$path) {
