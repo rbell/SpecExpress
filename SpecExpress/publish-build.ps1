@@ -105,10 +105,10 @@ task PublishCodePlexRelease {
 	[Reflection.Assembly]::LoadFrom("$codeplexPath\CodePlex.WebServices.Client.dll")
 	[Reflection.Assembly]::LoadFrom("$codeplexPath\ccnet.codeplex.plugin.dll")
 	[Reflection.Assembly]::LoadFrom("$codeplexPath\CodePlex.WebServices.Client.XmlSerializers.dll")
-	$credentials = newObject System.Net.NetworkCredential("$codeplexUser","$codeplexPassword")
-	$client = newObject CodePlex.WebServices.Client.ReleaseService
+	$credentials = New-Object System.Net.NetworkCredential("$codeplexUser","$codeplexPassword")
+	$client = New-Object CodePlex.WebServices.Client.ReleaseService
 	$client.Credentials = $credentials
-	$client.CreateARelease("specexpress","$releaseName","$releaseDescription",[system.datetime]::now,[CodePlex.WebServices.Client.ReleaseStatus]::Planned, $false, $false)
+	$client.CreateARelease("specexpress","$releaseName","releaseNotes",[system.datetime]::now,[CodePlex.WebServices.Client.ReleaseStatus]::Planned, $false, $false)
 	
 	$releaseFiles = new-Object "System.Collections.ObjectModel.Collection``1[CodePlex.WebServices.Client.ReleaseFile]"
 	$releaseFile = new-Object CodePlex.WebServices.Client.ReleaseFile
