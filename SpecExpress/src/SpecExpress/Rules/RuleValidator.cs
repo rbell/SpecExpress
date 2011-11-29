@@ -69,36 +69,47 @@ namespace SpecExpress.Rules
 
         protected bool Evaluate(bool isValid, RuleValidatorContext<T, TProperty> context, ValidationNotification notification)
         {
-            var paramValues =
-                (from ruleParameter in Params select (object) ruleParameter.GetParamValue(context)).ToList();
+			// Only evaluate the rule if Condition is null or Condition is not null and returns true
+			if (Condition == null || (Condition != null && Condition(context.Instance, context.PropertyValue)))
+			{
+				var paramValues =
+					(from ruleParameter in Params select (object) ruleParameter.GetParamValue(context)).ToList();
 
-            if (Negate)
-            {
-                if (!isValid)
-                {
-                    return true;
-                }
-                else
-                {
-                    notification.Errors.Add(ValidationResultFactory.Create(this, context, paramValues, MessageKey));
-                    return false;
-                }
-            }
-            else
-            {
-                if (isValid)
-                {
-                    return true;
-                }
-                else
-                {
-                    notification.Errors.Add(ValidationResultFactory.Create(this, context, paramValues, MessageKey));
-                    return false;
-                }
-            }
+				if (Negate)
+				{
+					if (!isValid)
+					{
+						return true;
+					}
+					else
+					{
+						notification.Errors.Add(ValidationResultFactory.Create(this, context, paramValues, MessageKey));
+						return false;
+					}
+				}
+				else
+				{
+					if (isValid)
+					{
+						return true;
+					}
+					else
+					{
+						notification.Errors.Add(ValidationResultFactory.Create(this, context, paramValues, MessageKey));
+						return false;
+					}
+				}
+			}
+			else
+			{
+				// Condition returned false so we should not evaluate this rule, so simply act as if it was valid.
+				return true;
+			}
         }
 
         public abstract bool Validate(RuleValidatorContext<T, TProperty> context,
                                       SpecificationContainer specificationContainer, ValidationNotification notification);
+
+		public Func<T, TProperty, bool> Condition { get; set; }
     }
 }

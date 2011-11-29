@@ -58,6 +58,16 @@ namespace SpecExpress.Test.DSLTests
                 .LessThan(DateTime.Now.AddDays(-10))
                 .Or.Group(r => r.GreaterThan(DateTime.Now).And.LessThan(DateTime.Now.AddDays(10)));
 
+        	Check(c => c.Name).Required()
+        		.Matches(c => c.NamePattern)
+        		.With(matches =>
+        		      	{
+        		      		matches.Condition =
+        		      			(c, n) => !string.IsNullOrWhiteSpace(c.NamePattern);
+        		      	})
+        		.And
+        		.MaxLength(c => c.Max);
+
         }
 
 
