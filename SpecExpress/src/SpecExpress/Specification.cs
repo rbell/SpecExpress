@@ -11,7 +11,9 @@ namespace SpecExpress
         {
             var spec = new SpecificationExpression<object>(rules);
 
-            var vn = spec.Validate(spec.Instance);
+            var vn = ValidationCatalog.Validate(spec.Instance, spec);
+
+            //var vn = spec.Validate(spec.Instance);
             if (!vn.IsValid)
             {
                 throw new ValidationException("Invalid " + spec.Instance.GetType().ToString(), vn);
