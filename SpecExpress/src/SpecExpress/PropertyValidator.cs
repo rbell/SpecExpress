@@ -30,6 +30,7 @@ namespace SpecExpress
         public Type PropertyType { get; private set; }
         public Type EntityType { get; private set; }
         public SpecificationBase CustomSpecificationBase { get; set; }
+        public string Label { get; set; }
 
         public MemberInfo PropertyInfo
         {
