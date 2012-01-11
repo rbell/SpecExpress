@@ -486,6 +486,16 @@ namespace SpecExpress
                     }
                 }
             }
+
+            // Apply the validator label if there is one, to any errors
+            if(!string.IsNullOrWhiteSpace(Label))
+            {
+                foreach (var error in notification.Errors)
+                {
+                    error.Label = Label;
+                }
+            }
+            
             return notification.IsValid;
         }
 
