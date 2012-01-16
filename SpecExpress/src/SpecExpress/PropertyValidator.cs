@@ -125,7 +125,7 @@ namespace SpecExpress
 
             try
             {
-                return Property.Compile().DynamicInvoke(new[] { instance });
+                return BuildPropertyDelegate().DynamicInvoke(new[] { instance });
             }
             catch (TargetInvocationException err)
             {
@@ -138,6 +138,12 @@ namespace SpecExpress
                     throw;
                 }
             }
+        }
+
+        private Delegate _propertyDelegate;
+        private Delegate BuildPropertyDelegate()
+        {
+            return _propertyDelegate ?? (_propertyDelegate = Property.Compile());
         }
 
         public RuleValidator RequiredRule { get; protected set; }
