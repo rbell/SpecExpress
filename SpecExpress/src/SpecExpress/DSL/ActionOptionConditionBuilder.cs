@@ -34,5 +34,16 @@ namespace SpecExpress.DSL
             return new ActionOptionBuilder<T, TProperty>(_propertyValidator);
         }
 
+        /// <summary>
+        /// Defines a custom "human-friendly" label for the validation rule.
+        /// The label can be located afterwards through <see cref="ValidationCatalog"/>'s <see cref="SpecificationContainer" />.
+        /// </summary>
+        /// <param name="labelName">The name for this custom label.</param>
+        /// <returns><see cref="ActionOptionConditionBuilder&lt;T, TProperty&gt;"/></returns>
+        public ActionOptionConditionBuilder<T, TProperty> WithLabel(string labelName)
+        {
+            _propertyValidator.Label = labelName;
+            return this;
+        }
     }
 }

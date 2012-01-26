@@ -51,8 +51,9 @@ namespace SpecExpress
 
         public ValidationLevelType Level { get; protected set; }
         
-
         public IEnumerable<ValidationResult> NestedValidationResults {get;set;}
+
+        public string Label { get; set; }
 
         public IEnumerable<string> AllErrorMessages()
         {

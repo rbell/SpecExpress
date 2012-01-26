@@ -105,7 +105,7 @@ namespace SpecExpress
             lock (this)
             {
                 PropertyValidator<T, TProperty> validator = registerValidator(expression);
-
+                
 
                 validator.PropertyNameOverrideExpression = propertyNameOverride;
                 validator.Level = ValidationLevelType.Error;

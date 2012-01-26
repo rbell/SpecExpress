@@ -129,5 +129,37 @@ namespace SpecExpress.Test
             var vn = ValidationCatalog.Validate(new Contact());
             Assert.That(vn.IsValid, Is.True);
         }
+
+        [Test]
+        public void Validate_Property_With_CustomName_IsValid_And_Label_Is_Set()
+        {
+            const string expected = "This is a custom rule label";
+
+            ValidationCatalog.AddSpecification<Contact>(spec => 
+                spec.Check(c => c.FirstName).WithLabel(expected)
+                .If(c => String.IsNullOrEmpty(c.Addresses[0].City)).Required());
+
+            var vn = ValidationCatalog.Validate(new Contact());
+            Assert.That(vn.IsValid, Is.True);
+
+            var actual = ValidationCatalog.SpecificationContainer.GetAllSpecifications().Single().PropertyValidators.Single().Label;
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Validate_Property_Label_Is_Available_On_Error_When_Invalid()
+        {
+            const string expected = "This is a custom rule label";
+
+            ValidationCatalog.AddSpecification<Contact>(spec =>
+                spec.Check(c => c.FirstName).WithLabel(expected).Required());
+
+            var contact = new Contact();
+            var vn = ValidationCatalog.Validate(contact);
+            Assert.That(vn.IsValid, Is.False);
+
+            var error = vn.Errors.Single();
+            Assert.AreEqual(expected, error.Label);
+        }
     }
 }
