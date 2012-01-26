@@ -39,7 +39,7 @@ namespace SpecExpress
 
         public void AddAssembliesFromPath(string path)
         {
-            var r = Directory.GetFiles(path).Where(file =>
+            var r = Directory.EnumerateFiles(path).Where(file =>
                                                                                Path.GetExtension(file).Equals(
                                                                                    ".exe",
                                                                                    StringComparison.OrdinalIgnoreCase)

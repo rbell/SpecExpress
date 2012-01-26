@@ -494,7 +494,7 @@ namespace SpecExpress
             }
 
             // Apply the validator label if there is one, to any errors
-            if(!string.IsNullOrWhiteSpace(Label))
+            if(!String.IsNullOrWhiteSpace(Label))
             {
                 foreach (var error in notification.Errors)
                 {
