@@ -98,7 +98,9 @@ namespace SpecExpress.Rules.GeneralValidators
             foreach (var item in propertyEnumerable)
             {
                 var innerNotfication = new ValidationNotification();
-                if (!_specificationBase.Validate(item, specificationContainer, innerNotfication))
+                _specificationBase.Validate(item, specificationContainer, innerNotfication);
+
+                if (innerNotfication.Errors.Any())
                 {
                     var propertyName = String.IsNullOrEmpty(ItemName) ? item.GetType().Name : ItemName;
 

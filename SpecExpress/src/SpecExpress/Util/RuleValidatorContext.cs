@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
@@ -28,29 +29,11 @@ namespace SpecExpress.Rules
 
         public RuleValidatorContext(object instance, PropertyValidator validator, RuleValidatorContext parentContext)
         {
-
             PropertyValue = validator.GetValueForProperty(instance);
-
-
+            
             if (validator.PropertyNameOverride == null)
             {
-                var instanceType = instance.GetType();
-                var validationProperty = instanceType.GetProperty(validator.PropertyName);
-                if (validationProperty != null)
-                {
-                    var displayAttributeQry = from attribute in validationProperty.GetCustomAttributes(true)
-                                              where attribute is DisplayAttribute
-                                              select attribute;
-                    if (displayAttributeQry.Any())
-                    {
-                        var displayAttribute = displayAttributeQry.First() as DisplayAttribute;
-                        PropertyName = displayAttribute.GetName();
-                    }
-                }
-                if (String.IsNullOrEmpty(PropertyName))
-                {
-                    PropertyName = validator.PropertyName.SplitPascalCase();
-                }
+                SelectPropertyName(instance, validator);
             }
             else
             {
@@ -63,6 +46,60 @@ namespace SpecExpress.Rules
             Level = validator.Level;
         }
 
+        private static readonly IDictionary<Type, IDictionary<string, PropertyInfo>> _propertyBag = new Dictionary<Type, IDictionary<string, PropertyInfo>>();
+        private static readonly IDictionary<PropertyInfo, DisplayAttribute> _attributeBag = new Dictionary<PropertyInfo, DisplayAttribute>();
+        private void SelectPropertyName(object instance, PropertyValidator validator)
+        {
+            var instanceType = instance.GetType();
+            
+            var validationProperty = GetValidationProperty(validator, instanceType);
+
+            if(validationProperty != null)
+            {
+                DisplayAttribute displayAttribute = null;
+                if (!_attributeBag.ContainsKey(validationProperty))
+                {
+                    var displayAttributeQry = (from attribute in validationProperty.GetCustomAttributes(true)
+                                               where attribute is DisplayAttribute
+                                               select attribute).ToList();
+
+                    if (displayAttributeQry.Any())
+                    {
+                        displayAttribute = displayAttributeQry.First() as DisplayAttribute;
+                    }
+                    _attributeBag[validationProperty] = displayAttribute;
+                }
+                else
+                {
+                    displayAttribute = _attributeBag[validationProperty];
+                }
+
+                if (displayAttribute != null)
+                {
+                    PropertyName = displayAttribute.GetName();
+                }
+            }
+
+            if (String.IsNullOrEmpty(PropertyName))
+            {
+                PropertyName = validator.PropertyName.SplitPascalCase();
+            }
+        }
+
+        private static PropertyInfo GetValidationProperty(PropertyValidator validator, Type instanceType)
+        {
+            if (!_propertyBag.ContainsKey(instanceType))
+            {
+                _propertyBag.Add(instanceType, new Dictionary<string, PropertyInfo>());
+            }
+            var propertyBag = _propertyBag[instanceType];
+            if (!propertyBag.ContainsKey(validator.PropertyName))
+            {
+                propertyBag.Add(validator.PropertyName, instanceType.GetProperty(validator.PropertyName));
+            }
+            var validationProperty = propertyBag[validator.PropertyName];
+            return validationProperty;
+        }
     }
 
 
@@ -80,19 +117,7 @@ namespace SpecExpress.Rules
         {
             if (validator.PropertyNameOverrideExpression == null)
             {
-                var instanceType = typeof(T);
-                var validationProperty = instanceType.GetProperty(validator.PropertyName);
-                if (validationProperty != null)
-                {
-                    var displayAttributeQry = from attribute in validationProperty.GetCustomAttributes(true)
-                                              where attribute is DisplayAttribute
-                                              select attribute;
-                    if (displayAttributeQry.Any())
-                    {
-                        var displayAttribute = displayAttributeQry.First() as DisplayAttribute;
-                        PropertyName = displayAttribute.GetName();
-                    }
-                }
+                SelectPropertyName(validator);
                 if (String.IsNullOrEmpty(PropertyName))
                 {
                     PropertyName = validator.PropertyName.SplitPascalCase();
@@ -103,6 +128,60 @@ namespace SpecExpress.Rules
                 PropertyName = validator.PropertyNameOverrideExpression(instance);
             }
 
+        }
+
+        private static readonly IDictionary<Type, IDictionary<string, PropertyInfo>> _propertyBag = new Dictionary<Type, IDictionary<string, PropertyInfo>>();
+        private static readonly IDictionary<PropertyInfo, DisplayAttribute> _attributeBag = new Dictionary<PropertyInfo, DisplayAttribute>();
+        private void SelectPropertyName(PropertyValidator validator)
+        {
+            var instanceType = typeof (T);
+            var validationProperty = GetValidationProperty(validator, instanceType);
+
+            if(validationProperty != null)
+            {
+                DisplayAttribute displayAttribute = null;
+                if (!_attributeBag.ContainsKey(validationProperty))
+                {
+                    var displayAttributeQry = (from attribute in validationProperty.GetCustomAttributes(true)
+                                               where attribute is DisplayAttribute
+                                               select attribute).ToList();
+
+                    if (displayAttributeQry.Any())
+                    {
+                        displayAttribute = displayAttributeQry.First() as DisplayAttribute;
+                    }
+                    _attributeBag[validationProperty] = displayAttribute;
+                }
+                else
+                {
+                    displayAttribute = _attributeBag[validationProperty];
+                }
+
+                if (displayAttribute != null)
+                {
+                    PropertyName = displayAttribute.GetName();
+                }
+            }
+
+            if (String.IsNullOrEmpty(PropertyName))
+            {
+                PropertyName = validator.PropertyName.SplitPascalCase();
+            }
+        }
+
+        private static PropertyInfo GetValidationProperty(PropertyValidator validator, Type instanceType)
+        {
+            if (!_propertyBag.ContainsKey(instanceType))
+            {
+                _propertyBag.Add(instanceType, new Dictionary<string, PropertyInfo>());
+            }
+            var propertyBag = _propertyBag[instanceType];
+            if (!propertyBag.ContainsKey(validator.PropertyName))
+            {
+                propertyBag.Add(validator.PropertyName, instanceType.GetProperty(validator.PropertyName));
+            }
+            var validationProperty = propertyBag[validator.PropertyName];
+            return validationProperty;
         }
 
         public RuleValidatorContext(T instance, string propertyName, TProperty propertyValue, MemberInfo propertyInfo, ValidationLevelType level,

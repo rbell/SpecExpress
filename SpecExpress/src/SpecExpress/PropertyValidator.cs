@@ -30,6 +30,7 @@ namespace SpecExpress
         public Type PropertyType { get; private set; }
         public Type EntityType { get; private set; }
         public SpecificationBase CustomSpecificationBase { get; set; }
+        public string Label { get; set; }
 
         public MemberInfo PropertyInfo
         {
@@ -124,7 +125,7 @@ namespace SpecExpress
 
             try
             {
-                return Property.Compile().DynamicInvoke(new[] { instance });
+                return BuildPropertyDelegate().DynamicInvoke(new[] { instance });
             }
             catch (TargetInvocationException err)
             {
@@ -137,6 +138,12 @@ namespace SpecExpress
                     throw;
                 }
             }
+        }
+
+        private Delegate _propertyDelegate;
+        private Delegate BuildPropertyDelegate()
+        {
+            return _propertyDelegate ?? (_propertyDelegate = Property.Compile());
         }
 
         public RuleValidator RequiredRule { get; protected set; }
@@ -485,6 +492,16 @@ namespace SpecExpress
                     }
                 }
             }
+
+            // Apply the validator label if there is one, to any errors
+            if(!String.IsNullOrWhiteSpace(Label))
+            {
+                foreach (var error in notification.Errors)
+                {
+                    error.Label = Label;
+                }
+            }
+            
             return notification.IsValid;
         }
 
