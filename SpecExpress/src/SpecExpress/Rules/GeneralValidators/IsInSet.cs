@@ -18,7 +18,7 @@ namespace SpecExpress.Rules.GeneralValidators
             Params.Add(new RuleParameter("set", expression));
         }
 
-        public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
+        public override bool Validate(RuleValidatorContext<T, TProperty> context, ISpecificationContainer specificationContainer, ValidationNotification notification)
         {
             var set = (IEnumerable<TProperty>)Params[0].GetParamValue(context);
 

@@ -21,7 +21,7 @@ namespace SpecExpress.Rules.Collection
         }
 
 
-        public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
+        public override bool Validate(RuleValidatorContext<T, TProperty> context, ISpecificationContainer specificationContainer, ValidationNotification notification)
         {
             StringBuilder sb = new StringBuilder();
 

@@ -24,8 +24,8 @@ namespace SpecExpress
             PropertyType = propertyType;
         }
 
-        public abstract bool Validate(object instance, SpecificationContainer specificationContainer, ValidationNotification notification);
-        public abstract bool Validate(object instance, RuleValidatorContext parentRuleContexts, SpecificationContainer specificationContainer, ValidationNotification notification);
+        public abstract bool Validate(object instance, ISpecificationContainer specificationContainer, ValidationNotification notification);
+        public abstract bool Validate(object instance, RuleValidatorContext parentRuleContexts, ISpecificationContainer specificationContainer, ValidationNotification notification);
 
         public Type PropertyType { get; private set; }
         public Type EntityType { get; private set; }
@@ -190,19 +190,19 @@ namespace SpecExpress
         {
         }
 
-        public abstract bool Validate(T instance, RuleValidatorContext parentRuleContext, SpecificationContainer specificationContainer, ValidationNotification notification);
+        public abstract bool Validate(T instance, RuleValidatorContext parentRuleContext, ISpecificationContainer specificationContainer, ValidationNotification notification);
 
-        public bool Validate(T instance, SpecificationContainer specificationContainer, ValidationNotification notification)
+        public bool Validate(T instance, ISpecificationContainer specificationContainer, ValidationNotification notification)
         {
             return Validate(instance, null, specificationContainer, notification);
         }
 
-        public override bool Validate(object instance, SpecificationContainer specificationContainer, ValidationNotification notification)
+        public override bool Validate(object instance, ISpecificationContainer specificationContainer, ValidationNotification notification)
         {
             return Validate((T)instance, null, specificationContainer, notification);
         }
 
-        public override bool Validate(object instance, RuleValidatorContext parentRuleContext, SpecificationContainer specificationContainer, ValidationNotification notification)
+        public override bool Validate(object instance, RuleValidatorContext parentRuleContext, ISpecificationContainer specificationContainer, ValidationNotification notification)
         {
             return Validate((T)instance, parentRuleContext, specificationContainer, notification);
         }
@@ -464,7 +464,7 @@ namespace SpecExpress
             }
         }
 
-        public override bool Validate(T instance, RuleValidatorContext parentRuleContext, SpecificationContainer specificationContainer, ValidationNotification notification)
+        public override bool Validate(T instance, RuleValidatorContext parentRuleContext, ISpecificationContainer specificationContainer, ValidationNotification notification)
         {
             var context = new RuleValidatorContext<T, TProperty>(instance, this, parentRuleContext);
             if ((_propertyValueRequired || !context.PropertyValue.IsNullOrDefault()))
@@ -505,7 +505,7 @@ namespace SpecExpress
             return notification.IsValid;
         }
 
-        private void ValidateObjectGraph(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
+        private void ValidateObjectGraph(RuleValidatorContext<T, TProperty> context, ISpecificationContainer specificationContainer, ValidationNotification notification)
         {
             if (!notification.Errors.Any() && specificationContainer.TryGetSpecification(typeof(TProperty)) != null)
             {

@@ -35,7 +35,7 @@ namespace SpecExpress
             return ValidationCatalog.Validate(instance, context.SpecificationContainer, spec);
         }
 
-        public static SpecificationContainer SpecificationContainer
+        public static ISpecificationContainer SpecificationContainer
         {
             get { return new TContext().SpecificationContainer; }
         }
@@ -82,7 +82,11 @@ namespace SpecExpress
 
         public static bool ValidateObjectGraph { get; set; }
         public static ValidationCatalogConfiguration Configuration { get; private set; }
-        public static SpecificationContainer SpecificationContainer = new SpecificationContainer();
+        
+        //public static ISpecificationContainer SpecificationContainer = new SpecificationContainer();
+        public static ISpecificationContainer SpecificationContainer = new NoInstanceSpecificiationContainer();
+
+        
 
         static ValidationCatalog()
         {
@@ -126,12 +130,13 @@ namespace SpecExpress
             {
                 var specificationRegistry = new SpecificationScanner();
                 configuration(specificationRegistry);
-                SpecificationContainer.Add(specificationRegistry.FoundSpecifications);
 
-                if (!ValidationCatalog.SpecificationContainer.GetAllSpecifications().Any())
+                if (!specificationRegistry.FoundSpecifications.Any())
                 {
                     throw new SpecExpressConfigurationException("No specifications are registered with ValidationCatalog. Check if Scan has been run.");
-                }  
+                }
+
+                SpecificationContainer.Add(specificationRegistry.FoundSpecifications);
             }
         }
 
@@ -211,7 +216,7 @@ namespace SpecExpress
 
         #region Object Validation
 
-        internal static ValidationNotification Validate(object instance, SpecificationContainer container, SpecificationBase specificationBase)
+        internal static ValidationNotification Validate(object instance, ISpecificationContainer container, SpecificationBase specificationBase)
         {
             //Guard for null
             if (instance == null)
@@ -288,7 +293,7 @@ namespace SpecExpress
             return Validate(instance, SpecificationContainer, spec);
         }
 
-        private static ValidationNotification ValidateCollection(IEnumerable instance, SpecificationContainer specificationContainer)
+        private static ValidationNotification ValidateCollection(IEnumerable instance, ISpecificationContainer specificationContainer)
         {
             //assume that the first item in the collection is the same for all items in the collection and get the specification for that type
             IEnumerator enumerator = ((IEnumerable)instance).GetEnumerator();
@@ -306,7 +311,7 @@ namespace SpecExpress
             }
         }
 
-        private static ValidationNotification ValidateCollection(IEnumerable instance, SpecificationBase specificationBase, SpecificationContainer specificationContainer)
+        private static ValidationNotification ValidateCollection(IEnumerable instance, SpecificationBase specificationBase, ISpecificationContainer specificationContainer)
         {
             //Guard for null
             if (instance == null)
@@ -355,7 +360,7 @@ namespace SpecExpress
 
         }
 
-        internal static ValidationNotification ValidateProperty(object instance, string propertyName, SpecificationBase specificationBase, SpecificationContainer container)
+        internal static ValidationNotification ValidateProperty(object instance, string propertyName, SpecificationBase specificationBase, ISpecificationContainer container)
         {
             if (specificationBase == null)
             {

@@ -102,7 +102,7 @@ namespace SpecExpress.RuleTree
     public class RuleTree<T, TProperty> : RuleTree
     {
        
-        private Func<RuleValidatorContext<T, TProperty>, SpecificationContainer, ValidationNotification, bool> _lambda;
+        private Func<RuleValidatorContext<T, TProperty>, ISpecificationContainer, ValidationNotification, bool> _lambda;
 
         public RuleTree()
         {
@@ -123,7 +123,7 @@ namespace SpecExpress.RuleTree
             }
         }
 
-        public Func<RuleValidatorContext<T, TProperty>, SpecificationContainer, ValidationNotification, bool> LambdaExpression
+        public Func<RuleValidatorContext<T, TProperty>, ISpecificationContainer, ValidationNotification, bool> LambdaExpression
         {
             get
             {

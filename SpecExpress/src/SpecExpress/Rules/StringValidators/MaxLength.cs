@@ -23,7 +23,7 @@ namespace SpecExpress.Rules.StringValidators
             Params.Add(new RuleParameter("max", expression));
         }
 
-        public override bool Validate(RuleValidatorContext<T, string> context, SpecificationContainer specificationContainer, ValidationNotification notification)
+        public override bool Validate(RuleValidatorContext<T, string> context, ISpecificationContainer specificationContainer, ValidationNotification notification)
         {
             int length = String.IsNullOrEmpty(context.PropertyValue) ? 0 : context.PropertyValue.Length;
 

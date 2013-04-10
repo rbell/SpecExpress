@@ -8,15 +8,15 @@ namespace SpecExpress.RuleTree
 {
     public class RuleExpressionFactory<T, TProperty>
     {
-        public Func<RuleValidatorContext<T, TProperty>, SpecificationContainer, ValidationNotification, bool> CreateExpression(RuleTree<T, TProperty> tree)
+        public Func<RuleValidatorContext<T, TProperty>, ISpecificationContainer, ValidationNotification, bool> CreateExpression(RuleTree<T, TProperty> tree)
         {
             var contextParam = Expression.Parameter(typeof(RuleValidatorContext<T, TProperty>), "context");
-            var specContainerParam = Expression.Parameter(typeof(SpecificationContainer), "container");
+            var specContainerParam = Expression.Parameter(typeof(ISpecificationContainer), "container");
             var specNotificationParam = Expression.Parameter(typeof(ValidationNotification), "notification");
 
             var expression = BuildExpression(tree.Root, contextParam, specContainerParam, specNotificationParam);
             var lambda = Expression.Lambda(expression, new ParameterExpression[] { contextParam, specContainerParam, specNotificationParam });
-            var compiledFunc = lambda.Compile() as Func<RuleValidatorContext<T, TProperty>, SpecificationContainer, ValidationNotification, bool>;
+            var compiledFunc = lambda.Compile() as Func<RuleValidatorContext<T, TProperty>, ISpecificationContainer, ValidationNotification, bool>;
             return compiledFunc;
         }
 

@@ -18,7 +18,7 @@ namespace SpecExpress.Rules.Collection
             Params.Add(new RuleParameter("countEquals", expression));
         }
 
-        public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
+        public override bool Validate(RuleValidatorContext<T, TProperty> context, ISpecificationContainer specificationContainer, ValidationNotification notification)
         {
             var countEquals = (int)Params[0].GetParamValue(context);
 

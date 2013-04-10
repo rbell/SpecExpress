@@ -25,7 +25,7 @@ namespace SpecExpress
             }
         }
 
-        public bool Validate(object instance, SpecificationContainer specificationContainer, ValidationNotification notification)
+        public bool Validate(object instance, ISpecificationContainer specificationContainer, ValidationNotification notification)
         {
             lock (this)
             {

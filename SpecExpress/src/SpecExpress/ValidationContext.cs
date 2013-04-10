@@ -8,7 +8,9 @@ namespace SpecExpress
 {
     public abstract class ValidationContext
     {
-        private SpecificationContainer _specContainer = new SpecificationContainer();
+        //private ISpecificationContainer _specContainer = new SpecificationContainer();
+        private ISpecificationContainer _specContainer = new NoInstanceSpecificiationContainer();
+
 
         public ValidationContext()
         {
@@ -26,7 +28,7 @@ namespace SpecExpress
             _specContainer.Add(new TSpecType());
         }
 
-        public SpecificationContainer SpecificationContainer
+        public ISpecificationContainer SpecificationContainer
         {
             get { return _specContainer; }
         }

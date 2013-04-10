@@ -23,7 +23,7 @@ namespace SpecExpress.Rules.GeneralValidators
             
         }
         
-        public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
+        public override bool Validate(RuleValidatorContext<T, TProperty> context, ISpecificationContainer specificationContainer, ValidationNotification notification)
         {
             //Resolve the Specification
             Specification = specificationContainer.TryGetSpecification<TSpecification>() as Validates<TCollectionType>  ??
@@ -66,7 +66,7 @@ namespace SpecExpress.Rules.GeneralValidators
             ItemName = itemName;
         }
 
-        public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
+        public override bool Validate(RuleValidatorContext<T, TProperty> context, ISpecificationContainer specificationContainer, ValidationNotification notification)
         {
             if (Specification == null)
             {
@@ -155,7 +155,7 @@ namespace SpecExpress.Rules.GeneralValidators
 
        
 
-        public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
+        public override bool Validate(RuleValidatorContext<T, TProperty> context, ISpecificationContainer specificationContainer, ValidationNotification notification)
         { 
             ValidationResult collectionValidationResult = null;
 

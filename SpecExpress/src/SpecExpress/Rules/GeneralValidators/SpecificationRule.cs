@@ -8,7 +8,7 @@ namespace SpecExpress.Rules.GeneralValidators
 {
     public class SpecificationRule<T, TProperty, TSpecification> : SpecificationRule<T, TProperty> where TSpecification : Validates<TProperty>, new()
     {
-        public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
+        public override bool Validate(RuleValidatorContext<T, TProperty> context, ISpecificationContainer specificationContainer, ValidationNotification notification)
         {
             SpecificationBase = specificationContainer.TryGetSpecification<TSpecification>() as Validates<TProperty> ??
                      new TSpecification();
@@ -38,7 +38,7 @@ namespace SpecExpress.Rules.GeneralValidators
            
         }
 
-        public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
+        public override bool Validate(RuleValidatorContext<T, TProperty> context, ISpecificationContainer specificationContainer, ValidationNotification notification)
         {
             SpecificationBase specificationBase;
 

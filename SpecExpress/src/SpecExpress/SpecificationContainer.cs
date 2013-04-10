@@ -6,8 +6,13 @@ using SpecExpress.Util;
 
 namespace SpecExpress
 {
-    public class SpecificationContainer
+    
+
+   
+
+    public class SpecificationContainer : ISpecificationContainer
     {
+
         private List<SpecificationBase> _registry = new List<SpecificationBase>();
 
         public void Add<TEntity>(Validates<TEntity> expression)
@@ -16,26 +21,36 @@ namespace SpecExpress
         }
 
         public void Add(SpecificationBase spec)
-        {
+        { 
+            //TODO: Deprecate this? Can't upcast
             if (spec != null)
             {
                 _registry.Add(spec);
+              
             }
         }
 
         public void Add<TSpec>() where TSpec : SpecificationBase, new()
         {
             _registry.Add(new TSpec());
+           
         }
 
         public void Add(IEnumerable<SpecificationBase> specs)
         {
             if (specs != null)
             {
-                _registry.AddRange(specs);
+                var specificationBases   = specs as IList<SpecificationBase> ?? specs.ToList();
+                _registry.AddRange(specificationBases);
+
+               
             }
         }
 
+         public void Add<T>(SpecificationExpression<T> expression)
+         {
+             Add(expression as SpecificationBase);
+         }
         public void Add(IEnumerable<Type> specs)
         {
             int counter = 0;
@@ -60,6 +75,8 @@ namespace SpecExpress
 
         public SpecificationBase TryGetSpecification(Type type)
         {
+            
+
             //Attempt to find Specification where the Types are equal
            var specs = from r in _registry
                                 where type == r.ForType
@@ -72,6 +89,7 @@ namespace SpecExpress
                             where type.CanBeCastTo(r.ForType)
                             select r;
             }
+
            
 
             //TODO: Join with Validation Catalog Registry
@@ -131,7 +149,7 @@ namespace SpecExpress
             return TryGetSpecification(typeof(TType)) as Validates<TType>;
         }
 
-        public IList<SpecificationBase> GetAllSpecifications()
+        public List<SpecificationBase> GetAllSpecifications()
         {
             // For thread safety, return a copy of the registry
             return new List<SpecificationBase>(_registry);
@@ -145,6 +163,7 @@ namespace SpecExpress
 
             var delayedSpecs = new List<Type>();
 
+           
 
             //For each type, instantiate it and add it to the collection of specs found
             specs.ToList<Type>().ForEach(spec =>

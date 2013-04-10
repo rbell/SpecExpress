@@ -8,7 +8,7 @@ namespace SpecExpress.Rules.GeneralValidators
 {
     public class Required<T, TProperty> : RuleValidator<T, TProperty>
     {
-        public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
+        public override bool Validate(RuleValidatorContext<T, TProperty> context, ISpecificationContainer specificationContainer, ValidationNotification notification)
         {
             return Evaluate(!context.PropertyValue.IsNullOrDefault(), context, notification);      
         }

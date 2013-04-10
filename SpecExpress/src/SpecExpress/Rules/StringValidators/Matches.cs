@@ -19,7 +19,7 @@ namespace SpecExpress.Rules.StringValidators
         }
 
 
-        public override bool Validate(RuleValidatorContext<T, string> context, SpecificationContainer specificationContainer, ValidationNotification notification)
+        public override bool Validate(RuleValidatorContext<T, string> context, ISpecificationContainer specificationContainer, ValidationNotification notification)
         {
             var regexPattern = (string)Params[0].GetParamValue(context);
 

@@ -19,7 +19,7 @@ namespace SpecExpress.Rules.Collection
             Params.Add(new RuleParameter("countGreaterThan", expression));
         }
 
-        public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
+        public override bool Validate(RuleValidatorContext<T, TProperty> context, ISpecificationContainer specificationContainer, ValidationNotification notification)
         {
            var countGreaterThan = (int)Params[0].GetParamValue(context);
 

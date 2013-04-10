@@ -35,7 +35,7 @@ namespace SpecExpress.Rules.IComparableValidators
             Params.Add(new RuleParameter("ceiling", ceiling));
         }
 
-        public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
+        public override bool Validate(RuleValidatorContext<T, TProperty> context, ISpecificationContainer specificationContainer, ValidationNotification notification)
         {
             var floor = (TProperty)Params[0].GetParamValue(context);
             var ceiling = (TProperty)Params[1].GetParamValue(context);

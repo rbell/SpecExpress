@@ -16,7 +16,7 @@ namespace SpecExpress.Rules.Collection
             get { return new List<RuleParameter>() { new RuleParameter("duplicates", _dups) }; }
         }
 
-        public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
+        public override bool Validate(RuleValidatorContext<T, TProperty> context, ISpecificationContainer specificationContainer, ValidationNotification notification)
         {
             _dups = duplicateItems(context.PropertyValue);
 

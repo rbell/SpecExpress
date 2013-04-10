@@ -8,7 +8,7 @@ namespace SpecExpress.Rules.Collection
 {
     public class IsEmpty<T, TProperty> : RuleValidator<T, TProperty> where TProperty : IEnumerable
     {
-        public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
+        public override bool Validate(RuleValidatorContext<T, TProperty> context, ISpecificationContainer specificationContainer, ValidationNotification notification)
         {
             int count = 0;
 

@@ -2,7 +2,7 @@
 using System.Linq;
 using NUnit.Framework;
 using Rhino.Mocks;
-using SpecExpress;
+using SpecExpress.Util;
 using SpecExpress.Test.Entities;
 
 
@@ -50,6 +50,9 @@ namespace SpecExpress.Test
         {
             //Add the target specification to the container
             ValidationCatalog.AddSpecification<Contact>( x => new ContactSpecification());
+
+            var container = new SpecificationContainer();
+            container.Add<ContactSpecification>();
 
             //create the mock object which is proxy type
             var mockRepository = new MockRepository();

@@ -43,7 +43,7 @@ namespace SpecExpress.Test.Concurrency
 
             childThread.Join();
 
-            int specCount = ValidationCatalog.SpecificationContainer.GetAllSpecifications().Count;
+            int specCount = ValidationCatalog.SpecificationContainer.GetAllSpecifications().Count();
 
             Assert.AreEqual(22, specCount);
         }

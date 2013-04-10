@@ -18,7 +18,7 @@ namespace SpecExpress.Rules.IComparableValidators
             Params.Add(new RuleParameter("lessThan", expression));
         }
 
-        public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
+        public override bool Validate(RuleValidatorContext<T, TProperty> context, ISpecificationContainer specificationContainer, ValidationNotification notification)
         {
             var lessThan = (TProperty)Params[0].GetParamValue(context);
 

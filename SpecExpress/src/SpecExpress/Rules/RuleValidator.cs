@@ -99,6 +99,6 @@ namespace SpecExpress.Rules
         }
 
         public abstract bool Validate(RuleValidatorContext<T, TProperty> context,
-                                      SpecificationContainer specificationContainer, ValidationNotification notification);
+                                      ISpecificationContainer specificationContainer, ValidationNotification notification);
     }
 }

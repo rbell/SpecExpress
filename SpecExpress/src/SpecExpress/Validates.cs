@@ -175,9 +175,11 @@ namespace SpecExpress
         public void Using<U, TSpecType>() where TSpecType : Validates<U>, new()
         {
             //Get the PropertyValidators from the Using Spec and add it to this specification
-            var usingSpec = ValidationCatalog.SpecificationContainer.GetAllSpecifications().First( x => x.GetType() == typeof(TSpecType));
+            //var usingSpec = ValidationCatalog.SpecificationContainer.GetAllSpecifications().First( x => x.GetType() == typeof(TSpecType));
 
-            PropertyValidators.AddRange(usingSpec.PropertyValidators);
+            //TODO: Creating Specification
+            var spec = new TSpecType();
+            PropertyValidators.AddRange(spec.PropertyValidators);
         }
 
         /// <summary>
@@ -208,7 +210,7 @@ namespace SpecExpress
         /// <param name="instance">Instance of T to validate.</param>
         /// <param name="specificationContainer">The <see cref="SpecificationContainer"/></param>
         /// <returns><see cref="ValidationNotification"/></returns>
-        public ValidationNotification Validate(T instance, SpecificationContainer specificationContainer)
+        public ValidationNotification Validate(T instance, ISpecificationContainer specificationContainer)
         {
             lock (this)
             {
