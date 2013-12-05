@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2869EDF5-93A6-4AEF-AFF8-55B083575A48}"
 	ProjectSection(SolutionItems) = preProject
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
@@ -34,9 +36,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleSilverlightDomain", "SampleSilverlightDomain\SampleSilverlightDomain.csproj", "{6E1516ED-10D1-4230-A311-D84F8FFB562A}"
 EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = SpecExpress.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -93,5 +92,8 @@ Global
 		{5777B66A-59DC-497A-A5E7-2D5B854A03ED} = {235C2588-3810-4107-94A0-02CF993EA651}
 		{6E1516ED-10D1-4230-A311-D84F8FFB562A} = {235C2588-3810-4107-94A0-02CF993EA651}
 		{01482E62-23D8-4A15-B5F1-6594AF297F51} = {562E6691-22F5-4C8F-9070-F1B3E1A59132}
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = SpecExpress.vsmdi
 	EndGlobalSection
 EndGlobal
