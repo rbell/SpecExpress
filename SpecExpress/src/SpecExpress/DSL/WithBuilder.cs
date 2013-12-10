@@ -25,6 +25,18 @@ namespace SpecExpress.DSL
             _propertyValidator = propertyValidator;
         }
 
+        public void MessageFormat(string format, object[] args)
+        {
+            var rule = getLastRuleValidator();
+            rule.Message = format;
+
+            foreach (var o in args)
+            {
+                //Add as an unnamed Parameter
+                var ruleParam = new RuleParameter(string.Empty, o);
+                rule.Params.Add(ruleParam);
+            }
+        }
         /// <summary>
         /// Specifies an override to the default error message if the rule fails.
         /// </summary>

@@ -75,5 +75,30 @@ namespace SpecExpress.Rules
             }
         }
 
+        public object GetParamValue2(RuleValidatorContext context = null)
+        {
+            if (IsExpressionParam)
+            {
+                if (context == null)
+                {
+                    throw new System.ArgumentException(
+                        "Cannot get Param Value for an Expression Param without context.");
+                }
+
+                return CompiledExpression.Invoke(context.Instance);
+            }
+            else
+            {
+                if (IsDelegate)
+                {
+                    return Delegate.DynamicInvoke(new object[] { context.Instance });
+                }
+                else
+                {
+                    return paramValue;
+                }
+            }
+        }
+
     }
 }

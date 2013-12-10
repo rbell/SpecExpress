@@ -45,10 +45,10 @@ namespace SpecExpress.Test
             var messageService = new MessageService();
 
             var messageContext = new MessageContext(context, ruleValidator.GetType(), false, null, null);
-            var paramValues =
-                (from ruleParameter in ruleValidator.Params select (object) ruleParameter.GetParamValue())
-                    .ToList();
-            var errorMessage = messageService.GetDefaultMessageAndFormat(messageContext, paramValues);
+            //var paramValues =
+            //    (from ruleParameter in ruleValidator.Params select (object) ruleParameter.GetParamValue())
+            //        .ToList();
+            var errorMessage = messageService.GetDefaultMessageAndFormat(messageContext, ruleValidator.Params);
 
             Assert.That(errorMessage, Is.Not.Null.Or.Empty);
 

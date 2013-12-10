@@ -112,16 +112,16 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Alpha" xml:space="preserve">
     <value>{PropertyName} should only contain letters.</value>
   </data>
   <data name="Between" xml:space="preserve">
-    <value>{PropertyName} must be between {0} and {1}.</value>
+    <value>{PropertyName} must be between {floor} and {ceiling}.</value>
   </data>
   <data name="Contains" xml:space="preserve">
     <value>{PropertyName} does not contain {PropertyValue}.</value>
@@ -142,7 +142,7 @@
     <value>{PropertyName} should contain less or equal to {0} items.</value>
   </data>
   <data name="EqualTo" xml:space="preserve">
-    <value>{PropertyName} must equal {0}.</value>
+    <value>{PropertyName} must equal {equalTo}.</value>
   </data>
   <data name="GreaterThan" xml:space="preserve">
     <value>{PropertyName} must be greater than {0}.</value>
@@ -172,7 +172,7 @@
     <value>{PropertyName} should be unique.  The duplicates of the following: {0}</value>
   </data>
   <data name="LengthBetween" xml:space="preserve">
-    <value>{PropertyName} must be between {0} and {1} characters.</value>
+    <value>{PropertyName} must be between {min} and {max} characters.</value>
   </data>
   <data name="LengthEqualTo" xml:space="preserve">
     <value>{PropertyName} must be {0} character(s).</value>

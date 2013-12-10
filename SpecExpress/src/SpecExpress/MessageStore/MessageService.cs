@@ -13,7 +13,7 @@ namespace SpecExpress.MessageStore
 {
     public class MessageService
     {
-        public string GetDefaultMessageAndFormat(MessageContext context, IList<Object> parameterValues)
+        public string GetDefaultMessageAndFormat(MessageContext context, IList<RuleParameter> parameterValues)
         {
             string messageTemplate = GetMessageTemplate(context);
           
@@ -45,16 +45,19 @@ namespace SpecExpress.MessageStore
         }
 
 
-        public string FormatMessage(string message, RuleValidatorContext context, IList<Object> parameterValues)
+        public string FormatMessage(string message, RuleValidatorContext context, IList<RuleParameter> ruleParameters)
         {
-            return FormatMessage(message, context, parameterValues, null);
+            return FormatMessage(message, context, ruleParameters, null);
         }
 
-        public string FormatMessage(string message, RuleValidatorContext context, IList<Object> parameterValues, Func<object, string> propertyValueFormatter)
+        public string FormatMessage(string message, RuleValidatorContext context, IList<RuleParameter> ruleParameters, Func<object, string> propertyValueFormatter)
         {
             //Replace known keywords with actual values
+
+            //PropertyName
             var formattedMessage = message.Replace("{PropertyName}", buildPropertyName(context));
 
+            //PropertyValue
             if (context.PropertyValue == null)
             {
                 formattedMessage = formattedMessage.Replace("{PropertyValue}", context.PropertyValue as string);                
@@ -74,7 +77,29 @@ namespace SpecExpress.MessageStore
                 formattedMessage = formattedMessage.Replace("{PropertyValue}", formattedPropertyValue);
             }
 
-            return parameterValues == null ? formattedMessage : String.Format(formattedMessage, parameterValues.ToStringEnum().ToArray());
+            //Parameters
+            if (ruleParameters != null)
+            {
+                //Named Parameters
+                var namedParameters = ruleParameters.Where(p => !String.IsNullOrEmpty(p.PropertyName));
+
+                //Replace {PropertyName} with the Value
+                foreach (var namedParameter in namedParameters)
+                {
+                    formattedMessage = formattedMessage.Replace("{" + namedParameter.PropertyName + "}", namedParameter.GetParamValue2(context).ToString());
+                }
+
+                //Unnamed Parameters
+                var unnamedParameterValues = ruleParameters.Where(p => String.IsNullOrEmpty(p.PropertyName)).Select( p => p.GetParamValue2(context));
+                
+                if (unnamedParameterValues.Any())
+                {
+                    formattedMessage = String.Format(formattedMessage, unnamedParameterValues.ToStringEnum().ToArray());
+                }
+                
+            }
+
+            return formattedMessage;
         }
 
         public string BuildRuleKeyFromContext(MessageContext context)

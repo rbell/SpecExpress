@@ -72,8 +72,7 @@ namespace SpecExpress.Rules
 			// Only evaluate the rule if Condition is null or Condition is not null and returns true
 			if (Condition == null || (Condition != null && Condition(context.Instance, context.PropertyValue)))
 			{
-				var paramValues =
-					(from ruleParameter in Params select (object) ruleParameter.GetParamValue(context)).ToList();
+				//var paramValues = (from ruleParameter in Params select (object) ruleParameter.GetParamValue(context)).ToList();
 
 				if (Negate)
 				{
@@ -83,7 +82,7 @@ namespace SpecExpress.Rules
 					}
 					else
 					{
-						notification.Errors.Add(ValidationResultFactory.Create(this, context, paramValues, MessageKey));
+                        notification.Errors.Add(ValidationResultFactory.Create(this, context, Params, MessageKey));
 						return false;
 					}
 				}
@@ -95,7 +94,7 @@ namespace SpecExpress.Rules
 					}
 					else
 					{
-						notification.Errors.Add(ValidationResultFactory.Create(this, context, paramValues, MessageKey));
+                        notification.Errors.Add(ValidationResultFactory.Create(this, context, Params, MessageKey));
 						return false;
 					}
 				}

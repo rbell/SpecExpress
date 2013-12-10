@@ -1,0 +1,348 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E5640A72-5D0D-41D7-85A9-CB7C39D63662}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SpecExpress</RootNamespace>
+    <AssemblyName>SpecExpress.Silverlight</AssemblyName>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <FileUpgradeFlags>0</FileUpgradeFlags>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UpgradeBackupLocation>C:\Projects\SpecExpress\SpecExpress\src\Backup\SpecExpress.Silverlight\</UpgradeBackupLocation>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="system" />
+    <Reference Include="System.ComponentModel.DataAnnotations, Version=2.0.5.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows" />
+    <Reference Include="mscorlib" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows.Browser" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SpecExpress\CompiledFunctionExpression.cs">
+      <Link>CompiledFunctionExpression.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\CoreValidatorExtensions.cs">
+      <Link>CoreValidatorExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\DSL\ActionJoinBuilder.cs">
+      <Link>DSL\ActionJoinBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\DSL\ActionOptionBuilder.cs">
+      <Link>DSL\ActionOptionBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\DSL\ActionOptionConditionBuilder.cs">
+      <Link>DSL\ActionOptionConditionBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\DSL\RuleBuilder.cs">
+      <Link>DSL\RuleBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\DSL\WithBuilder.cs">
+      <Link>DSL\WithBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\DSL\WithRuleBuilder.cs">
+      <Link>DSL\WithRuleBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Enums\ValidationLevelType.cs">
+      <Link>Enums\ValidationLevelType.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\MessageStore\IMessageStore.cs">
+      <Link>MessageStore\IMessageStore.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\MessageStore\MessageContext.cs">
+      <Link>MessageStore\MessageContext.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\MessageStore\MessageService.cs">
+      <Link>MessageStore\MessageService.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\MessageStore\MessageStoreFactory.cs">
+      <Link>MessageStore\MessageStoreFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\MessageStore\ResourceMessageStore.cs">
+      <Link>MessageStore\ResourceMessageStore.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\MessageStore\RuleErrorMessages.Designer.cs">
+      <Link>MessageStore\RuleErrorMessages.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\PropertyValidator.cs">
+      <Link>PropertyValidator.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\Boolean\IsFalse.cs">
+      <Link>Rules\Boolean\IsFalse.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\Boolean\IsTrue.cs">
+      <Link>Rules\Boolean\IsTrue.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\Collection\Contains.cs">
+      <Link>Rules\Collection\Contains.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\Collection\CountEqualTo.cs">
+      <Link>Rules\Collection\CountEqualTo.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\Collection\CountGreaterThan.cs">
+      <Link>Rules\Collection\CountGreaterThan.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\Collection\CountGreaterThanEqualTo.cs">
+      <Link>Rules\Collection\CountGreaterThanEqualTo.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\Collection\CountLessThan.cs">
+      <Link>Rules\Collection\CountLessThan.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\Collection\CountLessThanEqualTo.cs">
+      <Link>Rules\Collection\CountLessThanEqualTo.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\Collection\ForEach.cs">
+      <Link>Rules\Collection\ForEach.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\Collection\IsEmpty.cs">
+      <Link>Rules\Collection\IsEmpty.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\Collection\ItemsAreUnique.cs">
+      <Link>Rules\Collection\ItemsAreUnique.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\CustomRule.cs">
+      <Link>Rules\CustomRule.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\DateValidators\IsInFuture.cs">
+      <Link>Rules\DateValidators\IsInFuture.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\DateValidators\IsInPast.cs">
+      <Link>Rules\DateValidators\IsInPast.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\GeneralValidators\ForEachSpecificationRule.cs">
+      <Link>Rules\GeneralValidators\ForEachSpecificationRule.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\GeneralValidators\IsInSet.cs">
+      <Link>Rules\GeneralValidators\IsInSet.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\GeneralValidators\Required.cs">
+      <Link>Rules\GeneralValidators\Required.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\GeneralValidators\SpecificationRule.cs">
+      <Link>Rules\GeneralValidators\SpecificationRule.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\IComparableValidators\Between.cs">
+      <Link>Rules\IComparableValidators\Between.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\IComparableValidators\EqualTo.cs">
+      <Link>Rules\IComparableValidators\EqualTo.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\IComparableValidators\GreaterThan.cs">
+      <Link>Rules\IComparableValidators\GreaterThan.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\IComparableValidators\GreaterThanEqualTo.cs">
+      <Link>Rules\IComparableValidators\GreaterThanEqualTo.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\IComparableValidators\LessThan.cs">
+      <Link>Rules\IComparableValidators\LessThan.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\IComparableValidators\LessThanEqualTo.cs">
+      <Link>Rules\IComparableValidators\LessThanEqualTo.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\RuleParameter.cs">
+      <Link>Rules\RuleParameter.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\RuleValidator.cs">
+      <Link>Rules\RuleValidator.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\StringValidators\Alpha.cs">
+      <Link>Rules\StringValidators\Alpha.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\StringValidators\LengthBetween.cs">
+      <Link>Rules\StringValidators\LengthBetween.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\StringValidators\LengthEqualTo.cs">
+      <Link>Rules\StringValidators\LengthEqualTo.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\StringValidators\Matches.cs">
+      <Link>Rules\StringValidators\Matches.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\StringValidators\MaxLength.cs">
+      <Link>Rules\StringValidators\MaxLength.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\StringValidators\MinLength.cs">
+      <Link>Rules\StringValidators\MinLength.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Rules\StringValidators\Numeric.cs">
+      <Link>Rules\StringValidators\Numeric.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\RuleTree\GroupNode.cs">
+      <Link>RuleTree\GroupNode.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\RuleTree\NodeBase.cs">
+      <Link>RuleTree\NodeBase.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\RuleTree\RuleExpressionFactory.cs">
+      <Link>RuleTree\RuleExpressionFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\RuleTree\RuleNode.cs">
+      <Link>RuleTree\RuleNode.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\RuleTree\RuleTree.cs">
+      <Link>RuleTree\RuleTree.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\SpecExpressConfigurationException.cs">
+      <Link>SpecExpressConfigurationException.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Specification.cs">
+      <Link>Specification.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\SpecificationBase.cs">
+      <Link>SpecificationBase.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\SpecificationContainer.cs">
+      <Link>SpecificationContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\SpecificationExpression.cs">
+      <Link>SpecificationExpression.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\SpecificationScanner.cs">
+      <Link>SpecificationScanner.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Util\EnumerableExtensions.cs">
+      <Link>Util\EnumerableExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Util\ExpressionExtensions.cs">
+      <Link>Util\ExpressionExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Util\ObjectExtensions.cs">
+      <Link>Util\ObjectExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Util\PredicateExtensions.cs">
+      <Link>Util\PredicateExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Util\RuleValidatorContext.cs">
+      <Link>Util\RuleValidatorContext.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Util\StringExtensions.cs">
+      <Link>Util\StringExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Util\TypeExtensions.cs">
+      <Link>Util\TypeExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\Validates.cs">
+      <Link>Validates.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\ValidationCatalog.cs">
+      <Link>ValidationCatalog.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\ValidationCatalogConfiguration.cs">
+      <Link>ValidationCatalogConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\ValidationContext.cs">
+      <Link>ValidationContext.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\ValidationException.cs">
+      <Link>ValidationException.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\ValidationNotification.cs">
+      <Link>ValidationNotification.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\ValidationResult.cs">
+      <Link>ValidationResult.cs</Link>
+    </Compile>
+    <Compile Include="..\SpecExpress\ValidationResultFactory.cs">
+      <Link>ValidationResultFactory.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\ArrayExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\SpecExpress\specexpress.key">
+      <Link>specexpress.key</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\SpecExpress\MessageStore\RuleErrorMessages.resx">
+      <Link>MessageStore\RuleErrorMessages.resx</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

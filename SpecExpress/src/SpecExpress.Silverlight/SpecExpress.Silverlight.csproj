@@ -20,9 +20,9 @@
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
-    <FileUpgradeFlags>0</FileUpgradeFlags>
+    <FileUpgradeFlags>40</FileUpgradeFlags>
     <OldToolsVersion>4.0</OldToolsVersion>
-    <UpgradeBackupLocation>C:\Projects\SpecExpress\SpecExpress\src\Backup\SpecExpress.Silverlight\</UpgradeBackupLocation>
+    <UpgradeBackupLocation>C:\Users\Alan.Baker\Desktop\SpecExpress\SpecExpress\src\Backup\SpecExpress.Silverlight\</UpgradeBackupLocation>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>

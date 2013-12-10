@@ -17,12 +17,12 @@ namespace SpecExpress.Rules.StringValidators
             {
                 throw new ArgumentOutOfRangeException("length", "Length should be greater than 0");
             }
-            Params.Add(new RuleParameter("length", length));
+            Params.Add(new RuleParameter("lengthEqualTo", length));
         }
 
         public LengthEqualTo(Expression<Func<T, int>> expression)
         {
-            Params.Add(new RuleParameter("length", expression));
+            Params.Add(new RuleParameter("lengthEqualTo", expression));
         }
 
         public override bool Validate(RuleValidatorContext<T, string> context, SpecificationContainer specificationContainer, ValidationNotification notification)

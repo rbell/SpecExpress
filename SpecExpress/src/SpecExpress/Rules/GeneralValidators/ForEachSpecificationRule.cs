@@ -109,7 +109,7 @@ namespace SpecExpress.Rules.GeneralValidators
                     var childContext = new RuleValidatorContext(item, propertyName, item, context.Level,
                                                                 item.GetType() as MemberInfo, context);
                     
-                    var itemError = ValidationResultFactory.Create(this, childContext, new List<object>(), MessageKey);
+                    var itemError = ValidationResultFactory.Create(this, childContext, MessageKey);
 
                     //var itemError = ValidationResultFactory.Create(this, context, Parameters, MessageKey);
                     itemError.NestedValidationResults = innerNotfication.Errors;
@@ -122,8 +122,8 @@ namespace SpecExpress.Rules.GeneralValidators
             {
                 //Errors were found on at least one item in the collection to return a ValidationResult for the Collection property
                 Message = "{PropertyName} is invalid.";
-               
-                collectionValidationResult = ValidationResultFactory.Create(this, context, new List<object>(), MessageKey);
+
+                collectionValidationResult = ValidationResultFactory.Create(this, context, new List<RuleParameter>(), MessageKey);
                 collectionValidationResult.NestedValidationResults = itemsNestedValidationResult;
                 notification.Errors.Add(collectionValidationResult);
                 return false;
@@ -191,7 +191,7 @@ namespace SpecExpress.Rules.GeneralValidators
                     var childContext = new RuleValidatorContext(item, propertyName, item, context.Level,
                                                                 item.GetType() as MemberInfo, context);
 
-                    var itemError = ValidationResultFactory.Create(this, childContext, new List<object>(), MessageKey);
+                    var itemError = ValidationResultFactory.Create(this, childContext, MessageKey);
 
                     //var itemError = ValidationResultFactory.Create(this, context, Parameters, MessageKey);
                     itemError.NestedValidationResults = innerNotfication.Errors;
@@ -204,7 +204,7 @@ namespace SpecExpress.Rules.GeneralValidators
             {
                 //Errors were found on at least one item in the collection to return a ValidationResult for the Collection property
                 Message = "{PropertyName} is invalid.";
-                collectionValidationResult = ValidationResultFactory.Create(this, context, new List<object>(), MessageKey);
+                collectionValidationResult = ValidationResultFactory.Create(this, context, MessageKey);
                 collectionValidationResult.NestedValidationResults = itemsNestedValidationResult;
                 notification.Errors.Add(collectionValidationResult);
                 return false;

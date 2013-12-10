@@ -62,8 +62,8 @@ namespace SpecExpress.Rules.GeneralValidators
             ValidationResult result = null;
 
             if (innerNotification.Errors.Any())
-            {   
-                result = ValidationResultFactory.Create(this, context, new List<object>(), MessageKey);
+            {
+                result = ValidationResultFactory.Create(this, context, MessageKey);
                 result.NestedValidationResults = innerNotification.Errors;
                 notification.Errors.Add(result);
                 return false;

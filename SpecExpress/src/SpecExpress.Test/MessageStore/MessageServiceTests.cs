@@ -24,7 +24,11 @@ namespace SpecExpress.Test
         public void FormatMessage_IsValid(string message, string propertyValue, string parm1, string parm2, string expectedResult)
         {
             var context = BuildContext(propertyValue);
-            string result = new MessageService().FormatMessage(message, context, new List<object>() {parm1, parm2});
+
+            var ruleParam1 = new RuleParameter(string.Empty, parm1);
+            var ruleParam2 = new RuleParameter(string.Empty, parm2);
+
+            string result = new MessageService().FormatMessage(message, context, new List<RuleParameter>() { ruleParam1, ruleParam2 });
             Assert.That(result,Is.EqualTo(expectedResult));
         }
 
