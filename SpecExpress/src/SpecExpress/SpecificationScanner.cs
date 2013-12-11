@@ -47,7 +47,7 @@ namespace SpecExpress
                                                                                Path.GetExtension(file).Equals(
                                                                                    ".dll",
                                                                                    StringComparison.OrdinalIgnoreCase))
-                                                                                   .Select(assemblyPath => Assembly.LoadFrom(assemblyPath));
+                                                                                   .Select(Assembly.LoadFrom);
 
            
             List<Assembly> assemblies = r.Where<Assembly>(assembly => assembly != null && assembly != typeof(ValidationCatalog).Assembly)

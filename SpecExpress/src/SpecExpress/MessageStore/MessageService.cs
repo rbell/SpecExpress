@@ -86,11 +86,11 @@ namespace SpecExpress.MessageStore
                 //Replace {PropertyName} with the Value
                 foreach (var namedParameter in namedParameters)
                 {
-                    formattedMessage = formattedMessage.Replace("{" + namedParameter.PropertyName + "}", namedParameter.GetParamValue2(context).ToString());
+                    formattedMessage = formattedMessage.Replace("{" + namedParameter.PropertyName + "}", namedParameter.GetParamValue(context).ToString());
                 }
 
                 //Unnamed Parameters
-                var unnamedParameterValues = ruleParameters.Where(p => String.IsNullOrEmpty(p.PropertyName)).Select( p => p.GetParamValue2(context));
+                var unnamedParameterValues = ruleParameters.Where(p => String.IsNullOrEmpty(p.PropertyName)).Select( p => p.GetParamValue(context));
                 
                 if (unnamedParameterValues.Any())
                 {

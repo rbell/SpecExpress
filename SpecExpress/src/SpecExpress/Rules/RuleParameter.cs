@@ -41,41 +41,41 @@ namespace SpecExpress.Rules
         public CompiledExpression CompiledExpression { get; private set; }
         public Delegate Delegate { get; private set; }
 
-        public object GetParamValue()
-        {
-            if (IsExpressionParam)
-            {
-                throw new System.ArgumentException("Cannot get Param Value for an Expression Param without context.");
-            }
-            return paramValue;
-        }
+        //public object GetParamValue()
+        //{
+        //    if (IsExpressionParam)
+        //    {
+        //        throw new System.ArgumentException("Cannot get Param Value for an Expression Param without context.");
+        //    }
+        //    return paramValue;
+        //}
 
-        public object GetParamValue<T,TProperty>(RuleValidatorContext<T, TProperty> context = null)
-        {
-            if (IsExpressionParam)
-            {
-                if (context == null)
-                {
-                    throw new System.ArgumentException(
-                        "Cannot get Param Value for an Expression Param without context.");
-                }
+        //public object GetParamValue<T,TProperty>(RuleValidatorContext<T, TProperty> context = null)
+        //{
+        //    if (IsExpressionParam)
+        //    {
+        //        if (context == null)
+        //        {
+        //            throw new System.ArgumentException(
+        //                "Cannot get Param Value for an Expression Param without context.");
+        //        }
 
-                return CompiledExpression.Invoke(context.Instance);
-            }
-            else
-            {
-                if (IsDelegate)
-                {
-                    return Delegate.DynamicInvoke(new object[] {context.Instance});
-                }
-                else
-                {
-                    return paramValue;
-                }
-            }
-        }
+        //        return CompiledExpression.Invoke(context.Instance);
+        //    }
+        //    else
+        //    {
+        //        if (IsDelegate)
+        //        {
+        //            return Delegate.DynamicInvoke(new object[] {context.Instance});
+        //        }
+        //        else
+        //        {
+        //            return paramValue;
+        //        }
+        //    }
+        //}
 
-        public object GetParamValue2(RuleValidatorContext context = null)
+        public object GetParamValue(RuleValidatorContext context = null)
         {
             if (IsExpressionParam)
             {
