@@ -86,6 +86,20 @@ namespace SpecExpress.DSL
             }
         }
 
+    	public Func<T, TProperty, bool> Condition
+    	{
+    		get 
+			{ 
+				RuleValidator<T, TProperty> rule = (RuleValidator<T, TProperty>) getLastRuleValidator();
+				return rule.Condition;
+			}
+			set
+			{
+				RuleValidator<T, TProperty> rule = (RuleValidator<T, TProperty>)getLastRuleValidator();
+				rule.Condition = value;
+			}
+    	}
+
         private RuleValidator getLastRuleValidator()
         {
             return _propertyValidator.RuleTree.LastRuleNode.Rule;
