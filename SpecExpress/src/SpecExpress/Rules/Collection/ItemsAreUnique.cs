@@ -13,7 +13,7 @@ namespace SpecExpress.Rules.Collection
 
         public override IList<RuleParameter> Params
         {
-            get { return new List<RuleParameter>() { new RuleParameter("duplicates", _dups) }; }
+            get { return new List<RuleParameter>() { new RuleParameter("itemsAreUnique", _dups) }; }
         }
 
         public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)

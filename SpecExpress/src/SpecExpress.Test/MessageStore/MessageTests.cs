@@ -106,6 +106,47 @@ namespace SpecExpress.Test
             Assert.That(valNot.Errors.First().Message, Is.EqualTo("Too long 5"));
         }
 
+        [Test]
+        public void When_WithMessageFormat()
+        {
+            var requiredLastName = "Johnson";
+            var contact = new Contact() { FirstName = "Joesph", LastName = "Smith" };
+
+            var vn = Specification.Validate(spec =>
+                {
+                    spec.Check(c => contact.LastName, "Last Name")
+                    .Required()
+                    .EqualTo(requiredLastName)
+                    .With(m => m.MessageFormat("{PropertyName} should equal {0} not {PropertyValue}!", requiredLastName));
+                });
+
+            Assert.That(vn.Errors, Is.Not.Empty);
+            Assert.That(vn.Errors.First().Message, Is.EqualTo("Last Name should equal Johnson not Smith!"));
+        }
+
+        [Test]
+        public void When_WithMessageFormat_UsingExpression()
+        {
+            var contact = new Contact() { FirstName = "Joesph", LastName = "Smith" };
+
+            ValidationCatalog.AddSpecification<Contact>(
+                spec =>
+                    {
+                        var requiredLastName = "Johnson";
+
+                        spec.Check(c => c.LastName).Required()
+                            .EqualTo(requiredLastName)
+                            .With(
+                                m =>
+                                m.MessageFormat("Name: {0} {1}", contact.FirstName, contact.LastName));
+                    });
+
+            var vn = ValidationCatalog.Validate(contact);
+
+            Assert.That(vn.Errors, Is.Not.Empty);
+            Assert.That(vn.Errors.First().Message, Is.EqualTo("Name: Joesph Smith"));
+        }
+
 
     }
 }

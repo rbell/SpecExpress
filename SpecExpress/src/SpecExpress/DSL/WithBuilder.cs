@@ -25,6 +25,18 @@ namespace SpecExpress.DSL
             _propertyValidator = propertyValidator;
         }
 
+        public void MessageFormat(string format, object arg0)
+        {
+            var objArray = new object[] {arg0};
+            MessageFormat(format, objArray);
+        }
+
+        public void MessageFormat(string format, object arg0, object arg1)
+        {
+            var objArray = new object[] { arg0, arg1 };
+            MessageFormat(format, objArray);
+        }
+
         public void MessageFormat(string format, object[] args)
         {
             var rule = getLastRuleValidator();
