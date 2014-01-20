@@ -161,6 +161,7 @@
     <Compile Include="ValidationResultFactory.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="MessageStore\RuleErrorMessages.de.resx" />
     <EmbeddedResource Include="MessageStore\RuleErrorMessages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>RuleErrorMessages.Designer.cs</LastGenOutput>
