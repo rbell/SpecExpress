@@ -97,6 +97,8 @@
     <Compile Include="RuleTreeTests\RuleExpressionFactoryTest.cs" />
     <Compile Include="Scratch.cs" />
     <Compile Include="SpecificationInheritanceWithAbstractClasses.cs" />
+    <Compile Include="Specifications\ContactFirstNameWarningRequiredSpecification.cs" />
+    <Compile Include="Specifications\CustomerRequiredWarningSpecification.cs" />
     <Compile Include="Specifications\DeleteContactSpecification.cs" />
     <Compile Include="Specifications\DeleteCustomerSpecification.cs" />
     <Compile Include="TestMocksWithSpecifications.cs" />

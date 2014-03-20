@@ -4,10 +4,14 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using SpecExpress.Enums;
-using SpecExpress.Test.Entities;
 
 namespace SpecExpress.Test
 {
+    using SpecExpress.Test.Domain.Entities;
+    using SpecExpress.Test.Specifications;
+
+    using Customer = SpecExpress.Test.Entities.Customer;
+
     [TestFixture]
     public class ValidationLevelTests
     {
@@ -51,6 +55,17 @@ namespace SpecExpress.Test
             var vn = ValidationCatalog.Validate(customer);
 
             Assert.That( vn.IsValid, Is.True);
+        }
+
+        [Test]
+        public void ValidationNotification_WithAllWarnDeepTree_IsValid()
+        {
+           var customer = new SpecExpress.Test.Domain.Entities.Customer();
+            customer.PrimaryContact = new Contact();
+
+            var vn = ValidationCatalog.Validate<CustomerRequiredWarningSpecification>(customer);
+            Assert.IsTrue(vn.Errors.Count == 1);
+            Assert.That(vn.IsValid, Is.True);
         }
 
         [Test]
