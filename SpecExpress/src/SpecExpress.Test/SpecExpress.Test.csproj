@@ -91,6 +91,7 @@
     <Compile Include="Container\ComplexTypesTests.cs" />
     <Compile Include="ContactSpecification.cs" />
     <Compile Include="CustomerAddressSpecification.cs" />
+    <Compile Include="ExceptionsTest.cs" />
     <Compile Include="InlineSpecificationTests.cs" />
     <Compile Include="PolymorphismTests.cs" />
     <Compile Include="RequiredEnumsTests.cs" />

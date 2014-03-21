@@ -10,6 +10,7 @@ namespace SpecExpress.Test
     {
         public ContactSpecification()
         {
+            this.IsDefaultForType();
             Check(c => c.FirstName).Required();
             Check(c => c.LastName).Required();
 

@@ -75,6 +75,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Specifications\AddressSpecification.cs" />
     <Compile Include="Specifications\ContactSpecification.cs" />
+    <Compile Include="Specifications\CustomerCheckPropertiesExceptionSpecification.cs" />
+    <Compile Include="Specifications\CustomerExpectNullReferenceExceptionSpecification.cs" />
+    <Compile Include="Specifications\CustomerNullReferenceSpecification.cs" />
     <Compile Include="Specifications\USWidgetSpecification.cs" />
     <Compile Include="Specifications\DeleteContactSpecification.cs" />
     <Compile Include="Specifications\CustomerSpecification.cs" />
