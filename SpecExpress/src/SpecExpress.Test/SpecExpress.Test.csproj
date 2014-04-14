@@ -91,12 +91,15 @@
     <Compile Include="Container\ComplexTypesTests.cs" />
     <Compile Include="ContactSpecification.cs" />
     <Compile Include="CustomerAddressSpecification.cs" />
+    <Compile Include="ExceptionsTest.cs" />
     <Compile Include="InlineSpecificationTests.cs" />
     <Compile Include="PolymorphismTests.cs" />
     <Compile Include="RequiredEnumsTests.cs" />
     <Compile Include="RuleTreeTests\RuleExpressionFactoryTest.cs" />
     <Compile Include="Scratch.cs" />
     <Compile Include="SpecificationInheritanceWithAbstractClasses.cs" />
+    <Compile Include="Specifications\ContactFirstNameWarningRequiredSpecification.cs" />
+    <Compile Include="Specifications\CustomerRequiredWarningSpecification.cs" />
     <Compile Include="Specifications\DeleteContactSpecification.cs" />
     <Compile Include="Specifications\DeleteCustomerSpecification.cs" />
     <Compile Include="TestMocksWithSpecifications.cs" />

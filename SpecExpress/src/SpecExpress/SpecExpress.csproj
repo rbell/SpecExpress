@@ -75,6 +75,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomRuleEvaluationException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rules\RuleParameter.cs" />
     <Compile Include="Specification.cs" />
@@ -161,6 +162,7 @@
     <Compile Include="ValidationResultFactory.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="MessageStore\RuleErrorMessages.de.resx" />
     <EmbeddedResource Include="MessageStore\RuleErrorMessages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>RuleErrorMessages.Designer.cs</LastGenOutput>

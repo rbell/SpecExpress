@@ -7,8 +7,6 @@ namespace SpecExpress.Test.Domain.Specifications
     {
         public ContactSpecification()
         {
-            IsDefaultForType();
-
             Check(c => c.FirstName).Required();
             Check(c => c.LastName).Required();
             Check(c => c.Addresses).Required().ForEachSpecification<Address, AddressSpecification>();
