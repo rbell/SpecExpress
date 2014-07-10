@@ -43,5 +43,44 @@ namespace SpecExpress.Test
            
 
         }
+
+
+        [Test]
+        public void ValidateMethodCallProperty_IsSuccessful()
+        {
+            //ConstantExpress
+            Specification.Assert( sp=> sp.Check( x => GetCollection()).Required().CountGreaterThan(0));
+            
+        }
+
+        [Test]
+        public void ValidateMethodCallPropertyOnClass_IsSuccessful()
+        {
+            ValidationCatalog.AddSpecification<StubClass>(validates => validates.Check( x=> x.GetCollection()).Required().CountGreaterThan(1));
+            var c = new StubClass();
+            Assert.DoesNotThrow( () => ValidationCatalog.Validate(c)   );
+        }
+
+        public class StubClass
+        {
+            public List<string> GetCollection()
+            {
+                 return new List<string>()
+                {
+                    "A",
+                    "B",
+                    "C"
+                };
+            }
+        }
+        public List<string> GetCollection()
+        {
+            return new List<string>()
+            {
+                "A",
+                "B",
+                "C"
+            };
+        }
     }
 }

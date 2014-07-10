@@ -46,7 +46,7 @@ namespace SpecExpress
 
                 if (bodyExp.NodeType == ExpressionType.Call)
                 {
-                    MethodCallExpression exp = (MethodCallExpression)Property.Body;
+                    var exp = (MethodCallExpression)Property.Body;
 
                     //GetValueOrDefault
                     if (exp.Object == null)
@@ -55,7 +55,7 @@ namespace SpecExpress
                     }
                     else
                     {
-                        return ((System.Linq.Expressions.MemberExpression)(exp.Object)).Member;
+                        return (MemberInfo)exp.Method;
                     }
                 }
 
