@@ -105,42 +105,6 @@ namespace SpecExpress.Test.RuleValidatorTests
             var allerrors = results.Errors.First().AllErrorMessages().ToList();
             Assert.That(results.Errors.First().NestedValidationResults, Is.Not.Empty);
         }
-
-        [Test]
-        public void ForEachSpecification()
-        {
-            //create list of contacts to validate
-            var contacts = new List<Contact>
-                               {
-                                   new Contact() {FirstName = String.Empty, LastName = "Smith"},
-                                   new Contact() {FirstName = String.Empty, LastName = String.Empty},
-                                   new Contact() {FirstName = "Joe", LastName = "Smith"}
-                               };
-
-            var customer = new Customer() { Name = "Smith Industries", Contacts = contacts };
-
-
-            //Add Specification for Customer and Address
-            ValidationCatalog.AddSpecification<Customer>(spec =>
-            {
-                spec.Check(c => c.Contacts).Required();
-                spec.Warn(c => c.Contacts).Optional().ForEachSpecification<Contact>();
-                spec.Warn(c => c.Contacts).Optional().ForEachSpecification<Contact>(
-                    cspec =>
-                    {
-                        cspec.Warn(c => c.LastName).Required();
-                        cspec.Warn(c => c.FirstName).Required();
-                    });
-            });
-
-            //Validate Customer
-            var results = ValidationCatalog.Validate(customer);
-
-            Assert.That(results.Errors, Is.Not.Empty);
-            Assert.IsTrue(results.IsValid);
-
-            var allerrors = results.Errors.First().AllErrorMessages().ToList();
-            Assert.That(results.Errors.First().NestedValidationResults, Is.Not.Empty);
-        }
+    
     }
 }

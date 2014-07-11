@@ -11,7 +11,6 @@ namespace SpecExpress
 #if !SILVERLIGHT
     [Serializable]
 #endif
-   
     public class ValidationNotification
     {
         public ValidationNotification()
