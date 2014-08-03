@@ -35,7 +35,7 @@ task PackNuget {
     $Spec.package.metadata.version = $version
     $Spec.Save("$NuGetPackDir\SpecExpress\SpecExpress.nuspec")
 	
-    exec { nuget pack "$NuGetPackDir\SpecExpress\SpecExpress.nuspec" -OutputDirectory "$NuGetPackDir" }
+    exec { .\nuget pack "$NuGetPackDir\SpecExpress\SpecExpress.nuspec" -OutputDirectory "$NuGetPackDir" }
 	
 	# Package MVC
 	if (test-path $NuGetPackDir\SpecExpressMVC) {  
@@ -58,41 +58,20 @@ task PackNuget {
     $Spec.package.metadata.dependencies.dependency.version = $version
     $Spec.Save("$NuGetPackDir\SpecExpressMVC\SpecExpress.MVC3.nuspec")
 	
-    exec { nuget pack "$NuGetPackDir\SpecExpressMVC\SpecExpress.MVC3.nuspec" -OutputDirectory "$NuGetPackDir" }
-
-	#Package Silverlight
-	if (test-path $NuGetPackDir\SpecExpressSL) {  
-		remove-item -force -recurse $NuGetPackDir\SpecExpressSL -ErrorAction SilentlyContinue | Out-Null
-	}
-	
-	mkdir $NuGetPackDir\SpecExpressSL
-	
-    cp "$src_directory\NuGetSpecs\SpecExpress.Silverlight.nuspec" "$NuGetPackDir\SpecExpressSL"
-
-    mkdir "$NuGetPackDir\SpecExpressSL\lib"
-    cp "$release_directory\SpecExpress.Silverlight.dll" "$NuGetPackDir\SpecExpressSL\lib"
-    
-	[xml] $Spec = gc "$NuGetPackDir\SpecExpressSL\SpecExpress.Silverlight.nuspec"
-    $Spec.package.metadata.version = $version
-    $Spec.package.metadata.dependencies.dependency.version = $version
-    $Spec.Save("$NuGetPackDir\SpecExpressSL\SpecExpress.Silverlight.nuspec")
-	
-    exec { nuget pack "$NuGetPackDir\SpecExpressSL\SpecExpress.Silverlight.nuspec" -OutputDirectory "$NuGetPackDir" }
-
+    exec { .\nuget pack "$NuGetPackDir\SpecExpressMVC\SpecExpress.MVC3.nuspec" -OutputDirectory "$NuGetPackDir" }
 }
 
 task Publish -depends PublishCodePlexRelease, PublishNuget
 
 task PublishNuget {
     #We don't care if deleting fails..
-    nuget delete SpecExpress $version -NoPrompt
-    nuget delete SpecExpress.MVC3 $version -NoPrompt
-    nuget delete SpecExpress.Silverlight $version -NoPrompt
+    .\nuget delete SpecExpress $version -NoPrompt
+    .\nuget delete SpecExpress.MVC3 $version -NoPrompt
 
     $PackageNames = gci "$NuGetPackDir\*.nupkg"
 	foreach ($packageName in $PackageNames)
 	{
-      exec { nuget push $PackageName }
+      exec { .\nuget push $PackageName }
 	}  
 }
 
