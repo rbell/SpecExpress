@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Alpha" xml:space="preserve">
+    <value>{PropertyName} deve contenere solamente caratteri alfanumerici.</value>
+  </data>
+  <data name="Between" xml:space="preserve">
+    <value>{PropertyName} deve avere un valore fra  {0} e {1}.</value>
+  </data>
+  <data name="Contains" xml:space="preserve">
+    <value>{PropertyName} non contiene il valore {PropertyValue}.</value>
+  </data>
+  <data name="CountEqualTo" xml:space="preserve">
+    <value>{PropertyName} deve contenere {0} elementi.</value>
+  </data>
+  <data name="CountGreaterThan" xml:space="preserve">
+    <value>{PropertyName} deve contenere più di {0} elementi.</value>
+  </data>
+  <data name="CountGreaterThanEqualTo" xml:space="preserve">
+    <value>{PropertyName} deve contenere un numero maggiore o uguale a {0} elementi.</value>
+  </data>
+  <data name="CountLessThan" xml:space="preserve">
+    <value>{PropertyName} deve contenere meno di {0} elementi.</value>
+  </data>
+  <data name="CountLessThanEqualTo" xml:space="preserve">
+    <value>{PropertyName} deve contenere un numero minore o ugale a {0} elementi.</value>
+  </data>
+  <data name="EqualTo" xml:space="preserve">
+    <value>{PropertyName} deve essere uguale a {0}.</value>
+  </data>
+  <data name="GreaterThan" xml:space="preserve">
+    <value>{PropertyName} deve essere maggiore a {0}.</value>
+  </data>
+  <data name="GreaterThanEqualTo" xml:space="preserve">
+    <value>{PropertyName} deve essere maggiore o uguale a {0}.</value>
+  </data>
+  <data name="IsEmpty" xml:space="preserve">
+    <value>{PropertyName} deve essere vuoto.</value>
+  </data>
+  <data name="IsFalse" xml:space="preserve">
+    <value>{PropertyName} deve essere "falso".</value>
+  </data>
+  <data name="IsInFuture" xml:space="preserve">
+    <value>{PropertyName} deve essere nel futuro.</value>
+  </data>
+  <data name="IsInPast" xml:space="preserve">
+    <value>{PropertyName} deve essere nel passato.</value>
+  </data>
+  <data name="IsInSet" xml:space="preserve">
+    <value>{PropertyName} è un valore non valido.</value>
+  </data>
+  <data name="IsTrue" xml:space="preserve">
+    <value>{PropertyName} deve essere "vero".</value>
+  </data>
+  <data name="LengthBetween" xml:space="preserve">
+    <value>{PropertyName} deve avere fra {0} e {1} caratteri.</value>
+  </data>
+  <data name="LengthEqualTo" xml:space="preserve">
+    <value>{PropertyName} deve avere {0} caratteri.</value>
+  </data>
+  <data name="LessThan" xml:space="preserve">
+    <value>{PropertyName} deve essere minore a {0}.</value>
+  </data>
+  <data name="LessThanEqualTo" xml:space="preserve">
+    <value>{PropertyName} deve essere minore o uguale a {0}.</value>
+  </data>
+  <data name="Matches" xml:space="preserve">
+    <value>Il valore {PropertyName} non corrisponde al pattern '{0}'.</value>
+  </data>
+  <data name="MaxLength" xml:space="preserve">
+    <value>{PropertyName} deve avere meno di {0} caratteri.</value>
+  </data>
+  <data name="MinLength" xml:space="preserve">
+    <value>{PropertyName} deve avere più di {0} caratteri.</value>
+  </data>
+  <data name="Not_Alpha" xml:space="preserve">
+    <value>{PropertyName} non deve contenere lettere alfabetiche.</value>
+  </data>
+  <data name="Not_Between" xml:space="preserve">
+    <value>{PropertyName} non puo essere fra {0} e {1}.</value>
+  </data>
+  <data name="Not_Contains" xml:space="preserve">
+    <value>{PropertyName} contiene {PropertyValue}.</value>
+  </data>
+  <data name="Not_CountEqualTo" xml:space="preserve">
+    <value>{PropertyName} non deve contenere {0} elementi.</value>
+  </data>
+  <data name="Not_CountGreaterThan" xml:space="preserve">
+    <value>{PropertyName} non deve contenere più di {0} elementi.</value>
+  </data>
+  <data name="Not_CountGreaterThanEqualTo" xml:space="preserve">
+    <value>{PropertyName} non deve contenere un numero maggiore o uguale a {0} elementi.</value>
+  </data>
+  <data name="Not_CountLessThan" xml:space="preserve">
+    <value>{PropertyName} non deve contenere meno di {0} elementi.</value>
+  </data>
+  <data name="Not_CountLessThanEqualTo" xml:space="preserve">
+    <value>{PropertyName} non deve contenere un numero minore o ugale a {0} elementi.</value>
+  </data>
+  <data name="Not_EqualTo" xml:space="preserve">
+    <value>{PropertyName} non deve essere uguale a {0}.  Lei a digitato {PropertyValue}.</value>
+  </data>
+  <data name="Not_GreaterThan" xml:space="preserve">
+    <value>{PropertyName} non deve essere maggiore a {0}.</value>
+  </data>
+  <data name="Not_GreaterThanEqualTo" xml:space="preserve">
+    <value>{PropertyName} non deve essere maggiore o uguale a {0}.</value>
+  </data>
+  <data name="Not_IsEmpty" xml:space="preserve">
+    <value>{PropertyName} non puo essere vuoto.</value>
+  </data>
+  <data name="Not_IsFalse" xml:space="preserve">
+    <value>{PropertyName} non puo essere "falso".</value>
+  </data>
+  <data name="Not_IsInFuture" xml:space="preserve">
+    <value>{PropertyName} non puo essere nel futuro.</value>
+  </data>
+  <data name="Not_IsInPast" xml:space="preserve">
+    <value>{PropertyName} non puo essere nel passato.</value>
+  </data>
+  <data name="Not_IsInSet" xml:space="preserve">
+    <value>{PropertyName} è un valore non valido.</value>
+  </data>
+  <data name="Not_IsTrue" xml:space="preserve">
+    <value>{PropertyName} non puo essere "vero".</value>
+  </data>
+  <data name="Not_LengthBetween" xml:space="preserve">
+    <value>{PropertyName} non puo avere fra {0} e {1} caratteri.</value>
+  </data>
+  <data name="Not_LengthEqualTo" xml:space="preserve">
+    <value>{PropertyName} non puo avere {0} caratteri.</value>
+  </data>
+  <data name="Not_LessThan" xml:space="preserve">
+    <value>{PropertyName} non puo essere minore a {0}.</value>
+  </data>
+  <data name="Not_LessThanEqualTo" xml:space="preserve">
+    <value>{PropertyName} non puo essere minore o uguale a {0}.</value>
+  </data>
+  <data name="Not_Matches" xml:space="preserve">
+    <value>Il valore {PropertyName} non puo corrispondere al pattern '{0}'.</value>
+  </data>
+  <data name="Not_MaxLength" xml:space="preserve">
+    <value>{PropertyName} non puo avere meno di {0} caratteri.</value>
+  </data>
+  <data name="Not_MinLength" xml:space="preserve">
+    <value>{PropertyName} non puo avere più di {0} caratteri.</value>
+  </data>
+  <data name="Not_Numeric" xml:space="preserve">
+    <value>{PropertyName} non puo contenere solamente numeri naturali.</value>
+  </data>
+  <data name="Numeric" xml:space="preserve">
+    <value>{PropertyName} deve contenere solamente numeri naturali.</value>
+  </data>
+  <data name="Required" xml:space="preserve">
+    <value>{PropertyName} è obbligatorio.</value>
+  </data>
+  <data name="SpecificationRule" xml:space="preserve">
+    <value>{PropertyName} non è valido.</value>
+  </data>
+</root>
