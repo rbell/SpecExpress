@@ -30,7 +30,7 @@ namespace SpecExpress
             _property = property;
             _message = message;
             _target = target;
-            NestedValidationResults = nestedValidationResults;
+            NestedValidationResults = nestedValidationResults ?? new List<ValidationResult>();
             Level = level;
         }
 

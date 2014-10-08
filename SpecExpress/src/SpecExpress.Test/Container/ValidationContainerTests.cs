@@ -70,8 +70,22 @@ namespace SpecExpress.Test
             Assembly assembly = Assembly.LoadFrom("SpecExpress.Test.Domain.dll");
             ValidationCatalog.Scan(x => x.AddAssembly(assembly));
 
-            var spec = ValidationCatalog.SpecificationContainer.GetSpecification<SpecExpress.Test.Domain.Entities.Contact>();
-            Assert.That(spec.GetType(), Is.EqualTo(typeof(SpecExpress.Test.Domain.Specifications.ContactSpecification)));
+            //Add Default specification with optional last name
+            ValidationCatalog.AddSpecification<SpecExpress.Test.Domain.Entities.Contact>(spec =>
+            {
+                spec.IsDefaultForType();
+                spec.Check(c => c.LastName).Optional();
+            });
+
+            //Add Secondary specification with required last name
+            ValidationCatalog.AddSpecification<SpecExpress.Test.Domain.Entities.Contact>(spec => spec.Check(c => c.LastName).Required());
+
+            //Create valid object, with null Last Name
+            var contact = new SpecExpress.Test.Domain.Entities.Contact();
+
+            var vn = ValidationCatalog.Validate(contact);
+            
+            Assert.That(vn.IsValid, Is.True);
         }
 
 

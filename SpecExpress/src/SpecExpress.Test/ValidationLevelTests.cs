@@ -60,10 +60,15 @@ namespace SpecExpress.Test
         [Test]
         public void ValidationNotification_WithAllWarnDeepTree_IsValid()
         {
-           var customer = new SpecExpress.Test.Domain.Entities.Customer();
-            customer.PrimaryContact = new Contact();
+           var customer = new SpecExpress.Test.Domain.Entities.Customer {PrimaryContact = new Contact()};
 
-            var vn = ValidationCatalog.Validate<CustomerRequiredWarningSpecification>(customer);
+            var vn = Specification.Validate(
+                spec =>
+                    spec.Check(c => customer.PrimaryContact)
+                        .Required()
+                        .Specification(contactSpec => contactSpec.Warn(c => c.FirstName).Required()));
+
+           
             Assert.IsTrue(vn.Errors.Count == 1);
             Assert.That(vn.IsValid, Is.True);
         }

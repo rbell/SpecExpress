@@ -10,7 +10,11 @@ namespace SpecExpress.Test
     using SpecExpress.Test.Domain.Entities;
     using SpecExpress.Test.Domain.Specifications;
 
+    /// <summary>
+    /// These are test cases to illustrate a the NullReference Problem
+    /// </summary>
     [TestFixture]
+    
     public class ExceptionsTest
     {
         /// <summary>
@@ -18,34 +22,27 @@ namespace SpecExpress.Test
         /// without a clear exception message
         /// </summary>
         [Test]
+        [ExpectedException(typeof(NullReferenceException))]
         public void ListNullReferenceException()
-        {
-            try
-            {
-                var customer = new Customer();
-                customer.Employees = new List<Contact>();
-                customer.Employees.Add(null);
-
-                ValidationCatalog.Validate<CustomerNullReferenceSpecification>(customer);
-            }
-            catch (NullReferenceException exception)
-            {
-                Assert.IsTrue(exception.Message.Contains(typeof(Customer).FullName));
-            }
+        {   
+            var customer = new Customer {Employees = new List<Contact> {null}};
+            Specification.Assert(spec => spec.Check(c => customer.Employees).Optional().ForEachSpecification());
         }
 
         /// <summary>
         /// Very hard to figure out which specification caused the exception
         /// </summary>
         [Test]
-        [ExpectedException(typeof(CustomRuleEvaluationException))]
+        [ExpectedException(typeof(NullReferenceException))]
         public void ExpectNullReferenceException()
         {
-            var customer = new Customer();
-            customer.Employees = new List<Contact>();
-            customer.Employees.Add(null);
+            var customer = new Customer {Employees = new List<Contact> {null}};
+            Specification.Assert(spec => spec.Check(c => customer.Employees).Required().Expect(ThrowHereNullReferenceException, "object not valid"));
+        }
 
-            ValidationCatalog.Validate<CustomerExpectNullReferenceExceptionSpecification>(customer);
+        private bool ThrowHereNullReferenceException(object arg1, List<Contact> arg2)
+        {
+            throw new NullReferenceException("try_to_find_the_specification_causing_this_nullreferenceexception");
         }
     }
 }
