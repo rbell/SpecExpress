@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.Data;
 using System.Text.RegularExpressions;
 
 namespace SpecExpress.Rules
@@ -15,8 +16,7 @@ namespace SpecExpress.Rules
 
         public override bool Validate(RuleValidatorContext<T, TProperty> context, SpecificationContainer specificationContainer, ValidationNotification notification)
         {
-            var result = (bool)(_expression.DynamicInvoke(new object[] {context.Instance, context.PropertyValue }));
-
+            var result = _expression(context.Instance, context.PropertyValue);
             return Evaluate(result, context, notification);
         }
     }
