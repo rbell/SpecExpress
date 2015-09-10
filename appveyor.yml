@@ -1,4 +1,4 @@
-version: 1.6.2
+version: 1.6.2.{build}
 branches:
   only:
   - feature/Feature-Fix.Build
@@ -15,5 +15,5 @@ assembly_info:
   patch: true
   file: \SpecExpress\src\SpecExpress\Properties\AssemblyInfo.cs
   assembly_version: '{version}'
-  assembly_file_version: '{version}.{build}'
-  assembly_informational_version: '{version}-rc1'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
