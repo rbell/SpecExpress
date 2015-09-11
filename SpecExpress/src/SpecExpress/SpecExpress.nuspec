@@ -1,19 +1,19 @@
 <?xml version="1.0"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+<package >
   <metadata>
-    <id>SpecExpress</id>
+    <id>$id$</id>
     <version>$version$</version>
-    <title>SpecExpress</title>
+    <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.txt</licenseUrl>
-    <projectUrl>https://github.com/rbell/SpecExpress</projectUrl>
+    <projectUrl>https://github.com/rbell/SpecExpress</projectUrl>    
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>SpecExpress takes a different approach than most other Validation Frameworks, such as Validation Application Block. SpecExpress doesn't use Attributes to decorate properties and embed all the metadata required for the rule. Instead, it it uses a separate class, called a Specification, which contains a set a rules for all the properties for a type. This allows for much easier reading, separation of concerns, and much better support for state based validation. 
+     <description>SpecExpress takes a different approach than most other Validation Frameworks, such as Validation Application Block. SpecExpress doesn't use Attributes to decorate properties and embed all the metadata required for the rule. Instead, it it uses a separate class, called a Specification, which contains a set a rules for all the properties for a type. This allows for much easier reading, separation of concerns, and much better support for state based validation. 
 
 Features include: DSL that provides developers with a Fluent Interface for quickly composing rules that are also easy to read;    Generates error message from your validation rules, while allowing for easy overriding and customization of individual messages; Support for localization of error messages;
 Auto discovery of specifications means the developer isn't required to resolve which validation rules to use;      Programatically add or change validation rules at runtime; Validation Contexts Support for rich, complex object types and graphs; Built with extension and customization in mind; Easy to integrate into your existing code because there are no Base Classes or Attributes to inject into your code; ASP.NET WebForms support; Silverlight support; A rich set of Validators.</description>
     <summary>A fluent validation framework and container for .Net that makes it easier to write validation rules and validate your objects.</summary>
-    <language>en-US</language>
+    <copyright>Copyright 2015</copyright>   
   </metadata>
 </package>
